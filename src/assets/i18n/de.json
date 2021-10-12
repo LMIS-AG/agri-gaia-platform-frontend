@@ -1,0 +1,47 @@
+{
+  "common": {
+    "close": "Schließen",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirm": "Bestätigen",
+    "cancel": "Abbrechen",
+    "successMessage": "Aktion war erfolgreich.",
+    "errorMessage": "Aktion war nicht erfolgreich.",
+    "user": {
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "register": "Registrieren"
+    },
+    "unsavedChanges": {
+      "headline": "Ungespeicherte Änderungen",
+      "question": "Wollen Sie die Bearbeitung wirklich beenden?"
+    },
+    "deleteConfirmation": {
+      "header": "Löschen",
+      "question": "Möchten Sie den Datensatz wirklich löschen?"
+    }
+  },
+  "error": {
+    "connection": "Die Verbindung zum Server wurde unterbrochen. Bitte versuchen Sie es später erneut.",
+    "unauthorized": "Diese Aktion benötigt einen Login. Bitte melden Sie sich an und versuchen Sie es erneut.",
+    "forbidden": "Sie besitzen nicht die notwendigen Rechte, um diese Anfrage auszuführen.",
+    "notFound": "Die angefragte Ressource steht nicht zur Verfügung. Bitte versuchen Sie es später erneut und kontaktieren Sie den Support, sollte dieser Fehler weiterhin auftreten.",
+    "server": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut und kontaktieren Sie den Support, sollte dieser Fehler weiterhin auftreten.",
+    "http": "Bei der Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "spaces": "Bereiche",
+    "dataManagement": "Daten-Management",
+    "modelManagement": "Modell-Management",
+    "edgeManagement": "Edge-Management",
+    "monitoring": "Monitoring",
+    "marketplace": "Marktplatz",
+    "serviceCatalogue": "Service-Katalog",
+    "community": "Community",
+    "settings": "Einstellungen"
+  },
+  "dataManagement": {
+    "heading": "Daten-Management"
+  }
+}

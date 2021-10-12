@@ -1,0 +1,105 @@
+@import '../../../styles/common/variables';
+@import '../../../styles/common/mixins';
+
+@mixin menu-item-font() {
+  @include calluna-font();
+  color: $primary;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+// SVG filter for #889F9A
+$external-link-icon-filter: invert(67%) sepia(6%) saturate(692%) hue-rotate(117deg) brightness(92%) contrast(83%);
+
+.menu-container {
+  width: 250px;
+  height: 100%;
+}
+
+.current-user {
+  margin-top: 30px;
+  margin-bottom: 17px;
+  padding-left: 16px;
+  padding-right: 2px;
+
+  a {
+    text-decoration-line: none;
+  }
+
+  .image {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+  }
+
+  .name {
+    @include menu-item-font();
+  }
+
+  .active-link .name {
+    color: $accent;
+  }
+
+  .email {
+    font-size: 12px;
+    font-weight: normal;
+    font-family: unset;
+    color: $gray;
+  }
+}
+
+.mat-nav-list {
+  height: 100%;
+  padding-top: 0px;
+
+  .mat-list-item {
+    @include menu-item-font();
+    height: 50px;
+
+    &.active-link {
+      color: $accent;
+      .menu-svg-icon {
+        filter: $accent-filter;
+      }
+    }
+
+    .mat-icon,
+    .menu-svg-icon {
+      margin-right: 10px;
+    }
+
+    .suffix-icon {
+      margin-left: 10px;
+      margin-right: 0px;
+    }
+
+    .menu-svg-icon {
+      height: 24px;
+      width: 24px;
+
+      filter: $primary-filter;
+
+      &.suffix-icon {
+        filter: $external-link-icon-filter;
+      }
+    }
+
+    &.mat-list-item-disabled {
+      background-color: white;
+      color: $gray;
+
+      .menu-svg-icon {
+        filter: $gray-filter;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 12px;
+    }
+  }
+
+  .mat-divider {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+}

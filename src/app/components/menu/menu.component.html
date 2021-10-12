@@ -1,0 +1,67 @@
+<div class="menu-container" fxLayout="column">
+  <!-- *transloco directive must be inside the container that specifies the width.
+        If it is specified on the container or outside of it, the layout is destroyed
+        (no margin-left on mat-sidenav-content so the content is behind the menu). -->
+  <ng-container *transloco="let t; read: 'menu'">
+    <div class="current-user">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <a
+          style="pointer-events: none"
+          routerLink="#"
+          routerLinkActive="active-link"
+          fxFlex="grow"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
+          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
+          <div fxLayout="column">
+            <div class="name">Hank Scorpio</div>
+            <div class="email">h.scorpio@ag-brain.de</div>
+          </div>
+        </a>
+        <button mat-icon-button disabled><mat-icon>logout</mat-icon></button>
+      </div>
+    </div>
+
+    <mat-nav-list fxLayout="column" fxFlex="grow">
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <mat-icon>dashboard</mat-icon> {{ t('dashboard') }}
+      </a>
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <mat-icon>workspaces</mat-icon> {{ t('spaces') }}
+      </a>
+      <a mat-list-item routerLink="data" routerLinkActive="active-link">
+        <img src="/assets/icons/icons8-data.svg" class="menu-svg-icon" /> {{ t('dataManagement') }}
+      </a>
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <img src="/assets/icons/icons8-module.svg" class="menu-svg-icon" /> {{ t('modelManagement') }}
+      </a>
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <img src="/assets/icons/icons8-cloud_computing.svg" class="menu-svg-icon" /> {{ t('edgeManagement') }}
+      </a>
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <img src="/assets/icons/icons8-heart_monitor.svg" class="menu-svg-icon" /> {{ t('monitoring') }}
+      </a>
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <mat-icon>storefront</mat-icon> {{ t('marketplace') }}
+        <img src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
+      </a>
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <mat-icon>local_library</mat-icon> {{ t('serviceCatalogue') }}
+      </a>
+      <a mat-list-item href="https://community.agri-gaia.com" target="_blank" rel="noopener">
+        <mat-icon>forum</mat-icon> {{ t('community') }}
+        <img src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
+      </a>
+
+      <div fxFlex="grow"></div>
+
+      <mat-divider></mat-divider>
+
+      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+        <mat-icon>settings</mat-icon>{{ t('settings') }}
+      </a>
+    </mat-nav-list>
+  </ng-container>
+</div>
