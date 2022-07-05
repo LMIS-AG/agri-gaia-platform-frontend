@@ -31,8 +31,9 @@
       <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
         <mat-icon>workspaces</mat-icon> {{ t('spaces') }}
       </a>
-      <a mat-list-item routerLink="data" routerLinkActive="active-link">
+      <a mat-list-item href="https://data-sharing.platform.agri-gaia.com" target="_blank" rel="noopener">
         <img src="/assets/icons/icons8-data.svg" class="menu-svg-icon" /> {{ t('dataManagement') }}
+        <img src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
       </a>
       <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
         <img src="/assets/icons/icons8-module.svg" class="menu-svg-icon" /> {{ t('modelManagement') }}
