@@ -20,7 +20,7 @@
     "@angular/common": "^14.0.1",
     "@angular/compiler": "^14.0.1",
     "@angular/core": "^14.0.1",
-    "@angular/flex-layout": "^13.0.0-beta.38",
+    "@angular/flex-layout": "^14.0.0-beta.40",
     "@angular/forms": "^14.0.1",
     "@angular/material": "^14.0.1",
     "@angular/material-luxon-adapter": "^14.0.1",
@@ -63,13 +63,5 @@
     "rimraf": "^3.0.2",
     "typescript": "~4.6.4",
     "webpack-bundle-analyzer": "^4.4.2"
-  },
-  "overrides": {
-    "@angular/flex-layout": {
-      "@angular/cdk": "^14.0.0",
-      "@angular/common": "^14.0.0",
-      "@angular/core": "^14.0.0",
-      "@angular/platform-browser": "^14.0.0"
-    }
   }
 }

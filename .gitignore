@@ -47,3 +47,5 @@ Thumbs.db
 
 # Dynamically loaded environment config for local development.
 src/config/environment.json
+
+.angular

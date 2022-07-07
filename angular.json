@@ -123,10 +123,9 @@
       }
     }
   },
+  "defaultProject": "agri-gaia-platform",
   "cli": {
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ],
+    "defaultCollection": "@angular-eslint/schematics",
     "analytics": false
   }
 }
