@@ -7,7 +7,13 @@ import { MatIconRegistry } from '@angular/material/icon';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  public sideMenuWidth: number = 256;
+
   constructor(matIconRegistry: MatIconRegistry) {
     matIconRegistry.setDefaultFontSetClass('material-icons-outlined');
+  }
+
+  public adjustMenuWidth($event: number): void {
+    this.sideMenuWidth = $event;
   }
 }

@@ -16,6 +16,36 @@ $external-link-icon-filter: invert(67%) sepia(6%) saturate(692%) hue-rotate(117d
   height: 100%;
 }
 
+.mini-menu-container {
+  width: 75px;
+  height: 100%;
+}
+
+.mini-mat-navlist {
+  img,
+  mat-icon {
+    margin-left: 10px;
+  }
+}
+
+.toggle-menu-button {
+  border-style: none;
+  background-color: transparent;
+
+  mat-icon {
+    margin-right: 10px;
+    color: $gray;
+  }
+}
+
+.toggle-menu-text {
+  @include calluna-font();
+  color: $gray;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
 .current-user {
   margin-top: 30px;
   margin-bottom: 17px;

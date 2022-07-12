@@ -32,7 +32,7 @@
   },
   "menu": {
     "dashboard": "Dashboard",
-    "spaces": "Bereiche",
+    "spaces": "Kooperationsbereiche",
     "dataManagement": "Daten-Management",
     "modelManagement": "Modell-Management",
     "edgeManagement": "Edge-Management",
@@ -40,7 +40,8 @@
     "marketplace": "Marktplatz",
     "serviceCatalogue": "Service-Katalog",
     "community": "Community",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "hide": "Menü ausblenden"
   },
   "dataManagement": {
     "heading": "Daten-Management"

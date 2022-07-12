@@ -1,4 +1,4 @@
-<div class="menu-container" fxLayout="column">
+<div [class.menu-container]="isMenuOpen" [class.mini-menu-container]="!isMenuOpen" fxLayout="column">
   <!-- *transloco directive must be inside the container that specifies the width.
         If it is specified on the container or outside of it, the layout is destroyed
         (no margin-left on mat-sidenav-content so the content is behind the menu). -->
@@ -16,8 +16,8 @@
         >
           <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
           <div fxLayout="column">
-            <div class="name">{{this.profile?.firstName}} {{this.profile?.lastName}}</div>
-            <div class="email">{{this.profile?.email}}</div>
+            <div class="name">{{ this.profile?.firstName }} {{ this.profile?.lastName }}</div>
+            <div class="email">{{ this.profile?.email }}</div>
           </div>
         </a>
         <button mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
@@ -26,18 +26,19 @@
       </div>
     </div>
 
-    <mat-nav-list fxLayout="column" fxFlex="grow">
-      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+    <mat-nav-list [class.mini-mat-navlist]="!isMenuOpen" fxLayout="column" fxFlex="grow">
+      <!--<a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
         <mat-icon>dashboard</mat-icon> {{ t('dashboard') }}
-      </a>
+      </a>-->
       <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
-        <mat-icon>workspaces</mat-icon> {{ t('spaces') }}
+        <mat-icon>workspaces</mat-icon> <span *ngIf="isMenuOpen">{{ t('spaces') }}</span>
       </a>
       <a mat-list-item href="https://data-sharing.platform.agri-gaia.com" target="_blank" rel="noopener">
-        <img src="/assets/icons/icons8-data.svg" class="menu-svg-icon" /> {{ t('dataManagement') }}
-        <img src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
+        <img src="/assets/icons/icons8-data.svg" class="menu-svg-icon" />
+        <span *ngIf="isMenuOpen">{{ t('dataManagement') }}</span>
+        <img *ngIf="isMenuOpen" src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
       </a>
-      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+      <!--<a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
         <img src="/assets/icons/icons8-module.svg" class="menu-svg-icon" /> {{ t('modelManagement') }}
       </a>
       <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
@@ -52,10 +53,11 @@
       </a>
       <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
         <mat-icon>local_library</mat-icon> {{ t('serviceCatalogue') }}
-      </a>
+      </a>-->
       <a mat-list-item href="https://community.agri-gaia.com" target="_blank" rel="noopener">
-        <mat-icon>forum</mat-icon> {{ t('community') }}
-        <img src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
+        <mat-icon>forum</mat-icon>
+        <span *ngIf="isMenuOpen">{{ t('community') }} </span
+        ><img *ngIf="isMenuOpen" src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
       </a>
 
       <div fxFlex="grow"></div>
@@ -63,8 +65,26 @@
       <mat-divider></mat-divider>
 
       <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
-        <mat-icon>settings</mat-icon>{{ t('settings') }}
+        <mat-icon>settings</mat-icon><span *ngIf="isMenuOpen">{{ t('settings') }}</span>
       </a>
+
+      <mat-divider></mat-divider>
+
+      <!-- TODO add hover effect maybe (which is not easy because the divider has a margin so if you use ':hover' the margin-part will stay white)-->
+      <button
+        *ngIf="isMenuOpen"
+        fxLayout="row"
+        fxLayoutAlign="end"
+        fxLayoutGap="5px"
+        class="toggle-menu-button hover-effect"
+        (click)="toggleMenu()"
+      >
+        <div class="toggle-menu-text">{{ t('hide') }}</div>
+        <mat-icon>keyboard_double_arrow_left</mat-icon>
+      </button>
+      <button *ngIf="!isMenuOpen" class="toggle-menu-button" (click)="toggleMenu()">
+        <mat-icon>keyboard_double_arrow_right</mat-icon>
+      </button>
     </mat-nav-list>
   </ng-container>
 </div>

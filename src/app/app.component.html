@@ -2,9 +2,9 @@
   <app-toolbar fxFlex="none"></app-toolbar>
   <mat-sidenav-container fxFlex="1 1 auto">
     <mat-sidenav mode="side" opened>
-      <app-menu></app-menu>
+      <app-menu (toggleMenuEvent)="adjustMenuWidth($event)"></app-menu>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content [ngStyle]="{ 'margin-left.px': sideMenuWidth }">
       <div class="app-content"><router-outlet></router-outlet></div>
     </mat-sidenav-content>
   </mat-sidenav-container>
