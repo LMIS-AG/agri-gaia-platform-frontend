@@ -4,7 +4,7 @@
         (no margin-left on mat-sidenav-content so the content is behind the menu). -->
   <ng-container *transloco="let t; read: 'menu'">
     <div class="current-user">
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *transloco="let tCommon; read: 'common'">
         <a
           style="pointer-events: none"
           routerLink="#"
@@ -16,11 +16,13 @@
         >
           <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
           <div fxLayout="column">
-            <div class="name">Hank Scorpio</div>
-            <div class="email">h.scorpio@ag-brain.de</div>
+            <div class="name">{{this.profile?.firstName}} {{this.profile?.lastName}}</div>
+            <div class="email">{{this.profile?.email}}</div>
           </div>
         </a>
-        <button mat-icon-button disabled><mat-icon>logout</mat-icon></button>
+        <button mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
+          <mat-icon>logout</mat-icon>
+        </button>
       </div>
     </div>
 

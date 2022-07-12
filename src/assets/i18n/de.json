@@ -7,6 +7,7 @@
     "cancel": "Abbrechen",
     "successMessage": "Aktion war erfolgreich.",
     "errorMessage": "Aktion war nicht erfolgreich.",
+    "logout": "Ausloggen",
     "user": {
       "login": "Anmelden",
       "logout": "Abmelden",
