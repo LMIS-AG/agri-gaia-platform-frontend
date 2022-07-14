@@ -1,0 +1,45 @@
+<ng-container *transloco="let t; read: 'dataManagement.coopSpaces'">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <h1 class="headline">{{ t('headline') }}</h1>
+    <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="addCoopSpace()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z0"
+    *transloco="let tTable; read: 'dataManagement.coopSpaces.table'"
+  >
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Owner Column -->
+    <ng-container matColumnDef="owner">
+      <th mat-header-cell *matHeaderCellDef>{{ tTable('owner') }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.owner }}</td>
+    </ng-container>
+
+    <!-- Member Column -->
+    <ng-container matColumnDef="member">
+      <th mat-header-cell *matHeaderCellDef>{{ tTable('members') }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.member.toString() }}</td>
+    </ng-container>
+
+    <!-- MyRole Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef>{{ tTable('myRole') }}</th>
+      <td mat-cell *matCellDef="let element">{{ t('role.' + element.role) }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>

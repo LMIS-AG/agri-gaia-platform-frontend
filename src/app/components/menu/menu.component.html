@@ -15,12 +15,12 @@
           fxLayoutGap="10px"
         >
           <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
-          <div fxLayout="column">
+          <div *ngIf="isMenuOpen" fxLayout="column">
             <div class="name">{{ this.profile?.firstName }} {{ this.profile?.lastName }}</div>
             <div class="email">{{ this.profile?.email }}</div>
           </div>
         </a>
-        <button mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
+        <button *ngIf="isMenuOpen" mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
           <mat-icon>logout</mat-icon>
         </button>
       </div>
@@ -30,7 +30,7 @@
       <!--<a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
         <mat-icon>dashboard</mat-icon> {{ t('dashboard') }}
       </a>-->
-      <a mat-list-item disabled routerLink="#" routerLinkActive="active-link">
+      <a mat-list-item routerLink="data/coop-spaces" routerLinkActive="active-link">
         <mat-icon>workspaces</mat-icon> <span *ngIf="isMenuOpen">{{ t('spaces') }}</span>
       </a>
       <a mat-list-item href="https://data-sharing.platform.agri-gaia.com" target="_blank" rel="noopener">

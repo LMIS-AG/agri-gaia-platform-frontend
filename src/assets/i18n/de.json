@@ -44,6 +44,20 @@
     "hide": "Menü ausblenden"
   },
   "dataManagement": {
-    "heading": "Daten-Management"
+    "heading": "Daten-Management",
+    "coopSpaces": {
+      "headline": "Kooperationsbereiche",
+      "table": {
+        "name": "Name",
+        "owner": "Inhaber",
+        "members": "Beteiligte",
+        "myRole": "Meine Rolle"
+      },
+      "role": {
+        "VIEWER": "Zuschauer",
+        "EDITOR": "Editor",
+        "OWNER": "Inhaber"
+      }
+    }
   }
 }
