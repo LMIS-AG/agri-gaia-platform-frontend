@@ -3,7 +3,6 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { CoopSpacesComponent } from './pages/coop-spaces/coop-spaces.component';
-import { OverviewComponent } from './pages/overview/overview.component';
 
 const routes: Routes = [
   {
@@ -12,7 +11,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: OverviewComponent,
+    redirectTo: 'coop-spaces',
+    pathMatch: 'full',
   },
   {
     path: '**',
@@ -21,7 +21,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [OverviewComponent, CoopSpacesComponent],
+  declarations: [CoopSpacesComponent],
   imports: [MatTableModule, SharedModule, RouterModule.forChild(routes)],
 })
 export class DataManagementModule {}
