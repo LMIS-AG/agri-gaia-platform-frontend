@@ -1,3 +1,36 @@
-<mat-toolbar>
-  <img class="logo" src="/assets/theme/logo-agrigaia.svg" />
+<mat-toolbar *transloco="let t; read: 'toolbar'">
+  <div fxFlex fxLayout="row">
+    <div class="logo-container">
+      <img fxFlexAlign="start" class="logo" src="/assets/theme/logo-agrigaia.svg" />
+    </div>
+    <div fxFlex fxLayout="row" fxFlexAlign="space-between" class="headbar-container">
+      <div fxFlex fxLayout="row">
+        <button (click)="goBack()">
+          <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <button (click)="goForward()">
+          <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
+        <button fxFlex="5" class="save-button" (click)="save()">
+          <mat-icon class="save-icon">save</mat-icon>
+        </button>
+        <div fxFlex class="form-container">
+          <form>
+            <mat-form-field class="half-width">
+              <button mat-button matPrefix mat-icon-button>
+                <mat-icon>search</mat-icon>
+              </button>
+              <input matInput [value]="t('globalSearch')" />
+              <button mat-button *ngIf="false" matSuffix mat-icon-button>
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+      <button>
+        <mat-icon>notifications</mat-icon>
+      </button>
+    </div>
+  </div>
 </mat-toolbar>

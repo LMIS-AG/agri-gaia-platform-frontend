@@ -76,6 +76,16 @@ $external-link-icon-filter: invert(67%) sepia(6%) saturate(692%) hue-rotate(117d
     font-family: unset;
     color: $gray;
   }
+
+  .collapsed-menu-logout {
+    a {
+      margin-bottom: -8px;
+    }
+
+    button {
+      padding: 0 0 0px 7px;
+    }
+  }
 }
 
 .mat-nav-list {

@@ -1,7 +1,7 @@
 export interface CoopSpace {
-  id: number;
+  id?: number;
   name: string;
-  owner: string;
+  company: string;
   member: string[];
   role: CoopSpaceRole;
 }

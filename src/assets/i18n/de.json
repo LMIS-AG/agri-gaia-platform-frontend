@@ -5,6 +5,12 @@
     "no": "Nein",
     "confirm": "Bestätigen",
     "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "download": "Herunterladen",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "successfullySaved": "Der Datensatz wurde gespeichert.",
+    "required": "Pflichtfeld",
     "successMessage": "Aktion war erfolgreich.",
     "errorMessage": "Aktion war nicht erfolgreich.",
     "logout": "Ausloggen",
@@ -43,13 +49,16 @@
     "settings": "Einstellungen",
     "hide": "Menü ausblenden"
   },
+  "toolbar": {
+    "globalSearch": "Globale Suche"
+  },
   "dataManagement": {
     "heading": "Daten-Management",
     "coopSpaces": {
       "headline": "Kooperationsbereiche",
       "table": {
         "name": "Name",
-        "owner": "Inhaber",
+        "company": "Inhaber",
         "members": "Beteiligte",
         "myRole": "Meine Rolle"
       },
@@ -57,6 +66,31 @@
         "VIEWER": "Zuschauer",
         "EDITOR": "Editor",
         "OWNER": "Inhaber"
+      },
+      "createCoopSpaces": {
+        "new": "Neuen Kooperationsbereich erstellen",
+        "company": "Unternehmen",
+        "coopSpaceName": "Name Kooperationsbereich"
+      },
+      "details": {
+        "tools": "Verfügbare Tools",
+        "member": "Teilnehmer",
+        "buckets": "Bucktes",
+        "role": {
+          "VIEWER": "Zuschauer",
+          "EDITOR": "Editor",
+          "OWNER": "Inhaber"
+        },
+        "table": {
+          "name": "Name",
+          "date": "Datum",
+          "uploadDate": "Hochgleaden am",
+          "size": "Größe",
+          "labeling": "Labeling",
+          "coopSpace": "Kooperationsbereich",
+          "company": "Inhaber",
+          "role": "Rolle"
+        }
       }
     }
   }

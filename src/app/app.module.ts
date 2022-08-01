@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -45,6 +46,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatToolbarModule,
     MatListModule,
     MatTooltipModule,
+    MatInputModule,
   ],
   providers: [
     {

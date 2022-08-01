@@ -1,0 +1,170 @@
+@import '../../../../../styles/common/variables';
+@import '../../../../../styles/common/mixins';
+
+.card-headline {
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+  h1 {
+    @include calluna-font();
+    color: $primary;
+    font-weight: bold;
+    font-size: 36px;
+    margin-bottom: 0px;
+  }
+  .button32 {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    border: 3px solid $primary !important;
+  }
+  .icon32 {
+    font-size: 22px;
+    margin-top: -12px;
+    color: $primary;
+  }
+}
+
+.table-container {
+  overflow-y: auto;
+}
+
+table {
+  background-color: white;
+  width: 100%;
+  th {
+    color: $primary;
+    font-size: 16px;
+    font-weight: bold;
+    border-color: $primary;
+    border-width: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  td {
+    padding-left: 0px;
+    padding-right: 0px;
+    border-color: gray;
+    button {
+      color: $primary;
+      background-color: transparent;
+      border: none;
+    }
+  }
+
+  .mat-column-more {
+    width: 32px;
+  }
+}
+
+.card {
+  background-color: white;
+  height: 325px;
+  padding: 15px;
+  border-radius: 6px;
+
+  h3 {
+    color: $primary;
+    font-weight: bold;
+  }
+}
+
+.button24 {
+  background-color: white;
+  width: 24px;
+  height: 24px;
+  border: 2px solid $primary !important;
+}
+
+.icon24-more {
+  font-size: 19px;
+  color: $primary;
+  margin-top: -15px;
+  margin-left: -2px;
+}
+
+.icon24-arrow {
+  font-size: 16px;
+  color: $primary;
+  margin-top: -12px;
+  margin-left: -2px;
+}
+
+.button24-add {
+  background-color: $primary;
+  width: 24px;
+  height: 24px;
+}
+
+.icon24-add {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: -8px;
+  margin-right: -1px;
+  color: white;
+  background-color: transparent;
+}
+
+.svg-icon {
+  filter: $primary-filter;
+  margin-top: -20px;
+  height: 18px;
+  width: 18px;
+}
+
+.delete-button {
+  color: red;
+  mat-icon {
+    color: red;
+  }
+}
+
+.tool-item {
+  .cutline {
+    padding-top: 10px;
+    h2 {
+      @include calluna-font();
+      color: $primary;
+      font-size: large;
+      font-weight: bold;
+      padding-left: 8px;
+      margin-top: -4px;
+    }
+  }
+}
+
+.tool-image-container {
+  height: 200px;
+  width: 200px;
+  border: 2px solid $gray;
+  border-radius: 25px;
+}
+
+.tool-image-1 {
+  width: 130px;
+  height: 150px;
+  padding-left: 32px;
+  padding-top: 23px;
+}
+
+.tool-image-2 {
+  width: 150px;
+  height: 130px;
+  padding-left: 23px;
+  padding-top: 32px;
+}
+
+.tool-image-3 {
+  width: 130px;
+  height: 150px;
+  padding-left: 32px;
+  padding-top: 23px;
+}
+
+.icon24-play {
+  color: $primary;
+  font-size: 27px;
+  margin-top: -23px;
+  margin-left: -3px;
+}

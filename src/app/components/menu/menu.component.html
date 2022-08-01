@@ -3,8 +3,8 @@
         If it is specified on the container or outside of it, the layout is destroyed
         (no margin-left on mat-sidenav-content so the content is behind the menu). -->
   <ng-container *transloco="let t; read: 'menu'">
-    <div class="current-user">
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *transloco="let tCommon; read: 'common'">
+    <div class="current-user" *transloco="let tCommon; read: 'common'">
+      <div *ngIf="isMenuOpen" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <a
           style="pointer-events: none"
           routerLink="#"
@@ -15,12 +15,21 @@
           fxLayoutGap="10px"
         >
           <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
-          <div *ngIf="isMenuOpen" fxLayout="column">
+          <div fxLayout="column">
             <div class="name">{{ this.profile?.firstName }} {{ this.profile?.lastName }}</div>
             <div class="email">{{ this.profile?.email }}</div>
           </div>
         </a>
-        <button *ngIf="isMenuOpen" mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
+        <button mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="!isMenuOpen" class="collapsed-menu-logout" fxLayout="column">
+        <a style="pointer-events: none" routerLink="#" routerLinkActive="active-link" fxFlex="grow">
+          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
+        </a>
+        <button mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
           <mat-icon>logout</mat-icon>
         </button>
       </div>
