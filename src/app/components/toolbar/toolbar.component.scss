@@ -34,6 +34,7 @@
   }
 
   input {
+    @include calluna-font();
     color: $gray;
     font-size: 18px;
   }
