@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
@@ -33,7 +34,7 @@ const MOCK_DATA: CoopSpace[] = [
 export class CoopSpacesService {
   private mockData: CoopSpace[] = MOCK_DATA;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   public getAll(): Observable<CoopSpace[]> {
     return of(this.mockData);
@@ -45,6 +46,7 @@ export class CoopSpacesService {
   }
 
   public create(coopSpace: CoopSpace): Observable<CoopSpace> {
+    this.http.post('https://kr-eventsource-argo-events.platform.agri-gaia.com/example', {}).subscribe(x => console.log(x));
     return of(coopSpace);
   }
 }
