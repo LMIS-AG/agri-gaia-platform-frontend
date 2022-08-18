@@ -1,0 +1,37 @@
+<ng-container *transloco="let t">
+  <h2 mat-dialog-title>{{ title }}</h2>
+
+  <mat-stepper #stepper>
+    <mat-step>
+      <!--[stepControl]="firstFormGroup"-->
+
+      <mat-dialog-content class="dialog-content">
+        <ng-content select="[fields]"></ng-content>
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-flat-button (click)="cancelEdit()">
+          {{ cancelButtonLabel === '' ? t('common.cancel') : cancelButtonLabel }}
+        </button>
+        <button mat-flat-button matStepperNext color="primary">Next</button>
+      </mat-dialog-actions>
+    </mat-step>
+    <mat-step>
+      <mat-dialog-content class="dialog-content">
+        <app-add-members></app-add-members>
+      </mat-dialog-content>
+
+      <br />
+      <br />
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-flat-button (click)="cancelEdit()">
+          {{ cancelButtonLabel === '' ? t('common.cancel') : cancelButtonLabel }}
+        </button>
+        <button mat-flat-button matStepperPrevious>Back</button>
+        <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
+          {{ saveButtonLabel === '' ? t('common.save') : saveButtonLabel }}
+        </button>
+      </mat-dialog-actions>
+    </mat-step>
+  </mat-stepper>
+</ng-container>

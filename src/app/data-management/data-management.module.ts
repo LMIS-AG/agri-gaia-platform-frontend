@@ -10,6 +10,9 @@ import { CoopSpaceDetailsFocusComponent } from './pages/coop-spaces/coop-space-d
 import { CoopSpaceDetailsComponent } from './pages/coop-spaces/coop-space-details/coop-space-details.component';
 import { CoopSpacesComponent } from './pages/coop-spaces/coop-spaces.component';
 import { CreateCoopSpaceComponent } from './pages/coop-spaces/create-coop-space/create-coop-space.component';
+import { CreateCoopSpaceDlgComponent } from './pages/coop-spaces/create-coop-space/create-coop-space-dlg/create-coop-space-dlg.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatStepperModule} from '@angular/material/stepper';
 
 const routes: Routes = [
   {
@@ -41,6 +44,7 @@ const routes: Routes = [
     CreateCoopSpaceComponent,
     CoopSpaceDetailsComponent,
     CoopSpaceDetailsFocusComponent,
+    CreateCoopSpaceDlgComponent,
   ],
   imports: [
     MatTableModule,
@@ -49,6 +53,8 @@ const routes: Routes = [
     FormsModule,
     MatInputModule,
     MatMenuModule,
+    MatDialogModule,
+    MatStepperModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
   ],

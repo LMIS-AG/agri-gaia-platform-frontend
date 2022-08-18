@@ -1,0 +1,71 @@
+<div fxLayout="column">
+  <h3>Teilnehmer hinzufügen</h3>
+
+  <!-- TODO maybe make this a label-->
+  <p>
+    Teilnehmer werden automatisch initial als "Zuschauer" zu einem Kooperationsbereich hinzugefügt. Später können Sie
+    die Rolle jedes Teilnehmers anpassen.
+  </p>
+
+  <!-- SEARCH -->
+  <!-- TODO fix show input text (is currently cut off)-->
+  <div fxFlex class="form-container">
+    <form>
+      <mat-form-field class="search" [formGroup]="myGroup">
+        <button mat-button matPrefix mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+        <input matInput formControlName="searchTerm" value="Suche" placeholder="Suche" />
+        <button *ngIf="false" mat-button matSuffix mat-icon-button>
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <br />
+
+  <!-- LIST OF MEMBERS-->
+  <mat-divider></mat-divider>
+  <div fxLayout="column">
+    <span *ngFor="let i of [1, 2, 3]">
+      <div
+        class="current-user"
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        *transloco="let tCommon; read: 'common'"
+      >
+        <!--   -->
+
+        <a
+          style="pointer-events: none"
+          routerLink="#"
+          routerLinkActive="active-link"
+          fxFlex="grow"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
+          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
+          <div fxLayout="column">
+            <div fxLayout="row" fxLayoutGap="5px">
+              <div class="name">Hank Scorpia</div>
+              <div class="company">LMIS AG</div>
+            </div>
+            <div class="email">hank.scorpio@lmiss.de</div>
+          </div>
+        </a>
+
+        <div fxLayout="row" fxLayoutAlign="end center" class="full-witdth" fxLayoutGap="30px">
+          <!-- TODO The owner has no add Button! This has to be adjusted. Possibly with ngIfs...-->
+          <div class="role">Zuschauer</div>
+
+          <div>
+            <button class="outline-btn" mat-stroked-button color="primary">Hinzufügen</button>
+          </div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </span>
+  </div>
+</div>
