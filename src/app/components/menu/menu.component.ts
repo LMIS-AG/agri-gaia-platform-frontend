@@ -27,6 +27,6 @@ export class MenuComponent implements OnInit {
 
   public toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
-    this.toggleMenuEvent.emit(this.isMenuOpen ? 256 : 75);
+    this.toggleMenuEvent.emit(this.isMenuOpen ? 295 : 75);
   }
 }
