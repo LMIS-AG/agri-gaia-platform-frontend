@@ -8,3 +8,5 @@ COPY / /usr/local/apache2/htdocs/
 
 EXPOSE 8080
 USER 1000
+
+RUN pwd
