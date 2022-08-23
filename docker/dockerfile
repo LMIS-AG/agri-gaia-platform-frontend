@@ -1,8 +1,7 @@
 FROM httpd:2.4
 
 RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf \
-    && sed -i '/src/index.html' /usr/local/apache2/conf/httpd.conf \
-#    && sed -i '$aFallbackResource /src/index.html' /usr/local/apache2/conf/httpd.conf \
+    && sed -i '$aFallbackResource /index.html' /usr/local/apache2/conf/httpd.conf \
     && chown -R 1000:root /usr/local/apache2 \
     && chmod 775 -R /usr/local/apache2
 COPY / /usr/local/apache2/htdocs/
