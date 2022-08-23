@@ -40,6 +40,7 @@
     "dashboard": "Dashboard",
     "spaces": "Kooperationsbereiche",
     "dataManagement": "Daten-Management",
+    "aiTraining": "KI-Training",
     "modelManagement": "Modell-Management",
     "edgeManagement": "Edge-Management",
     "monitoring": "Monitoring",
