@@ -7,4 +7,4 @@ RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf \
 COPY / /usr/local/apache2/htdocs/
 
 EXPOSE 8080
-USER 1000
+# USER 1000
