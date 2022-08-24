@@ -16,13 +16,13 @@ COPY ./s2i/bin/ ${STI_SCRIPTS_PATH}
 
 RUN mkdir -p $SOURCE_DIR \
       && chmod 0777 $SOURCE_DIR \
-      && chmod -R 0777 /usr/local/apache2/htdocs \
+      && chmod -R 0777 /usr/local/apache2/htdocs && chown -R 1001:www-data /usr/local/apache2/htdocs \
       && chmod 755 ${STI_SCRIPTS_PATH}/* \
       && chmod 755 /tmp/ && chown -R 1001 /tmp/
 
 RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf \
     && sed -i '$aFallbackResource /index.html' /usr/local/apache2/conf/httpd.conf \
-    && chown -R 1001:root /usr/local/apache2 \
+    && chown -R 1001:root /usr/local/apache2 && chown -R 1001:www-data /usr/local/apache2\
     && chmod 775 -R /usr/local/apache2
 
 # Drop root (as is tradition)
