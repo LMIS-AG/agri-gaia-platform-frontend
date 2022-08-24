@@ -55,7 +55,7 @@ npm run build
 echo "List after:"
 ls -lah
 echo "Copy files from ~/build/dist/agri-gaia-platform/ -> htdocs:"
-cp -R ~/dist/agri-gaia-platform/* /usr/local/apache2/htdocs/
+cp -R ~/build/dist/agri-gaia-platform/* /usr/local/apache2/htdocs/
 
 
 
