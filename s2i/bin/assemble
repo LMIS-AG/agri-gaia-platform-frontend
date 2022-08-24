@@ -36,7 +36,7 @@ ls -lah /tmp/*
 
 # Restore artifacts from the previous build (if they exist).
 #
-
+#
 
 ### Original content from https://github.com/clcollins/golang-s2i
 # set -o errexit
