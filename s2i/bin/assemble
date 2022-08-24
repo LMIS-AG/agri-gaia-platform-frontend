@@ -42,7 +42,8 @@ echo "List after init:"
 ls -lah
 pwd
 
-npm install --production --umask 0022
+npm install @angular/cli
+npm install --omit=dev --umask 0022
 
 echo "List /tmp after build:"
 ls -lah /tmp/
