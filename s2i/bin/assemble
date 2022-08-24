@@ -41,15 +41,17 @@ echo "List after init:"
 ls -lah
 pwd
 
-# npm install -g --unsafe-perm=true --allow-root
-npm install --production --umask 0022
+npm install --umask 0022
+
+echo "List /tmp after build:"
+ls -lah /tmp/
 echo "After npn install, before build:"
 npm run build
 
 
 # Listing content from build
 echo "List after:"
-ls -lah /tmp/*
+ls -lah
 
 # Restore artifacts from the previous build (if they exist).
 #
