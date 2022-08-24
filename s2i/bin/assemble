@@ -6,6 +6,7 @@
 # For more information refer to the documentation:
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
+umask 022
 
 set -o errexit
 echo "Working Directory:"
@@ -41,7 +42,7 @@ echo "List after init:"
 ls -lah
 pwd
 
-npm install --umask 0022
+npm install --production --umask 0022
 
 echo "List /tmp after build:"
 ls -lah /tmp/
