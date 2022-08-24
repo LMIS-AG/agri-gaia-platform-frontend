@@ -20,7 +20,12 @@ RUN mkdir -p $SOURCE_DIR \
       && chmod 755 ${STI_SCRIPTS_PATH}/* \
       && chmod 755 /tmp/ && chown -R 1001 /tmp/
 
+RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf \
+    && sed -i '$aFallbackResource /index.html' /usr/local/apache2/conf/httpd.conf \
+    && chown -R 1001:root /usr/local/apache2 \
+    && chmod 775 -R /usr/local/apache2
+
 # Drop root (as is tradition)
 USER 1001
-
+EXPOSE 8080
 CMD ["/usr/libexec/s2i/usage"]

@@ -47,16 +47,18 @@ npm install
 ng update
 npm update
 
-echo "List /tmp after build:"
-ls -lah /tmp/
 echo "After npn install, before build:"
 # ng update @angular/cli @angular/core --allow-dirty --force
 npm run build
 
-
 # Listing content from build
 echo "List after:"
 ls -lah
+echo "Copy files from ~/build/dist/agri-gaia-platform/ -> htdocs:"
+cp -R ~/dist/agri-gaia-platform/* /usr/local/apache2/htdocs/
+
+
+
 
 # Restore artifacts from the previous build (if they exist).
 #
