@@ -22,7 +22,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'https://account.platform.agri-gaia.com/auth',
         realm: 'agri-gaia',
-        clientId: 'platform',
+        clientId: 'platform-ui',
       },
       initOptions: {
         onLoad: 'check-sso',
