@@ -24,6 +24,6 @@ RUN mkdir -p $SOURCE_DIR \
       && umask 022
 
 # Drop root (as is tradition)
-USER 0
+USER 1001
 
 CMD ["/usr/libexec/s2i/usage"]
