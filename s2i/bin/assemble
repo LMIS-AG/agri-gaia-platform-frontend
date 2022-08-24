@@ -23,20 +23,20 @@ cp -R * ~/build/
 cd ~/build
 # Listing content from build
 echo "List before:"
-ls -lah /tmp/*
+ls -lah
 echo "Working Directory:"
 pwd
 
 # List config
 echo "List Config:"
 npm config list
-# npm init
-# npm ci
-# npm lint
-# npm test
+
+
 echo "Run Build:"
 npm init -y
 echo "Working Directory:"
+echo "List after init:"
+ls -lah
 pwd
 
 npm install
