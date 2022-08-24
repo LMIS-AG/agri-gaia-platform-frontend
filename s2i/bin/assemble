@@ -41,8 +41,10 @@ echo "List after init:"
 ls -lah
 pwd
 
-npm install --unsafe-perm=true --allow-root
-npm run build --unsafe-perm=true --allow-root
+npm config get prefix
+chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+npm install
+npm run build
 
 
 # Listing content from build
