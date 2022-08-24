@@ -22,7 +22,7 @@ RUN mkdir -p $SOURCE_DIR \
 
 RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf \
     && sed -i '$aFallbackResource /index.html' /usr/local/apache2/conf/httpd.conf \
-    && chown -R 1001:root /usr/local/apache2 && chown -R 1001:www-data /usr/local/apache2\
+    && chown -R 1001:root /usr/local/apache2 && chown -R 1001:www-data /usr/local/apache2 \
     && chmod 775 -R /usr/local/apache2
 
 # Drop root (as is tradition)
