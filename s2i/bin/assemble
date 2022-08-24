@@ -24,10 +24,12 @@ cd /tmp
 
 npm config list
 # npm init
-#npm ci
-#npm lint
-#npm test
-npm run build
+# npm ci
+# npm lint
+# npm test
+# npm run build
+ng build
+npm run build:dockerfile
 
 # Listing content from build
 echo "List after:"
