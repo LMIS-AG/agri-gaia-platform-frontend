@@ -8,6 +8,8 @@
 #
 
 set -o errexit
+echo "Working Directory:"
+pwd
 
 # If the 'golang-builder' assemble script is executed with the '-h' flag, print the usage.
 if [[ "$1" == "-h" ]]; then
@@ -18,6 +20,7 @@ fi
 echo "List before:"
 ls -lah /tmp/*
 # Check vor npm
+cd /tmp
 npm run build
 
 # Listing content from build
