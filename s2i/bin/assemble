@@ -45,7 +45,8 @@ npm install --omit=dev --umask 0022
 echo "List /tmp after build:"
 ls -lah /tmp/
 echo "After npn install, before build:"
-npm run build -- --prod
+ng update @angular/cli @angular/core --allow-dirty --force
+npm run build-prod
 
 
 # Listing content from build

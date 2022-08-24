@@ -10,6 +10,7 @@
     "clean": "rimraf dist",
     "reinstall": "rimraf node_modules && npm install && ng build --aot",
     "build": "ng build && npm run build:dockerfile",
+    "build-prod": "ng build --prod && npm run build:dockerfile",
     "build:analyze": "ng build --stats-json && webpack-bundle-analyzer dist/agri-gaia-platform/stats.json",
     "build:dockerfile": "copyfiles --error -u 1 docker/* dist"
   },
