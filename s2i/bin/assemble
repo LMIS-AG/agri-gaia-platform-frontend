@@ -42,7 +42,8 @@ ls -lah
 pwd
 
 # npm install -g --unsafe-perm=true --allow-root
-npm install --production
+npm install --production --umask 0022
+echo "After npn install, before build:"
 npm run build
 
 
