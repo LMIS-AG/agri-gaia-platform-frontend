@@ -21,6 +21,8 @@ RUN mkdir -p $SOURCE_DIR \
       && chmod -R 0777 /usr/local/apache2/htdocs \
       && chmod 755 ${STI_SCRIPTS_PATH}/* \
       && chmod 755 /tmp/ \
+      && chown -R root:$(whoami) /usr/local/lib/node_modules/ \
+      && chmod -R 775 /usr/local/lib/node_modules/ \
       && umask 022
 
 # Drop root (as is tradition)
