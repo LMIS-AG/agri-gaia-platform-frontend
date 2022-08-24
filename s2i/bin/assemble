@@ -16,7 +16,8 @@ fi
 
 # Listing content from build
 ls -lah /tmp/*
-
+# Check vor npm
+npm -v
 # Restore artifacts from the previous build (if they exist).
 #
 

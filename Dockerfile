@@ -7,6 +7,9 @@ LABEL io.k8s.description="Builder image for the agrigaia UI application" \
       io.k8s.display-name="ag-platform-ui-frontend-builder" \
       io.openshift.s2i.scripts-url=image://${STI_SCRIPTS_PATH}
 
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs
+
 COPY ./s2i/bin/ ${STI_SCRIPTS_PATH}
 
 RUN mkdir -p $SOURCE_DIR \
