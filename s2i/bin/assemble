@@ -41,8 +41,8 @@ echo "List after init:"
 ls -lah
 pwd
 
-npm config get prefix
-chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+chown -R `whoami` ~/.npm
+chown -R `whoami` /usr/local/lib/node_modules
 npm install
 npm run build
 
