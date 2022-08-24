@@ -41,6 +41,7 @@ echo "List after init:"
 ls -lah
 pwd
 
+npm install -g sass
 npm install
 npm run build
 
