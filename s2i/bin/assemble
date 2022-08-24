@@ -35,14 +35,11 @@ npm config list
 
 
 echo "Run Build:"
-# npm init -y
 echo "Working Directory:"
 pwd
-echo "List after init:"
+echo "List before build:"
 ls -lah
-pwd
 
-npm install -g @angular/cli
 npm install --omit=dev --umask 0022
 
 echo "List /tmp after build:"
