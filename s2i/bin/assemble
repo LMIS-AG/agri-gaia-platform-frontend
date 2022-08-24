@@ -22,6 +22,8 @@ ls -lah /tmp/*
 # Check vor npm
 cd /tmp
 
+npm install -g @angular/cli
+
 npm config list
 # npm init
 npm ci
