@@ -35,7 +35,10 @@ npm config list
 # npm lint
 # npm test
 echo "Run Build:"
-# npm init -y
+npm init -y
+echo "Working Directory:"
+pwd
+
 npm install
 npm run build
 
