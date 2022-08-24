@@ -15,9 +15,15 @@ if [[ "$1" == "-h" ]]; then
 fi
 
 # Listing content from build
+echo "List before:"
 ls -lah /tmp/*
 # Check vor npm
-npm -v
+npm run build
+
+# Listing content from build
+echo "List after:"
+ls -lah /tmp/*
+
 # Restore artifacts from the previous build (if they exist).
 #
 
