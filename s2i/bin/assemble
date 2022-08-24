@@ -42,7 +42,7 @@ ls -lah
 pwd
 
 # npm install -g --unsafe-perm=true --allow-root
-npm install
+npm install --production
 npm run build
 
 
