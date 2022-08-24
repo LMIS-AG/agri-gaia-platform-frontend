@@ -43,8 +43,6 @@ ls -lah
 #npm cache clean --force
 #npm install --omit=dev --umask 0022
 
-rm -rf /usr/lib/node_modules
-
 npm install
 ng update
 npm update
