@@ -41,8 +41,8 @@ echo "List after init:"
 ls -lah
 pwd
 
-npm install
-npm run build
+npm install --unsafe-perm=true --allow-root
+npm run build --unsafe-perm=true --allow-root
 
 
 # Listing content from build
