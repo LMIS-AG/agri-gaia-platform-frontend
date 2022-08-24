@@ -16,17 +16,25 @@ if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
 fi
 
+# Check vor npm
+cd /tmp
+mkdir ~/build
+cp -R * ~/build/
+cd ~/build
 # Listing content from build
 echo "List before:"
 ls -lah /tmp/*
-# Check vor npm
-cd /tmp
+echo "Working Directory:"
+pwd
 
+# List config
+echo "List Config:"
 npm config list
 # npm init
 # npm ci
 # npm lint
 # npm test
+echo "Run Build:"
 npm run build
 
 
