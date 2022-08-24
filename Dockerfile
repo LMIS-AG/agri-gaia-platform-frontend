@@ -19,7 +19,8 @@ COPY ./s2i/bin/ ${STI_SCRIPTS_PATH}
 RUN mkdir -p $SOURCE_DIR \
       && chmod 0777 $SOURCE_DIR \
       && chmod -R 0777 /usr/local/apache2/htdocs \
-      && chmod 755 ${STI_SCRIPTS_PATH}/*
+      && chmod 755 ${STI_SCRIPTS_PATH}/* \
+      && chmod 755 /tmp/
 
 # Drop root (as is tradition)
 USER 1001
