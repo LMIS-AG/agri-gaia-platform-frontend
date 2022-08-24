@@ -51,7 +51,7 @@ echo "List /tmp after build:"
 ls -lah /tmp/
 echo "After npn install, before build:"
 # ng update @angular/cli @angular/core --allow-dirty --force
-npm run build-prod
+npm run build
 
 
 # Listing content from build
