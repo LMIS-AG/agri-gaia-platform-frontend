@@ -5,6 +5,8 @@
     "no": "Nein",
     "confirm": "Bestätigen",
     "cancel": "Abbrechen",
+    "next": "Weiter",
+    "back": "Zurück",
     "edit": "Bearbeiten",
     "download": "Herunterladen",
     "delete": "Löschen",
@@ -71,7 +73,12 @@
       "createCoopSpaces": {
         "new": "Neuen Kooperationsbereich erstellen",
         "company": "Unternehmen",
-        "coopSpaceName": "Name Kooperationsbereich"
+        "coopSpaceName": "Name Kooperationsbereich",
+        "dialog": {
+          "addMembers": "Teilnehmer hinzufügen",
+          "addMembersInfo": "Teilnehmer werden automatisch initial als \"Zuschauer\" zu einem Kooperationsbereich hinzugefügt. Später können Sie die Rolle jedes Teilnehmers anpassen.",
+          "search": "Suche"
+        }
       },
       "details": {
         "tools": "Verfügbare Tools",

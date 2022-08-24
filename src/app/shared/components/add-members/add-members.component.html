@@ -1,10 +1,9 @@
-<div fxLayout="column">
-  <h3>Teilnehmer hinzufügen</h3>
+<div fxLayout="column" *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
+  <h3>{{ t('addMembers') }}</h3>
 
   <!-- TODO maybe make this a label-->
   <p>
-    Teilnehmer werden automatisch initial als "Zuschauer" zu einem Kooperationsbereich hinzugefügt. Später können Sie
-    die Rolle jedes Teilnehmers anpassen.
+    {{ t('addMembersInfo') }}
   </p>
 
   <!-- SEARCH -->
@@ -15,7 +14,7 @@
         <button mat-button matPrefix mat-icon-button>
           <mat-icon>search</mat-icon>
         </button>
-        <input matInput formControlName="searchTerm" value="Suche" placeholder="Suche" />
+        <input matInput formControlName="searchTerm" value="Suche" placeholder="{{ t('search') }}" />
         <button *ngIf="false" mat-button matSuffix mat-icon-button>
           <mat-icon>close</mat-icon>
         </button>
