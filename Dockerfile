@@ -13,7 +13,7 @@ RUN adduser --disabled-login -u 1001 test && apt update && apt install -y curl
 
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs
-RUN mkdir -p /usr/local/lib/node_modules && chown -R 1001 /usr/local/lib/node_modules
+RUN mkdir -p /usr/lib/node_modules && chown -R 1001 /usr/lib/node_modules
 COPY ./s2i/bin/ ${STI_SCRIPTS_PATH}
 
 RUN mkdir -p $SOURCE_DIR \
