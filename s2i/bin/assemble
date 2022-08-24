@@ -24,9 +24,9 @@ cd /tmp
 
 npm config list
 # npm init
-npm ci
-npm lint
-npm test
+#npm ci
+#npm lint
+#npm test
 npm run build
 
 # Listing content from build
