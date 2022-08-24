@@ -9,7 +9,7 @@ LABEL io.k8s.description="Builder image for the agrigaia UI application" \
 
 
 
-RUN adduser -D -u 1001 test && apt update && apt install -y curl
+RUN adduser --disabled-login -u 1001 test && apt update && apt install -y curl
 
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs
