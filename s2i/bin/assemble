@@ -40,8 +40,14 @@ pwd
 echo "List before build:"
 ls -lah
 
-npm cache clean --force
-npm install --omit=dev --umask 0022
+#npm cache clean --force
+#npm install --omit=dev --umask 0022
+
+rm -rf /usr/lib/node_modules
+
+npm install
+ng update
+npm update
 
 echo "List /tmp after build:"
 ls -lah /tmp/
