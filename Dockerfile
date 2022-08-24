@@ -13,7 +13,7 @@ RUN adduser --disabled-login -u 1001 test && apt update && apt install -y curl
 
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs && npm install -g @angular/cli
-RUN sudo chown -R 1001 /usr/local/lib/node_modules
+RUN chown -R 1001 /usr/local/lib/node_modules
 COPY ./s2i/bin/ ${STI_SCRIPTS_PATH}
 
 RUN mkdir -p $SOURCE_DIR \
