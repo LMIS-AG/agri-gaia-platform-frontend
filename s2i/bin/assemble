@@ -41,10 +41,6 @@ echo "List after init:"
 ls -lah
 pwd
 
-chown -R root:$(whoami) /usr/local/lib/node_modules/
-chmod -R 775 /usr/local/lib/node_modules/
-
-npm install -g sass
 npm install
 npm run build
 
