@@ -21,6 +21,7 @@ echo "List before:"
 ls -lah /tmp/*
 # Check vor npm
 cd /tmp
+npm init
 npm run build
 
 # Listing content from build
