@@ -40,10 +40,7 @@ pwd
 echo "List before build:"
 ls -lah
 
-npm install
-npm uninstall -g @angular/cli
 npm cache clean --force
-npm install -g @angular/cli@latest
 npm install --omit=dev --umask 0022
 
 echo "List /tmp after build:"
