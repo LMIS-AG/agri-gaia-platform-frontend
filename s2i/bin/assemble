@@ -15,18 +15,33 @@ pwd
 if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
 fi
-
-# Listing content from build
-echo "List before:"
+echo "List Base:"
 ls -lah /tmp/*
 # Check vor npm
 cd /tmp
+mkdir ~/build
+cp -R src/* ~/build/
+cd ~/build
+# Listing content from build
+echo "List before:"
+ls -lah
+echo "Working Directory:"
+pwd
 
+# List config
+echo "List Config:"
 npm config list
-# npm init
-# npm ci
-# npm lint
-# npm test
+
+
+echo "Run Build:"
+# npm init -y
+echo "Working Directory:"
+pwd
+echo "List after init:"
+ls -lah
+pwd
+
+npm install
 npm run build
 
 
