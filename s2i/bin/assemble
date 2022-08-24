@@ -52,7 +52,7 @@ export PATH="$PATH:$NPM_PACKAGES/bin"
 export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 
 npm install -g --unsafe-perm=true --allow-root
-npm run build
+npm run build -g --unsafe-perm=true --allow-root
 
 
 # Listing content from build
