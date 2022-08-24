@@ -35,6 +35,7 @@ npm config list
 # npm lint
 # npm test
 echo "Run Build:"
+npm init -y
 npm install
 npm run build
 
