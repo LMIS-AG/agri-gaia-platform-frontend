@@ -46,9 +46,7 @@ export class CoopSpacesService {
   }
 
   public create(coopSpace: CoopSpace): Observable<CoopSpace> {
-    //https://platform-backend.platform.agri-gaia.com/coopspaces
-    // 172.30.27.77
-    this.http.post('platform-backend-git2.agrigaia-ui.svc.cluster.local/coopspaces', {}).subscribe(x => console.log(x));
+    this.http.post('https://platform-backend.platform.agri-gaia.com/coopspaces', {}).subscribe(x => console.log(x));
     return of(coopSpace);
   }
 }
