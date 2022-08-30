@@ -7,8 +7,8 @@ export const environment = {
   keycloakConfiguration: {
     url: 'https://account.platform.agri-gaia.com/auth',
     realm: 'agri-gaia',
-    clientId: 'platform'
-  }
+    clientId: 'platform-ui',
+  },
 };
 
 /*
