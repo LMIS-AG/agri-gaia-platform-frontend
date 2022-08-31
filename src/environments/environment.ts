@@ -7,10 +7,10 @@ export const environment = {
   keycloakConfiguration: {
     url: 'https://account.platform.agri-gaia.com/auth',
     realm: 'agri-gaia',
-    clientId: 'platform-ui'
+    clientId: 'platform-ui',
     "credentials:" {
       "secret": '67f94501-1f03-43bf-aab8-7ad720ac5062'
-  }
+    }
   }
 };
 
