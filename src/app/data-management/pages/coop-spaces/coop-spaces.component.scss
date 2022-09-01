@@ -27,12 +27,17 @@ table {
       color: $primary;
       background-color: transparent;
       border: none;
+      cursor: pointer;
     }
   }
 
   .mat-column-more {
     width: 32px;
   }
+}
+
+.mat-row .mat-cell {
+  cursor: pointer;
 }
 
 .delete-button {
