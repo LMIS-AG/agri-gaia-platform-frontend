@@ -35,6 +35,10 @@ table {
   }
 }
 
+.mat-row .mat-cell {
+  cursor: pointer;
+}
+
 .delete-button {
   color: red;
   mat-icon {
