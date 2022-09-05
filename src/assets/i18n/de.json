@@ -39,6 +39,7 @@
     "http": "Bei der Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
   },
   "menu": {
+    "gettingStarted": "Getting Started",
     "dashboard": "Dashboard",
     "spaces": "Kooperationsbereiche",
     "dataManagement": "Daten-Management",
