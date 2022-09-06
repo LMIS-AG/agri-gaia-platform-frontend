@@ -8,7 +8,11 @@ export const environment = {
     url: 'https://account.platform.agri-gaia.com/auth',
     realm: 'agri-gaia',
     clientId: 'platform-ui',
+<<<<<<< HEAD
   },
+=======
+  }
+>>>>>>> 6305f303ffc90a9a2fcb54e8965b922900124a5b
 };
 
 /*

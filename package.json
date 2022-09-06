@@ -10,13 +10,16 @@
     "clean": "rimraf dist",
     "reinstall": "rimraf node_modules && npm install && ng build --aot",
     "build": "ng build && npm run build:dockerfile",
+    "build-prod": "ng build --prod && npm run build:dockerfile",
     "build:analyze": "ng build --stats-json && webpack-bundle-analyzer dist/agri-gaia-platform/stats.json",
     "build:dockerfile": "copyfiles --error -u 1 docker/* dist"
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/build-angular": "^14.0.1",
     "@angular/animations": "^14.0.1",
     "@angular/cdk": "^14.0.1",
+    "@angular/cli": "^14.0.1",
     "@angular/common": "^14.0.1",
     "@angular/compiler": "^14.0.1",
     "@angular/core": "^14.0.1",
