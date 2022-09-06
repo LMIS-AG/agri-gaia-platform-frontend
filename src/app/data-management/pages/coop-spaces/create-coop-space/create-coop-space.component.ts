@@ -29,6 +29,7 @@ export class CreateCoopSpaceComponent {
           Validators.minLength(3), // not necessary cause this is specified through the pattern - but maybe this helps to show the user what he did wrong
           Validators.maxLength(63),
           Validators.pattern('^[a-z|0-9]([a-z|0-9|.|-]{1,61})[a-z|0-9]$'),
+          Validators.pattern('^(?!xn--).*$'),
           // TODO filter out IP-Address formats
         ],
       ],
