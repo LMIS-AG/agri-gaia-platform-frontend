@@ -36,6 +36,16 @@ table {
   }
 }
 
+.image {
+  height: 100%;
+}
+
+img {
+  height: 448px;
+  width: 443px;
+  margin-bottom: 75px;
+}
+
 .mat-row .mat-cell {
   cursor: pointer;
 }
