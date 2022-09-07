@@ -23,19 +23,20 @@ export class CreateCoopSpaceComponent {
     private uiService: UIService
   ) {
     this.formGroup = this.formBuilder.group({
+      company: ['', Validators.required],
       name: [
         '',
         [
           Validators.required,
-          Validators.minLength(3), // not necessary cause this is specified through the pattern - but maybe this helps to show the user what he did wrong
+          Validators.minLength(3),
           Validators.maxLength(63),
-          Validators.pattern('^[a-z|0-9]([a-z|0-9|.|-]{1,61})[a-z|0-9]$'),
-          //Validators.pattern('^(?!xn--).*$'),
-          CoopSpaceValidator.illegalPrefix,
-          // TODO filter out IP-Address formats
+          CoopSpaceValidator.validPrefix,
+          CoopSpaceValidator.validCharacters,
+          CoopSpaceValidator.validStartCharacter,
+          CoopSpaceValidator.validEndCharacter,
+          CoopSpaceValidator.noIPAddressPattern,
         ],
       ],
-      company: ['', Validators.required],
     });
   }
 
