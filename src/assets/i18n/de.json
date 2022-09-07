@@ -78,7 +78,21 @@
         "dialog": {
           "addMembers": "Teilnehmer hinzufügen",
           "addMembersInfo": "Teilnehmer werden automatisch initial als \"Zuschauer\" zu einem Kooperationsbereich hinzugefügt. Später können Sie die Rolle jedes Teilnehmers anpassen.",
-          "search": "Suche"
+          "search": "Suche",
+          "nameRules": {
+            "length": "Der Name muss zwischen 3 und 63 Zeichen lang sein.",
+            "lengthHtml": "Der Name muss zwischen <strong>3</strong> und <strong>63</strong> Zeichen lang sein.",
+            "generalCharacters": "Der Name darf nur aus Kleinbuchstaben, Zahlen, Punkten und Bindestrichen bestehen.",
+            "generalCharactersHtml": "Der Name darf nur aus <strong>Kleinbuchstaben</strong>, <strong>Zahlen</strong>, <strong>Punkten</strong> und <strong>Bindestrichen</strong> bestehen.",
+            "startingAndEndingCharacters": "Der Name muss mit einem Kleinbuchstaben oder einer Zahl beginnen und enden.",
+            "startingAndEndingCharactersHtml": "Der Name muss mit einem <strong>Kleinbuchstaben</strong> oder einer <strong>Zahl</strong> beginnen und enden.",
+            "noIPAddress": "Der Name darf nicht wie eine IP-Adresse formatiert werden (z. B. 192.168.5.4)",
+            "noIPAddressHtml": "Der Name darf nicht wie eine <strong>IP-Adresse</strong> formatiert werden (z. B. 192.168.5.4)",
+            "invalidPrefix": "Der Name darf nicht mit 'xn--' beginnen",
+            "invalidPrefixHtml": "Der Name darf nicht mit <strong>xn--</strong> beginnen",
+            "uniqueness": "Der Name darf nur einmal vorkommen",
+            "uniquenessHtml": "Der Name darf nur <strong>einmal</strong> vorkommen"
+          }
         }
       },
       "details": {

@@ -5,7 +5,7 @@
   *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'"
   class="admin-module"
 >
-  <ng-container fields>
+  <ng-container fields *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
     <div fxLayout="column" *transloco="let tCommon; read: 'common'">
       <mat-form-field appearance="fill" color="primary" class="bg">
         <mat-label>{{ t('company') }}</mat-label>
@@ -13,11 +13,45 @@
         <mat-error *ngIf="formGroup.controls['company'].hasError('required')">{{ tCommon('required') }}</mat-error>
       </mat-form-field>
 
+      <!-- NAME -->
       <mat-form-field appearance="fill" color="primary" class="bg">
         <mat-label>{{ t('coopSpaceName') }}</mat-label>
         <input matInput formControlName="name" required />
         <mat-error *ngIf="formGroup.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('minlength')">{{
+          tDialog('nameRules.length')
+        }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('maxlength')">{{
+          tDialog('nameRules.length')
+        }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('invalidCharacter')">{{
+          tDialog('nameRules.generalCharacters')
+        }}</mat-error>
+        <mat-error
+          *ngIf="
+            formGroup.controls['name'].hasError('invalidStartCharacter') ||
+            formGroup.controls['name'].hasError('invalidEndCharacter')
+          "
+          >{{ tDialog('nameRules.startingAndEndingCharacters') }}</mat-error
+        >
+        <mat-error *ngIf="formGroup.controls['name'].hasError('ipAddressPattern')">{{
+          tDialog('nameRules.noIPAddress')
+        }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
+          tDialog('nameRules.invalidPrefix')
+        }}</mat-error>
       </mat-form-field>
     </div>
+
+    <br />
+
+    <ul>
+      <li [innerHTML]="tDialog('nameRules.lengthHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.noIPAddressHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.invalidPrefixHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.uniquenessHtml')"></li>
+    </ul>
   </ng-container>
 </app-create-coop-space-dlg>

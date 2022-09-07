@@ -6,6 +6,7 @@ import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesComponent } from '../coop-spaces.component';
 import { CoopSpacesService } from '../coop-spaces.service';
+import { CoopSpaceValidator } from './coop-space-validator';
 
 @Component({
   selector: 'app-create-coop-space',
@@ -23,7 +24,19 @@ export class CreateCoopSpaceComponent {
   ) {
     this.formGroup = this.formBuilder.group({
       company: ['', Validators.required],
-      name: ['', Validators.required],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(63),
+          CoopSpaceValidator.validPrefix,
+          CoopSpaceValidator.validCharacters,
+          CoopSpaceValidator.validStartCharacter,
+          CoopSpaceValidator.validEndCharacter,
+          CoopSpaceValidator.noIPAddressPattern,
+        ],
+      ],
     });
   }
 
