@@ -29,8 +29,8 @@
         }}</mat-error>
         <mat-error
           *ngIf="
-            formGroup.controls['name'].hasError('validStartCharacter') ||
-            formGroup.controls['name'].hasError('validEndCharacter')
+            formGroup.controls['name'].hasError('invalidStartCharacter') ||
+            formGroup.controls['name'].hasError('invalidEndCharacter')
           "
           >{{ tDialog('nameRules.startingAndEndingCharacters') }}</mat-error
         >

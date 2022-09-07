@@ -14,7 +14,7 @@ export class CoopSpaceValidator {
     return validStartCharacterPattern.test(control.value)
       ? null
       : {
-          validStartCharacter: { valid: false },
+          invalidStartCharacter: { valid: false },
         };
   }
 
@@ -23,7 +23,7 @@ export class CoopSpaceValidator {
     return validEndCharacterPattern.test(control.value)
       ? null
       : {
-          validEndCharacter: { valid: false },
+          invalidEndCharacter: { valid: false },
         };
   }
 
