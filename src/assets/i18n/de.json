@@ -78,7 +78,11 @@
         "dialog": {
           "addMembers": "Teilnehmer hinzufügen",
           "addMembersInfo": "Teilnehmer werden automatisch initial als \"Zuschauer\" zu einem Kooperationsbereich hinzugefügt. Später können Sie die Rolle jedes Teilnehmers anpassen.",
-          "search": "Suche"
+          "search": "Suche",
+          "error": {
+            "pattern": "Der Name des Kooperationsbereich muss den gegebenen Regeln entsprechen",
+            "illegalPrefix": "Illegaler Präfix"
+          }
         }
       },
       "details": {

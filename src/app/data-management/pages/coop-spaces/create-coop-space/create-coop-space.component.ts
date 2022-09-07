@@ -6,6 +6,7 @@ import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesComponent } from '../coop-spaces.component';
 import { CoopSpacesService } from '../coop-spaces.service';
+import { CoopSpaceValidator } from './coop-space-validator';
 
 @Component({
   selector: 'app-create-coop-space',
@@ -29,7 +30,8 @@ export class CreateCoopSpaceComponent {
           Validators.minLength(3), // not necessary cause this is specified through the pattern - but maybe this helps to show the user what he did wrong
           Validators.maxLength(63),
           Validators.pattern('^[a-z|0-9]([a-z|0-9|.|-]{1,61})[a-z|0-9]$'),
-          Validators.pattern('^(?!xn--).*$'),
+          //Validators.pattern('^(?!xn--).*$'),
+          CoopSpaceValidator.illegalPrefix,
           // TODO filter out IP-Address formats
         ],
       ],
