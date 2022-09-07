@@ -34,11 +34,11 @@
           "
           >{{ tDialog('nameRules.startingAndEndingCharacters') }}</mat-error
         >
-        <mat-error *ngIf="formGroup.controls['name'].hasError('illegalPrefix')">{{
-          tDialog('nameRules.illegalPrefix')
-        }}</mat-error>
         <mat-error *ngIf="formGroup.controls['name'].hasError('ipAddressPattern')">{{
           tDialog('nameRules.noIPAddress')
+        }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
+          tDialog('nameRules.illegalPrefix')
         }}</mat-error>
       </mat-form-field>
     </div>

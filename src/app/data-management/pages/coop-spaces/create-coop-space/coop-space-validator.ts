@@ -1,14 +1,5 @@
 import { FormControl, ValidationErrors } from '@angular/forms';
 export class CoopSpaceValidator {
-  static noIPAddressPattern(control: FormControl): ValidationErrors | null {
-    const ipAddressPattern = new RegExp('^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$');
-    return ipAddressPattern.test(control.value)
-      ? {
-          ipAddressPattern: { valid: false },
-        }
-      : null;
-  }
-
   static validCharacters(control: FormControl): ValidationErrors | null {
     const validCharactersPattern = new RegExp('^[a-z|0-9|.|-]{1,}$');
     return validCharactersPattern.test(control.value)
@@ -36,12 +27,21 @@ export class CoopSpaceValidator {
         };
   }
 
+  static noIPAddressPattern(control: FormControl): ValidationErrors | null {
+    const ipAddressPattern = new RegExp('^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$');
+    return ipAddressPattern.test(control.value)
+      ? {
+          ipAddressPattern: { valid: false },
+        }
+      : null;
+  }
+
   static validPrefix(control: FormControl): ValidationErrors | null {
-    const invalidPrefixPattern = new RegExp('^(?!xn--).*$');
+    const invalidPrefixPattern = new RegExp('^xn--');
     return invalidPrefixPattern.test(control.value)
-      ? null
-      : {
-          illegalPrefix: { valid: false },
-        };
+      ? {
+          invalidPrefix: { valid: false },
+        }
+      : null;
   }
 }
