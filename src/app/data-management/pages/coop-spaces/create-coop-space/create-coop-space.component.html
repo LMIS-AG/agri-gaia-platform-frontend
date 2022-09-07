@@ -38,7 +38,7 @@
           tDialog('nameRules.noIPAddress')
         }}</mat-error>
         <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
-          tDialog('nameRules.illegalPrefix')
+          tDialog('nameRules.invalidPrefix')
         }}</mat-error>
       </mat-form-field>
     </div>
@@ -50,7 +50,7 @@
       <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.noIPAddressHtml')"></li>
-      <li [innerHTML]="tDialog('nameRules.illegalPrefixHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.invalidPrefixHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.uniquenessHtml')"></li>
     </ul>
   </ng-container>
