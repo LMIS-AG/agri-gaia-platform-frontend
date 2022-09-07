@@ -5,7 +5,7 @@
   *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'"
   class="admin-module"
 >
-  <ng-container fields>
+  <ng-container fields *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
     <div fxLayout="column" *transloco="let tCommon; read: 'common'">
       <mat-form-field appearance="fill" color="primary" class="bg">
         <mat-label>{{ t('company') }}</mat-label>
@@ -17,11 +17,22 @@
         <mat-label>{{ t('coopSpaceName') }}</mat-label>
         <input matInput formControlName="name" required />
         <mat-error *ngIf="formGroup.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
-        <mat-error *ngIf="formGroup.controls['name'].hasError('pattern')">{{ t('dialog.error.pattern') }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('pattern')">{{ tDialog('error.pattern') }}</mat-error>
         <mat-error *ngIf="formGroup.controls['name'].hasError('illegalPrefix')">{{
-          t('dialog.error.illegalPrefix')
+          tDialog('nameRules.illegalPrefix')
         }}</mat-error>
       </mat-form-field>
     </div>
+
+    <br />
+
+    <ul>
+      <li [innerHTML]="tDialog('nameRules.lengthHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.noIPAddress')"></li>
+      <li [innerHTML]="tDialog('nameRules.illegalPrefixHtml')"></li>
+      <li [innerHTML]="tDialog('nameRules.uniquenessHtml')"></li>
+    </ul>
   </ng-container>
 </app-create-coop-space-dlg>
