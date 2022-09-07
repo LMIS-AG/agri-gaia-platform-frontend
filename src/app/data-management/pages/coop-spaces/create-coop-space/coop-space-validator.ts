@@ -1,6 +1,5 @@
 import { FormControl, ValidationErrors } from '@angular/forms';
 export class CoopSpaceValidator {
-  // TODO
   static noIPAddressPattern(control: FormControl): ValidationErrors | null {
     const ipAddressPattern = new RegExp('^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$');
     return ipAddressPattern.test(control.value)
