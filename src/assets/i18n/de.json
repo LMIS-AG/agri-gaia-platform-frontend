@@ -42,7 +42,7 @@
     "gettingStarted": "Getting Started",
     "dashboard": "Dashboard",
     "spaces": "Kooperationsbereiche",
-    "dataManagement": "Daten-Management",
+    "dataManagement": "Asset-Management",
     "aiTraining": "KI-Training",
     "modelManagement": "Modell-Management",
     "edgeManagement": "Edge-Management",
@@ -57,7 +57,6 @@
     "globalSearch": "Globale Suche"
   },
   "dataManagement": {
-    "heading": "Daten-Management",
     "coopSpaces": {
       "headline": "Kooperationsbereiche",
       "table": {
