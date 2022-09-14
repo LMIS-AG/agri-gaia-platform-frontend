@@ -1,0 +1,95 @@
+@import '../../../../../styles/common/variables';
+@import '../../../../../styles/common/mixins';
+
+.card-headline {
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+  h1 {
+    @include calluna-font();
+    color: $primary;
+    font-weight: bold;
+    font-size: 36px;
+    margin-bottom: 0px;
+  }
+  .button32 {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    border: 3px solid $primary !important;
+  }
+  .icon32 {
+    font-size: 22px;
+    margin-top: -12px;
+    color: $primary;
+  }
+  .button32-add {
+    background-color: $primary;
+    width: 32px;
+    height: 32px;
+  }
+  .icon32-add {
+    font-size: 22px;
+    margin-top: -6px;
+    color: white;
+    background-color: transparent;
+  }
+  .button32-close-fullscreen {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    border: 3px solid $primary !important;
+  }
+  .icon32-close-fullscreen {
+    font-size: 19px;
+    margin-top: -9px;
+    color: $primary;
+  }
+  .svg-icon {
+    filter: $primary-filter;
+    margin-top: -14px;
+  }
+}
+
+.wrapper {
+  height: 100%;
+}
+
+.card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.table-container {
+  overflow-y: auto;
+}
+
+table {
+  background-color: white;
+  width: 100%;
+  th {
+    color: $primary;
+    font-size: 16px;
+    font-weight: bold;
+    border-color: $primary;
+    border-width: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  td {
+    padding-left: 0px;
+    padding-right: 0px;
+    border-color: gray;
+    button {
+      color: $primary;
+      background-color: transparent;
+      border: none;
+    }
+  }
+
+  .mat-column-more {
+    width: 32px;
+  }
+}

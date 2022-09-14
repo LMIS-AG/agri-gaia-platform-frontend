@@ -1,0 +1,16 @@
+@import '../../../../styles/common/variables';
+@import '../../../../styles/common/mixins';
+
+.dialog-content {
+  flex-grow: 1;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+}
+
+h2 {
+  @include calluna-font();
+  color: $primary;
+  font-weight: bold;
+}

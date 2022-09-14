@@ -1,0 +1,119 @@
+{
+  "common": {
+    "close": "Schließen",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirm": "Bestätigen",
+    "cancel": "Abbrechen",
+    "next": "Weiter",
+    "back": "Zurück",
+    "edit": "Bearbeiten",
+    "download": "Herunterladen",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "successfullySaved": "Der Datensatz wurde gespeichert.",
+    "required": "Pflichtfeld",
+    "successMessage": "Aktion war erfolgreich.",
+    "errorMessage": "Aktion war nicht erfolgreich.",
+    "logout": "Ausloggen",
+    "user": {
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "register": "Registrieren"
+    },
+    "unsavedChanges": {
+      "headline": "Ungespeicherte Änderungen",
+      "question": "Wollen Sie die Bearbeitung wirklich beenden?"
+    },
+    "deleteConfirmation": {
+      "header": "Löschen",
+      "question": "Möchten Sie den Datensatz wirklich löschen?"
+    }
+  },
+  "error": {
+    "connection": "Die Verbindung zum Server wurde unterbrochen. Bitte versuchen Sie es später erneut.",
+    "unauthorized": "Diese Aktion benötigt einen Login. Bitte melden Sie sich an und versuchen Sie es erneut.",
+    "forbidden": "Sie besitzen nicht die notwendigen Rechte, um diese Anfrage auszuführen.",
+    "notFound": "Die angefragte Ressource steht nicht zur Verfügung. Bitte versuchen Sie es später erneut und kontaktieren Sie den Support, sollte dieser Fehler weiterhin auftreten.",
+    "server": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut und kontaktieren Sie den Support, sollte dieser Fehler weiterhin auftreten.",
+    "http": "Bei der Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "menu": {
+    "gettingStarted": "Getting Started",
+    "dashboard": "Dashboard",
+    "spaces": "Kooperationsbereiche",
+    "dataManagement": "Asset-Management",
+    "aiTraining": "KI-Training",
+    "modelManagement": "Modell-Management",
+    "edgeManagement": "Edge-Management",
+    "monitoring": "Monitoring",
+    "marketplace": "Marktplatz",
+    "serviceCatalogue": "Service-Katalog",
+    "community": "Community",
+    "settings": "Einstellungen",
+    "hide": "Menü ausblenden"
+  },
+  "toolbar": {
+    "globalSearch": "Globale Suche"
+  },
+  "dataManagement": {
+    "coopSpaces": {
+      "headline": "Kooperationsbereiche",
+      "table": {
+        "name": "Name",
+        "company": "Inhaber",
+        "members": "Beteiligte",
+        "myRole": "Meine Rolle"
+      },
+      "role": {
+        "VIEWER": "Zuschauer",
+        "EDITOR": "Editor",
+        "OWNER": "Inhaber"
+      },
+      "createCoopSpaces": {
+        "new": "Neuen Kooperationsbereich erstellen",
+        "company": "Unternehmen",
+        "coopSpaceName": "Name Kooperationsbereich",
+        "dialog": {
+          "addMembers": "Teilnehmer hinzufügen",
+          "addMembersInfo": "Teilnehmer werden automatisch initial als \"Zuschauer\" zu einem Kooperationsbereich hinzugefügt. Später können Sie die Rolle jedes Teilnehmers anpassen.",
+          "search": "Suche",
+          "nameRules": {
+            "length": "Der Name muss zwischen 3 und 63 Zeichen lang sein.",
+            "lengthHtml": "Der Name muss zwischen <strong>3</strong> und <strong>63</strong> Zeichen lang sein.",
+            "generalCharacters": "Der Name darf nur aus Kleinbuchstaben, Zahlen, Punkten und Bindestrichen bestehen.",
+            "generalCharactersHtml": "Der Name darf nur aus <strong>Kleinbuchstaben</strong>, <strong>Zahlen</strong>, <strong>Punkten</strong> und <strong>Bindestrichen</strong> bestehen.",
+            "startingAndEndingCharacters": "Der Name muss mit einem Kleinbuchstaben oder einer Zahl beginnen und enden.",
+            "startingAndEndingCharactersHtml": "Der Name muss mit einem <strong>Kleinbuchstaben</strong> oder einer <strong>Zahl</strong> beginnen und enden.",
+            "noIPAddress": "Der Name darf nicht wie eine IP-Adresse formatiert werden (z. B. 192.168.5.4)",
+            "noIPAddressHtml": "Der Name darf nicht wie eine <strong>IP-Adresse</strong> formatiert werden (z. B. 192.168.5.4)",
+            "invalidPrefix": "Der Name darf nicht mit 'xn--' beginnen",
+            "invalidPrefixHtml": "Der Name darf nicht mit <strong>xn--</strong> beginnen",
+            "uniqueness": "Der Name darf nur einmal vorkommen",
+            "uniquenessHtml": "Der Name darf nur <strong>einmal</strong> vorkommen"
+          }
+        }
+      },
+      "details": {
+        "tools": "Verfügbare Tools",
+        "member": "Teilnehmer",
+        "buckets": "Bucktes",
+        "role": {
+          "VIEWER": "Zuschauer",
+          "EDITOR": "Editor",
+          "OWNER": "Inhaber"
+        },
+        "table": {
+          "name": "Name",
+          "date": "Datum",
+          "uploadDate": "Hochgleaden am",
+          "size": "Größe",
+          "labeling": "Labeling",
+          "coopSpace": "Kooperationsbereich",
+          "company": "Inhaber",
+          "role": "Rolle"
+        }
+      }
+    }
+  }
+}

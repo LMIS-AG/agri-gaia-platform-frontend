@@ -1,0 +1,45 @@
+@import '../../../styles/common/variables';
+@import '../../../styles/common/mixins';
+
+.mat-toolbar {
+  background-color: white;
+
+  button {
+    background-color: transparent;
+    border: none;
+    color: $gray;
+    cursor: pointer;
+  }
+
+  .logo {
+    height: 44px;
+  }
+
+  .logo-container {
+    margin-top: 15px;
+    width: 240px;
+  }
+
+  .headbar-container {
+    padding-left: 42px;
+  }
+
+  .save-icon {
+    font-size: 25px;
+  }
+
+  .form-container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  input {
+    @include calluna-font();
+    color: $gray;
+    font-size: 18px;
+  }
+
+  .half-width {
+    width: 50%;
+  }
+}

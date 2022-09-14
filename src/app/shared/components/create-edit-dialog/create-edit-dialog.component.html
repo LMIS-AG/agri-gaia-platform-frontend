@@ -1,0 +1,16 @@
+<ng-container *transloco="let t">
+  <h2 mat-dialog-title>{{ title }}</h2>
+
+  <mat-dialog-content class="dialog-content">
+    <ng-content select="[fields]"></ng-content>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-flat-button (click)="cancelEdit()">
+      {{ cancelButtonLabel === '' ? t('common.cancel') : cancelButtonLabel }}
+    </button>
+    <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
+      {{ saveButtonLabel === '' ? t('common.save') : saveButtonLabel }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>
