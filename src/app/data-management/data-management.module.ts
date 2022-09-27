@@ -14,6 +14,7 @@ import { CreateCoopSpaceDlgComponent } from './pages/coop-spaces/create-coop-spa
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PoliciesComponent } from './pages/policies/policies.component';
+import { CreatePolicyComponent } from './pages/policies/create-policy/create-policy.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'policies',
     component: PoliciesComponent,
+  },
+  {
+    path: 'policies/create',
+    component: CreatePolicyComponent,
   },
   {
     path: '',

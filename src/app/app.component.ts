@@ -23,8 +23,11 @@ export class AppComponent {
   public onActivate(componentRef: any): void {
     // fires every time a new component is loaded
 
-    if (!componentRef?.router?.browserUrlTree) {
-      // for any reason componentRef.router.browserUrlTree is not defined for http://localhost:4200/data/policies
+    if (
+      !componentRef?.router?.browserUrlTree ||
+      componentRef?.router?.browserUrlTree?.root?.children?.primary?.segments[1]?.path === 'policies'
+    ) {
+      // very ugly
       this.standardBackground = true;
       return;
     }
