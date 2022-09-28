@@ -11,11 +11,6 @@ export class CreatePolicyComponent implements OnInit {
   public options: string[] = ['Vertrag', 'Zugriff']; // TODO rename
   public addTagForm: FormGroup;
   public tags: Tag[] = [];
-  // lower part
-  public propertyOptions: string[] = ['Foward', 'Certification'];
-  public operatorOptions: string[] = ['Equal to =', 'Less than equal <='];
-  public attributeOptions: string[] = ['EU Country ', 'Not Allowed', 'Attribute'];
-  // FormGroup muss Wurzel sein und FormArray enthalten, FormArray könnte wiederum FormGroup mit 3 FormControls enthalten
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -30,21 +25,7 @@ export class CreatePolicyComponent implements OnInit {
     });
   }
 
-  get duties(): FormArray {
-    return this.formGroup.get('duties') as FormArray;
-  }
-
-  get permissions(): FormArray {
-    return this.formGroup.get('permissions') as FormArray;
-  }
-
-  get prohibitions(): FormArray {
-    return this.formGroup.get('prohibitions') as FormArray;
-  }
-
   public ngOnInit(): void {}
-
-  public onSave(): void {}
 
   public removeTag(tag: Tag): void {
     const index = this.tags.indexOf(tag);
@@ -59,23 +40,11 @@ export class CreatePolicyComponent implements OnInit {
     this.addTagForm.reset();
   }
 
-  private createRowFormArray(): FormArray {
-    //return this.formBuilder.array([this.createRowFormGroup()]);
-    return this.formBuilder.array([
-      this.formBuilder.group({
-        property: ['', [Validators.required]],
-        operator: ['', Validators.required],
-        attribute: ['', Validators.required],
-      }),
-    ]);
-  }
+  public back(): void {}
 
-  private createRowFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      property: ['', [Validators.required]],
-      operator: ['', Validators.required],
-      attribute: ['', Validators.required],
-    });
+  public createPolicy(): void {
+    const x = this.formGroup.value;
+    console.log(x); //TODO remove
   }
 
   public addDuty(): void {
@@ -102,11 +71,28 @@ export class CreatePolicyComponent implements OnInit {
     this.prohibitions.removeAt(index);
   }
 
-  public back(): void {}
+  get duties(): FormArray {
+    return this.formGroup.get('duties') as FormArray;
+  }
 
-  public createPolicy(): void {
-    const x = this.formGroup.value;
-    console.log(x); //TODO remove
+  get permissions(): FormArray {
+    return this.formGroup.get('permissions') as FormArray;
+  }
+
+  get prohibitions(): FormArray {
+    return this.formGroup.get('prohibitions') as FormArray;
+  }
+
+  private createRowFormArray(): FormArray {
+    return this.formBuilder.array([this.createRowFormGroup()]);
+  }
+
+  private createRowFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      property: ['', [Validators.required]],
+      operator: ['', Validators.required],
+      attribute: ['', Validators.required],
+    });
   }
 }
 

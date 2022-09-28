@@ -25,22 +25,17 @@ export class ConstraintsComponent implements OnInit {
 
   constructor() {}
 
-  public ngOnInit(): void {
-    console.log(this.formGroup); // TODO remove
-  }
+  public ngOnInit(): void {}
 
   get formArray(): FormArray {
     return this.formGroup.get(this.formArrayName) as FormArray;
   }
 
-  // TODO rename in more general way like 'deleteConstraint'
   public deleteConstraint(i: number): void {
-    console.log('deleteConstraint'); // TODO remove
     this.deleteEvent.emit(i);
   }
 
   public addConstraint(): void {
-    console.log('addConstraint'); // TODO remove
     this.addEvent.emit();
   }
 }
