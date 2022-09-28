@@ -1,0 +1,120 @@
+@import '../../../../../styles/common/variables';
+@import '../../../../../styles/common/mixins';
+
+.upper-container {
+  padding-left: 25px;
+  padding-top: 25px;
+
+  mat-slide-toggle {
+    margin-bottom: 15px;
+  }
+}
+
+.description {
+  p {
+    margin-top: 20px;
+  }
+  textarea {
+    height: 100px;
+  }
+}
+
+.add-button {
+  height: 52px;
+  margin-top: 4px;
+}
+
+.selected-tags-container {
+  width: 40%;
+}
+
+.single-tag {
+  width: 100px;
+  background-color: lightgray;
+  color: black;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.remove-btn {
+  border: none;
+  background-color: lightgray;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.remove-btn:hover {
+  background-color: gray;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.lower-container {
+  padding-left: 25px;
+  padding-top: 25px;
+}
+
+.row {
+  border: 1px solid #eef1f3;
+  height: 200px;
+  width: 100%;
+}
+
+.row-label {
+  border-right: 1px solid #eef1f3;
+  background-color: #f8f8f8;
+  width: 50px;
+  p {
+    transform: rotate(-90deg);
+    margin-top: 80px;
+    font-weight: bold;
+  }
+}
+
+.row-label2 {
+  border-right: 1px solid #eef1f3;
+  background-color: #f8f8f8;
+  width: 50px;
+  p {
+    transform: rotate(-90deg);
+    margin-top: 110px;
+    font-weight: bold;
+  }
+}
+
+.row-content {
+  overflow-y: auto;
+  width: 100%;
+}
+
+.add-btn {
+  width: 200px;
+  mat-icon {
+    color: $accent;
+    padding-bottom: 4px;
+  }
+}
+
+.fields {
+  font-size: 12px;
+  mat-form-field {
+    padding: 0 0 2.75em 1em;
+    font-weight: 700;
+    height: 20px;
+  }
+}
+
+.cancel-btn {
+  border: 2px solid;
+  border-color: $accent !important;
+}
+
+mat-error {
+  margin-top: -5px;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  overflow: visible !important;
+}

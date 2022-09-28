@@ -12,9 +12,11 @@ import { CoopSpacesComponent } from './pages/coop-spaces/coop-spaces.component';
 import { CreateCoopSpaceComponent } from './pages/coop-spaces/create-coop-space/create-coop-space.component';
 import { CreateCoopSpaceDlgComponent } from './pages/coop-spaces/create-coop-space/create-coop-space-dlg/create-coop-space-dlg.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PoliciesComponent } from './pages/policies/policies.component';
 import { CreatePolicyComponent } from './pages/policies/create-policy/create-policy.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Routes = [
   {
@@ -56,6 +58,7 @@ const routes: Routes = [
     CoopSpaceDetailsFocusComponent,
     CreateCoopSpaceDlgComponent,
     PoliciesComponent,
+    CreatePolicyComponent,
   ],
   imports: [
     MatTableModule,
@@ -65,6 +68,8 @@ const routes: Routes = [
     MatInputModule,
     MatMenuModule,
     MatDialogModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     MatStepperModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
