@@ -17,6 +17,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { PoliciesComponent } from './pages/policies/policies.component';
 import { CreatePolicyComponent } from './pages/policies/create-policy/create-policy.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ConstraintsComponent } from './pages/policies/createPolicy/constraints/constraints.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,7 @@ const routes: Routes = [
     CreateCoopSpaceDlgComponent,
     PoliciesComponent,
     CreatePolicyComponent,
+    ConstraintsComponent,
   ],
   imports: [
     MatTableModule,

@@ -1,0 +1,40 @@
+<ng-container [formGroup]="formGroup">
+  <div fxLayout="column" [formArrayName]="formArrayName">
+    <!-- ROW(S) -->
+    <div
+      fxLayout="row"
+      *ngFor="let x of formArray.controls; index as i"
+      [formGroupName]="i"
+      class="fields"
+      fxLayoutAlign="space-between"
+    >
+      <div>
+        <mat-form-field floatLabel="never" appearance="outline">
+          <mat-select formControlName="property" placeholder="Eigenschaft">
+            <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error>Pflichtfeld</mat-error>
+        </mat-form-field>
+        <mat-form-field floatLabel="never" appearance="outline">
+          <mat-select formControlName="operator" placeholder="Auswählen">
+            <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error>Pflichtfeld</mat-error>
+        </mat-form-field>
+        <mat-form-field floatLabel="never" appearance="outline">
+          <mat-select formControlName="attribute" placeholder="Attribut">
+            <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error>Pflichtfeld</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayoutAlign="center center">
+        <p>Human Readable Query</p>
+      </div>
+      <button mat-button class="delete-btn" (click)="deleteConstraint(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <button mat-button class="add-btn" (click)="addConstraint()"><mat-icon>add</mat-icon> Neue Einschränkung</button>
+  </div>
+</ng-container>
