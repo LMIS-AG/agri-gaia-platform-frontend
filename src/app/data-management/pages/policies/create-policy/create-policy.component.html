@@ -1,33 +1,32 @@
 <!--fxLayoutAlign="space-between"-->
 <div class="upper-container" fxLayout="column">
-  <mat-slide-toggle>Expertenmodus</mat-slide-toggle>
   <!-- NAME -->
   <div fxLayout="row" fxLayoutAlign="start center">
     <!--fxLayoutAlign="space-between"-->
     <p fxFlex="10">Name</p>
     <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
-      <mat-label>Name of the policy</mat-label>
+      <mat-label>Name der Policy</mat-label>
       <input matInput formControlName="name" />
-      <mat-error>Required</mat-error>
+      <mat-error>Pflichtfeld</mat-error>
     </mat-form-field>
   </div>
   <!-- DESCRIPTION -->
   <div fxLayout="row" class="description">
     <!--fxLayoutAlign="space-between"-->
-    <p fxFlex="10">Description</p>
+    <p fxFlex="10">Beschreibung</p>
     <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
-      <mat-label>Enter description</mat-label>
+      <mat-label>Beschreibung eingeben</mat-label>
       <textarea matInput formControlName="description"></textarea>
-      <mat-error>Required</mat-error>
+      <mat-error>Pflichtfeld</mat-error>
     </mat-form-field>
   </div>
   <!-- POLICY TYPE -->
   <div fxLayout="row" fxLayoutAlign="start center">
     <!--fxLayoutAlign="space-between"-->
-    <p fxFlex="10">Policy type</p>
+    <p fxFlex="10">Policy-Typ</p>
     <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
       <!-- TODO formControlName="..."-->
-      <mat-label>Choose type</mat-label>
+      <mat-label>Typ auswählen</mat-label>
       <mat-select>
         <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
       </mat-select>
@@ -37,21 +36,21 @@
   <!-- TAGGING -->
   <div fxLayout="row" fxLayoutAlign="start center">
     <!--fxLayoutAlign="space-between"-->
-    <p fxFlex="10">Tags</p>
+    <p fxFlex="10">Tagging</p>
     <div fxLayout="row" fxFlex="30" fxLayoutAlign="space-between">
       <mat-form-field [formGroup]="addTagForm" fxFlex="75" appearance="outline">
-        <mat-label>Add tag</mat-label>
+        <mat-label>Tag hinzufügen</mat-label>
         <input matInput formControlName="tagName" />
       </mat-form-field>
       <button
         mat-raised-button
         fxFlex="20"
         class="add-button"
-        color="accent"
+        color="primary"
         [disabled]="addTagForm.pristine || addTagForm.invalid"
         (click)="addTagging()"
       >
-        Add
+        <mat-icon>chevron_right</mat-icon>
       </button>
     </div>
   </div>
@@ -88,22 +87,22 @@
       >
         <div>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="property" placeholder="Property">
+            <mat-select formControlName="property" placeholder="Eigenschaft">
               <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="operator" placeholder="Select">
+            <mat-select formControlName="operator" placeholder="Auswählen">
               <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="attribute" placeholder="Attribute">
+            <mat-select formControlName="attribute" placeholder="Attribut">
               <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
         </div>
         <!--Human Readable Query-->
@@ -115,54 +114,52 @@
           <mat-icon>delete</mat-icon>
         </button>
       </div>
-      <button mat-button class="add-btn" (click)="addDuty()"><mat-icon>add</mat-icon> Add new constraint</button>
+      <button mat-button class="add-btn" (click)="addDuty()"><mat-icon>add</mat-icon> Neue Einschränkung</button>
     </div>
   </div>
 
-  <!-- PERMISSIONS
-    <div class="row" fxLayout="row">
-      <div class="row-label2"><p>PERMISSIONS</p></div>
-      <div fxLayout="column" formArrayName="permissions" class="row-content">
-        ROW(S)
-        <div
-          fxLayout="row"
-          *ngFor="let permission of permissions.controls; index as i"
-          [formGroupName]="i"
-          class="fields"
-          fxLayoutAlign="space-between"
-        >
-                  <div>
+  <!-- PERMISSIONS -->
+  <div class="row" fxLayout="row">
+    <div class="row-label2"><p>PERMISSIONS</p></div>
+    <div fxLayout="column" formArrayName="permissions" class="row-content">
+      <!-- ROW(S) -->
+      <div
+        fxLayout="row"
+        *ngFor="let permission of permissions.controls; index as i"
+        [formGroupName]="i"
+        class="fields"
+        fxLayoutAlign="space-between"
+      >
+        <div>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="property" placeholder="Property">
+            <mat-select formControlName="property" placeholder="Eigenschaft">
               <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="operator" placeholder="Select">
+            <mat-select formControlName="operator" placeholder="Auswählen">
               <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="attribute" placeholder="Attribute">
+            <mat-select formControlName="attribute" placeholder="Attribut">
               <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
         </div>
-          <div fxLayoutAlign="center center">
-            <p>Human Readable Query</p>
-          </div>
-          <button mat-button class="delete-btn" (click)="deletePermission(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
+        <div fxLayoutAlign="center center">
+          <p>Human Readable Query</p>
         </div>
-        <button mat-button class="add-btn" (click)="addPermission()">
-          <mat-icon>add</mat-icon> Add new constraint
+        <button mat-button class="delete-btn" (click)="deletePermission(i)">
+          <mat-icon>delete</mat-icon>
         </button>
       </div>
-    </div> -->
+      <button mat-button class="add-btn" (click)="addPermission()"><mat-icon>add</mat-icon> Neue Einschränkung</button>
+    </div>
+  </div>
 
   <!-- PROHIBITIONS -->
   <div class="row" fxLayout="row">
@@ -180,22 +177,22 @@
       >
         <div>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="property" placeholder="Property">
+            <mat-select formControlName="property" placeholder="Eigenschaft">
               <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="operator" placeholder="Select">
+            <mat-select formControlName="operator" placeholder="Auswählen">
               <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
           <mat-form-field floatLabel="never" appearance="outline">
-            <mat-select formControlName="attribute" placeholder="Attribute">
+            <mat-select formControlName="attribute" placeholder="Attribut">
               <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
             </mat-select>
-            <mat-error>Required</mat-error>
+            <mat-error>Pflichtfeld</mat-error>
           </mat-form-field>
         </div>
         <!--Human Readable Query-->
@@ -207,7 +204,7 @@
           <mat-icon>delete</mat-icon>
         </button>
       </div>
-      <button mat-button class="add-btn" (click)="addProhibition()"><mat-icon>add</mat-icon> Add new constraint</button>
+      <button mat-button class="add-btn" (click)="addProhibition()"><mat-icon>add</mat-icon> Neue Einschränkung</button>
     </div>
   </div>
 </div>
@@ -217,14 +214,14 @@
 <div fxLayout="row" fxLayoutAlign="space-between">
   <div></div>
   <div fxLayout="row" fxLayoutGap="10px">
-    <button mat-stroked-button color="accent" class="cancel-btn" (click)="back()">Cancel</button>
+    <button mat-stroked-button color="primary" class="cancel-btn" (click)="back()">Abbrechen</button>
     <button
       mat-raised-button
-      color="accent"
+      color="primary"
       [disabled]="formGroup.pristine || formGroup.invalid"
       (click)="createPolicy()"
     >
-      Create Policy
+      Policy erstellen
     </button>
   </div>
 </div>

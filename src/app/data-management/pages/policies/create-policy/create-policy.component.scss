@@ -92,7 +92,7 @@
 .add-btn {
   width: 200px;
   mat-icon {
-    color: $accent;
+    color: $primary;
     padding-bottom: 4px;
   }
 }
@@ -108,7 +108,7 @@
 
 .cancel-btn {
   border: 2px solid;
-  border-color: $accent !important;
+  border-color: $primary !important;
 }
 
 mat-error {
