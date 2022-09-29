@@ -115,6 +115,24 @@
           "role": "Rolle"
         }
       }
+    },
+    "policies": {
+      "name": "Name",
+      "policyname": " Name der Policy",
+      "description": "Beschreibung",
+      "enterDescription": "Beschreibung eingeben",
+      "policyType": "Policy-Typ",
+      "chooseType": "Typ auswählen",
+      "tagging": "Tagging",
+      "addTag": "Tag hinzufügen",
+      "duties": "DUTIES",
+      "permissions": "PERMISSIONS",
+      "prohibitions": "PROHIBITIONS",
+      "property": "Eigenschaft",
+      "select": "Auswählen",
+      "attribute": "Attribut",
+      "addConstraint": "Neue Einschränkung",
+      "createPolicy": "Policy erstellen"
     }
   }
 }

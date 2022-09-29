@@ -1,4 +1,4 @@
-<ng-container [formGroup]="formGroup">
+<ng-container [formGroup]="formGroup" *transloco="let t; read: 'dataManagement.policies'">
   <div fxLayout="column" [formArrayName]="formArrayName">
     <!-- ROW(S) -->
     <div
@@ -8,24 +8,24 @@
       class="fields"
       fxLayoutAlign="space-between"
     >
-      <div>
+      <div *transloco="let tCommon; read: 'common'">
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="property" placeholder="Eigenschaft">
+          <mat-select formControlName="property" placeholder="{{ t('property') }}">
             <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
-          <mat-error>Pflichtfeld</mat-error>
+          <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="operator" placeholder="Auswählen">
+          <mat-select formControlName="operator" placeholder="{{ t('select') }}">
             <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
-          <mat-error>Pflichtfeld</mat-error>
+          <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="attribute" placeholder="Attribut">
+          <mat-select formControlName="attribute" placeholder="{{ t('attribute') }}">
             <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
-          <mat-error>Pflichtfeld</mat-error>
+          <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
       </div>
       <div fxLayoutAlign="center center">
@@ -35,6 +35,8 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div>
-    <button mat-button class="add-btn" (click)="addConstraint()"><mat-icon>add</mat-icon> Neue Einschränkung</button>
+    <button mat-button class="add-btn" (click)="addConstraint()">
+      <mat-icon>add</mat-icon> {{ t('addConstraint') }}
+    </button>
   </div>
 </ng-container>
