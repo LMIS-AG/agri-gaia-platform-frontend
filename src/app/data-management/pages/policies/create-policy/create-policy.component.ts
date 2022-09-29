@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 })
 export class CreatePolicyComponent implements OnInit {
   public formGroup: FormGroup; // TODO rename
-  public options: string[] = ['Vertrag', 'Zugriff']; // TODO rename
+  public policytypes: string[] = ['Vertrag', 'Zugriff']; // TODO rename
   public addTagForm: FormGroup;
   public tags: Tag[] = [];
 
@@ -16,6 +16,7 @@ export class CreatePolicyComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       name: ['', [Validators.required]],
       description: ['', Validators.required],
+      type: [''],
       duties: this.createRowFormArray(),
       permissions: this.createRowFormArray(),
       prohibitions: this.createRowFormArray(),

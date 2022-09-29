@@ -1,8 +1,6 @@
-<!--fxLayoutAlign="space-between"-->
 <div class="upper-container" fxLayout="column">
   <!-- NAME -->
   <div fxLayout="row" fxLayoutAlign="start center">
-    <!--fxLayoutAlign="space-between"-->
     <p fxFlex="10">Name</p>
     <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
       <mat-label>Name der Policy</mat-label>
@@ -23,10 +21,9 @@
   <div fxLayout="row" fxLayoutAlign="start center">
     <p fxFlex="10">Policy-Typ</p>
     <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
-      <!-- TODO formControlName="..."-->
       <mat-label>Typ auswählen</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let policytype of policytypes" [value]="policytype">{{ policytype }}</mat-option>
       </mat-select>
       <!--<mat-error>error</mat-error>-->
     </mat-form-field>
@@ -65,7 +62,6 @@
   </div>
 </div>
 
-<!-- LOWER CONTAINER (Duties, Permissions, Prohibitions)-->
 <div class="lower-container" fxLayout="column" [formGroup]="formGroup" fxLayoutGap="15px">
   <!-- DUTIES -->
   <div class="row" fxLayout="row">
