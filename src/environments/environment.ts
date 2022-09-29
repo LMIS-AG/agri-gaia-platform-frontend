@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
   keycloakConfiguration: {
-    url: 'https://account.platform.agri-gaia.com/auth',
-    realm: 'agri-gaia',
-    clientId: 'platform-ui',
+    url: 'https://account.platform.agri-gaia.com',
+    realm: 'agri-gaia-platform',
+    clientId: 'ag-test-platform-ui',
   },
 };
 

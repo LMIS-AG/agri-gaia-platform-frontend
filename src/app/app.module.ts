@@ -15,18 +15,16 @@ import { MenuComponent } from './components/menu/menu.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslocoRootModule } from './transloco/transloco-root.module';
+import {environment} from "../environments/environment";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
-      config: {
-        url: 'https://account.platform.agri-gaia.com/auth',
-        realm: 'agri-gaia',
-        clientId: 'platform-ui',
-      },
+      config: environment.keycloakConfiguration,
       initOptions: {
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        pkceMethod: 'S256'
       },
     });
 }
