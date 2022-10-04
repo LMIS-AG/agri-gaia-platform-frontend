@@ -8,8 +8,8 @@ import { Tag } from 'src/app/shared/model/tag';
   styleUrls: ['./create-policy.component.scss'],
 })
 export class CreatePolicyComponent implements OnInit {
-  public formGroup: FormGroup; // TODO rename
-  public policytypes: string[] = ['Vertrag', 'Zugriff']; // TODO rename
+  public formGroup: FormGroup;
+  public policytypes: string[] = ['Vertrag', 'Zugriff'];
   public addTagForm: FormGroup;
   public tags: Tag[] = [];
 
