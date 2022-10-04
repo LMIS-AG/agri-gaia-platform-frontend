@@ -7,32 +7,22 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 umask 022
-
 set -o errexit
-echo "Working Directory:"
-pwd
 
 # If the 'golang-builder' assemble script is executed with the '-h' flag, print the usage.
 if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
 fi
-echo "List Base:"
-ls -lah /tmp/*
+echo "List Build:"
+ls -lah /tmp/build/*
 # Check vor npm
-cd /tmp
-mkdir ~/build
-cp -R src/* ~/build/
-cd ~/build
-# Listing content from build
-echo "List before:"
-ls -lah
-echo "Working Directory:"
-pwd
-
+#cd /tmp
+#mkdir /tmp/build
+#cp -R src/* /tmp/build/
+cd /tmp/build
 # List config
 echo "List Config:"
 npm config list
-
 
 echo "Run Build:"
 echo "Working Directory:"
@@ -55,7 +45,7 @@ npm run build
 echo "List after:"
 ls -lah
 echo "Copy files from ~/build/dist/agri-gaia-platform/ -> htdocs:"
-cp -R ~/build/dist/agri-gaia-platform/* /usr/local/apache2/htdocs/
+cp -R /tmp/build/dist/agri-gaia-platform/* /usr/local/apache2/htdocs/
 # chgrp -R www-data /usr/local/apache2/htdocs
 
 
