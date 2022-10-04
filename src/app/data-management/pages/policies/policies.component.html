@@ -1,6 +1,8 @@
-<div fxLayout="row">
-  <button mat-mini-fab class="mat-elevation-z0 button32" (click)="navigateToCreatePolicy()">
-    <mat-icon class="icon32">add</mat-icon>
-  </button>
-  <p>Create Policy</p>
-</div>
+<ng-container *transloco="let t; read: 'dataManagement.policies'">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <h1 class="headline">{{ t('headline') }}</h1>
+    <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="addPolicy()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</ng-container>

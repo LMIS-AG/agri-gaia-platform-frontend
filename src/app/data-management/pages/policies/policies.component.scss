@@ -1,0 +1,9 @@
+@import '../../../../styles/common/variables';
+@import '../../../../styles/common/mixins';
+
+.headline {
+  @include calluna-font();
+  color: $primary;
+  font-size: 36px;
+  font-weight: bold;
+}

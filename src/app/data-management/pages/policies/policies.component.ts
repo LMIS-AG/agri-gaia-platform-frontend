@@ -11,7 +11,7 @@ export class PoliciesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public navigateToCreatePolicy(): void {
+  public addPolicy(): void {
     this.router.navigate(['create'], { relativeTo: this.route });
   }
 }
