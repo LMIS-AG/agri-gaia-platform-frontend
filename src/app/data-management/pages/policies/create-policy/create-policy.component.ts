@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { Tag } from 'src/app/shared/model/tag';
 
 @Component({
   selector: 'app-create-policy',
@@ -45,7 +46,6 @@ export class CreatePolicyComponent implements OnInit {
 
   public createPolicy(): void {
     const x = this.formGroup.value;
-    console.log(x); //TODO remove
   }
 
   public addDuty(): void {
@@ -95,9 +95,4 @@ export class CreatePolicyComponent implements OnInit {
       attribute: ['', Validators.required],
     });
   }
-}
-
-// TODO place into model folder or something..
-export interface Tag {
-  name: string;
 }
