@@ -119,6 +119,7 @@
     "policies": {
       "headline": "Policies",
       "createPolicy": {
+        "headline": "Policy erstellen",
         "name": "Name",
         "policyname": " Name der Policy",
         "description": "Beschreibung",
