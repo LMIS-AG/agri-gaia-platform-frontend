@@ -35,3 +35,10 @@ table {
     width: 32px;
   }
 }
+
+.delete-button {
+  color: red;
+  mat-icon {
+    color: red;
+  }
+}
