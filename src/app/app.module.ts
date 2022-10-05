@@ -47,12 +47,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatInputModule,
   ],
   providers: [
-    /*{
+    {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
-    },*/
+    },
   ],
   bootstrap: [AppComponent],
 })
