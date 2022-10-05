@@ -1,0 +1,128 @@
+<ng-container *transloco="let t; read: 'dataManagement.policies.createPolicy'">
+  <ng-container *transloco="let tCommon; read: 'common'">
+    <h1 class="headline">{{ t('headline') }}</h1>
+    <div class="upper-container" fxLayout="column">
+      <!-- NAME -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <p fxFlex="10">{{ t('name') }}</p>
+        <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
+          <mat-label>{{ t('policyname') }}</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
+      </div>
+      <!-- DESCRIPTION -->
+      <div fxLayout="row" class="description">
+        <p fxFlex="10">{{ t('description') }}</p>
+        <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
+          <mat-label>{{ t('enterDescription') }}</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
+      </div>
+      <!-- POLICY TYPE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <p fxFlex="10">{{ t('policyType') }}</p>
+        <mat-form-field [formGroup]="formGroup" fxFlex="30" appearance="outline">
+          <mat-label>{{ t('chooseType') }}</mat-label>
+          <mat-select formControlName="type">
+            <mat-option *ngFor="let policytype of policytypes" [value]="policytype">{{ policytype }}</mat-option>
+          </mat-select>
+          <!--<mat-error>error</mat-error>-->
+        </mat-form-field>
+      </div>
+      <!-- TAGGING -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <p fxFlex="10">{{ t('tagging') }}</p>
+        <div fxLayout="row" fxFlex="30" fxLayoutAlign="space-between">
+          <mat-form-field [formGroup]="addTagForm" fxFlex="75" appearance="outline">
+            <mat-label>{{ t('addTag') }}</mat-label>
+            <input matInput formControlName="tagName" />
+          </mat-form-field>
+          <button
+            mat-raised-button
+            fxFlex="20"
+            class="add-button"
+            color="primary"
+            [disabled]="addTagForm.pristine || addTagForm.invalid"
+            (click)="addTagging()"
+          >
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="selected-tags-container">
+        <div fxFlexOffset="25" fxLayout="row">
+          <div *ngFor="let tag of tags" class="single-tag" fxLayout="row" fxLayoutAlign="space-between">
+            <div class="single-tag-text full-width" fxLayoutAlign="center center">
+              {{ tag.name }}
+            </div>
+            <button class="remove-btn" (click)="removeTag(tag)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lower-container" fxLayout="column" [formGroup]="formGroup" fxLayoutGap="15px">
+      <!-- DUTIES -->
+      <div class="row" fxLayout="row">
+        <div class="row-label">
+          <p>{{ t('duties') }}</p>
+        </div>
+        <app-constraints
+          class="row-content"
+          [formGroup]="formGroup"
+          formArrayName="duties"
+          (addEvent)="addDuty()"
+          (deleteEvent)="deleteDuty($event)"
+        ></app-constraints>
+      </div>
+
+      <!-- PERMISSIONS -->
+      <div class="row" fxLayout="row">
+        <div class="row-label2">
+          <p>{{ t('permissions') }}</p>
+        </div>
+        <app-constraints
+          class="row-content"
+          [formGroup]="formGroup"
+          formArrayName="permissions"
+          (addEvent)="addPermission()"
+          (deleteEvent)="deletePermission($event)"
+        ></app-constraints>
+      </div>
+
+      <!-- PROHIBITIONS -->
+      <div class="row" fxLayout="row">
+        <div class="row-label2">
+          <p>{{ t('prohibitions') }}</p>
+        </div>
+        <app-constraints
+          class="row-content"
+          [formGroup]="formGroup"
+          formArrayName="prohibitions"
+          (addEvent)="addProhibition()"
+          (deleteEvent)="deleteProhibition($event)"
+        ></app-constraints>
+      </div>
+    </div>
+
+    <br />
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <div></div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <button mat-stroked-button color="primary" class="cancel-btn" (click)="back()">{{ tCommon('cancel') }}</button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="formGroup.pristine || formGroup.invalid"
+          (click)="createPolicy()"
+        >
+          {{ t('createPolicy') }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

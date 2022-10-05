@@ -1,0 +1,54 @@
+<ng-container *transloco="let t; read: 'dataManagement.policies'">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <h1 class="headline">{{ t('headline') }}</h1>
+    <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="addPolicy()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="dataSource.length !== 0">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z0"
+      *transloco="let tTable; read: 'dataManagement.policies.table'"
+    >
+      <!-- Name Policy -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <!-- Company Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>{{ tTable('type') }}</th>
+        <td mat-cell *matCellDef="let element">{{ tTable(element.type) }}</td>
+      </ng-container>
+
+      <!-- InUse Column -->
+      <ng-container matColumnDef="inUse">
+        <th mat-header-cell *matHeaderCellDef>{{ tTable('inUse') }}</th>
+        <td mat-cell *matCellDef="let element">{{ tTable(element.inUse) }}</td>
+      </ng-container>
+
+      <!-- More Column -->
+      <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+          <button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button class="delete-button" (click)="onDelete()" mat-menu-item>
+              <mat-icon aria-hidden="false" aria-label="Mail">delete</mat-icon>
+              {{ tCommon('delete') }}
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row (click)="openDetails(row)" *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</ng-container>

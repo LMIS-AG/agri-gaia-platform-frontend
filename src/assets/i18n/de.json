@@ -44,6 +44,7 @@
     "spaces": "Kooperationsbereiche",
     "dataManagement": "Asset-Management",
     "aiTraining": "KI-Training",
+    "policies": "Policies",
     "modelManagement": "Modell-Management",
     "edgeManagement": "Edge-Management",
     "monitoring": "Monitoring",
@@ -113,6 +114,37 @@
           "company": "Inhaber",
           "role": "Rolle"
         }
+      }
+    },
+    "policies": {
+      "headline": "Policies",
+      "table": {
+        "name": "Name",
+        "type": "Typ",
+        "inUse": "In Anwendung",
+        "true": "Ja",
+        "false": "Nein",
+        "CONTRACT": "Vertrag",
+        "ACCESS": "Zugriff"
+      },
+      "createPolicy": {
+        "headline": "Policy erstellen",
+        "name": "Name",
+        "policyname": " Name der Policy",
+        "description": "Beschreibung",
+        "enterDescription": "Beschreibung eingeben",
+        "policyType": "Policy-Typ",
+        "chooseType": "Typ auswählen",
+        "tagging": "Tagging",
+        "addTag": "Tag hinzufügen",
+        "duties": "DUTIES",
+        "permissions": "PERMISSIONS",
+        "prohibitions": "PROHIBITIONS",
+        "property": "Eigenschaft",
+        "select": "Auswählen",
+        "attribute": "Attribut",
+        "addConstraint": "Neue Einschränkung",
+        "createPolicy": "Policy erstellen"
       }
     }
   }

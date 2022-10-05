@@ -1,0 +1,27 @@
+@import '../../../../../../styles/common/variables';
+@import '../../../../../../styles/common/mixins';
+
+.fields {
+  font-size: 12px;
+  mat-form-field {
+    padding: 0 0 2.75em 1em;
+    font-weight: 700;
+    height: 20px;
+  }
+}
+
+.add-btn {
+  width: 200px;
+  mat-icon {
+    color: $primary;
+    padding-bottom: 4px;
+  }
+}
+
+mat-error {
+  margin-top: -5px;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  overflow: visible !important;
+}

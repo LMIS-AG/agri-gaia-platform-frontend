@@ -1,0 +1,42 @@
+<ng-container [formGroup]="formGroup" *transloco="let t; read: 'dataManagement.policies.createPolicy'">
+  <div fxLayout="column" [formArrayName]="formArrayName">
+    <!-- ROW(S) -->
+    <div
+      fxLayout="row"
+      *ngFor="let x of formArray.controls; index as i"
+      [formGroupName]="i"
+      class="fields"
+      fxLayoutAlign="space-between"
+    >
+      <div *transloco="let tCommon; read: 'common'">
+        <mat-form-field floatLabel="never" appearance="outline">
+          <mat-select formControlName="property" placeholder="{{ t('property') }}">
+            <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field floatLabel="never" appearance="outline">
+          <mat-select formControlName="operator" placeholder="{{ t('select') }}">
+            <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field floatLabel="never" appearance="outline">
+          <mat-select formControlName="attribute" placeholder="{{ t('attribute') }}">
+            <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayoutAlign="center center">
+        <p>Human Readable Query</p>
+      </div>
+      <button mat-button (click)="deleteConstraint(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <button mat-button class="add-btn" (click)="addConstraint()">
+      <mat-icon>add</mat-icon> {{ t('addConstraint') }}
+    </button>
+  </div>
+</ng-container>
