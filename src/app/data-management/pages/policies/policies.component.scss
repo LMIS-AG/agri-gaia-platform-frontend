@@ -1,0 +1,44 @@
+@import '../../../../styles/common/variables';
+@import '../../../../styles/common/mixins';
+
+.headline {
+  @include calluna-font();
+  color: $primary;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  th {
+    color: $primary;
+    font-size: 16px;
+    font-weight: bold;
+    border-color: $primary;
+    border-width: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  td {
+    padding-left: 0px;
+    padding-right: 0px;
+    border-color: gray;
+    button {
+      color: $primary;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  .mat-column-more {
+    width: 32px;
+  }
+}
+
+.delete-button {
+  color: red;
+  mat-icon {
+    color: red;
+  }
+}

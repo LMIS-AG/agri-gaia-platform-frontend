@@ -23,6 +23,15 @@ export class AppComponent {
   public onActivate(componentRef: any): void {
     // fires every time a new component is loaded
 
+    if (
+      !componentRef?.router?.browserUrlTree ||
+      componentRef?.router?.browserUrlTree?.root?.children?.primary?.segments[1]?.path === 'policies'
+    ) {
+      // very ugly
+      this.standardBackground = true;
+      return;
+    }
+
     if (!componentRef.route) {
       // for any reason component.route is not defined for http://localhost:4200/data/coop-spaces/1/focus
       this.standardBackground = false;

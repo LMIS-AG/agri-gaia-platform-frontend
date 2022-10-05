@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'data',
     loadChildren: () => import('./data-management/data-management.module').then(i => i.DataManagementModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: '**',
