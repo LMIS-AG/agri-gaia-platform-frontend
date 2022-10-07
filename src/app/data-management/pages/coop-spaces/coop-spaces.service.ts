@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
+import { Member } from 'src/app/shared/model/member';
 
 // MOCK DATA ! TODO remove later when fetching data from extern
 const MOCK_DATA: CoopSpace[] = [
@@ -47,11 +48,19 @@ export class CoopSpacesService {
 
   public create(coopSpace: CoopSpace): Observable<CoopSpace> {
     this.http
-      .post('https://ag-platform-ui-frontend.platform.agri-gaia.com/api/coopspaces', {
+      //.post('https://ag-platform-ui-frontend.platform.agri-gaia.com/api/coopspaces', {
+      .post('http://localhost:8080/coopspaces', {
         name: coopSpace.name,
         company: coopSpace.company,
       })
       .subscribe(x => console.log(x));
     return of(coopSpace);
+  }
+
+  public getMembers(): Observable<Member[]> {
+    this.http.get<Member[]>('http://localhost:8080/coopspaces/members').subscribe(x => console.log(x));
+
+    const member: Member = { id: 1, name: 'Mock', company: 'MockComp', role: CoopSpaceRole.Viewer };
+    return of([member]);
   }
 }
