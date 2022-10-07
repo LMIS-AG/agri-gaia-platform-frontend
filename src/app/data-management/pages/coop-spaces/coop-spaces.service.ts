@@ -58,9 +58,6 @@ export class CoopSpacesService {
   }
 
   public getMembers(): Observable<Member[]> {
-    this.http.get<Member[]>('http://localhost:8080/coopspaces/members').subscribe(x => console.log(x));
-
-    const member: Member = { id: 1, name: 'Mock', company: 'MockComp', role: CoopSpaceRole.Viewer };
-    return of([member]);
+    return this.http.get<Member[]>('http://localhost:8080/coopspaces/members');
   }
 }

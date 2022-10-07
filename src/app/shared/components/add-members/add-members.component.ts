@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CoopSpacesService } from 'src/app/data-management/pages/coop-spaces/coop-spaces.service';
+import { Member } from '../../model/member';
 
 @UntilDestroy()
 @Component({
@@ -11,6 +12,7 @@ import { CoopSpacesService } from 'src/app/data-management/pages/coop-spaces/coo
   styleUrls: ['./add-members.component.scss'],
 })
 export class AddMembersComponent implements OnInit {
+  public members: Member[] = [];
   public myGroup = new FormGroup({
     searchTerm: new FormControl(),
   });
@@ -23,6 +25,8 @@ export class AddMembersComponent implements OnInit {
       .subscribe(value => console.log(value) /*this.datasource.updateFilter(value)*/);
     // TODO implement search for members
 
-    this.coopSpaceService.getMembers();
+    this.coopSpaceService.getMembers().subscribe(members => {
+      this.members = members;
+    });
   }
 }

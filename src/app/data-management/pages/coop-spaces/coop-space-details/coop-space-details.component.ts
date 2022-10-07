@@ -8,14 +8,14 @@ import { CoopSpacesService } from '../coop-spaces.service';
 
 // TODO get mock data from service in future
 const MOCK_DATA_MEMBER: Member[] = [
-  { id: 1, name: 'Hank Scorpio', company: 'AgBRAIN', role: CoopSpaceRole.Owner },
-  { id: 2, name: 'Gerald Entscheider', company: 'Krone', role: CoopSpaceRole.Owner },
-  { id: 3, name: 'Max Power', company: 'DFKI', role: CoopSpaceRole.Editor },
-  { id: 4, name: 'Emil Liam', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', company: 'LMIS', role: CoopSpaceRole.Viewer },
+  { id: 1, name: 'Hank Scorpio', email: 'test@test.de', company: 'AgBRAIN', role: CoopSpaceRole.Owner },
+  { id: 2, name: 'Gerald Entscheider', email: 'test@test.de', company: 'Krone', role: CoopSpaceRole.Owner },
+  { id: 3, name: 'Max Power', email: 'test@test.de', company: 'DFKI', role: CoopSpaceRole.Editor },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
 ];
 
 // TODO get mock data from service in future

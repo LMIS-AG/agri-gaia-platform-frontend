@@ -27,7 +27,7 @@
   <!-- LIST OF MEMBERS-->
   <mat-divider></mat-divider>
   <div fxLayout="column">
-    <span *ngFor="let i of [1, 2, 3]">
+    <span *ngFor="let member of members">
       <div
         class="current-user"
         fxLayout="row"
@@ -48,16 +48,16 @@
           <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
           <div fxLayout="column">
             <div fxLayout="row" fxLayoutGap="5px">
-              <div class="name">Hank Scorpio</div>
-              <div class="company">LMIS AG</div>
+              <div class="name">{{ member.name }}</div>
+              <div class="company">{{ member.company }}</div>
             </div>
-            <div class="email">hank.scorpio@lmis.de</div>
+            <div class="email">{{ member.email }}</div>
           </div>
         </a>
 
         <div fxLayout="row" fxLayoutAlign="end center" class="full-witdth" fxLayoutGap="30px">
           <!-- TODO The owner has no add Button! This has to be adjusted. Possibly with ngIfs...-->
-          <div class="role">Zuschauer</div>
+          <div class="role">{{ member.role }}</div>
 
           <div>
             <button class="outline-btn" mat-stroked-button color="primary">Hinzufügen</button>
