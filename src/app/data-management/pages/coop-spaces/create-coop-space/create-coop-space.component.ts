@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { translate } from '@ngneat/transloco';
+import { take } from 'rxjs';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesComponent } from '../coop-spaces.component';
@@ -20,7 +22,8 @@ export class CreateCoopSpaceComponent {
     private dialogRef: MatDialogRef<CoopSpacesComponent>,
     private formBuilder: FormBuilder,
     private coopSpacesService: CoopSpacesService,
-    private uiService: UIService
+    private uiService: UIService,
+    private authenticationService: AuthenticationService
   ) {
     this.formGroup = this.formBuilder.group({
       company: ['', Validators.required],
@@ -41,17 +44,19 @@ export class CreateCoopSpaceComponent {
   }
 
   public onSave(): void {
-    const newCoopSpace: CoopSpace = {
-      company: this.formGroup.get('company')?.value,
-      name: this.formGroup.get('name')?.value,
-      mandant: 'mgrave',
-      member: [],
-      role: CoopSpaceRole.Owner,
-    };
+    this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => {
+      const newCoopSpace: CoopSpace = {
+        company: this.formGroup.get('company')?.value,
+        name: this.formGroup.get('name')?.value,
+        mandant: profile!.username,
+        member: [],
+        role: CoopSpaceRole.Owner,
+      };
 
-    this.coopSpacesService.create(newCoopSpace).subscribe(createdCoopSpace => {
-      this.uiService.showSuccessMessage(translate('common.successfullySaved'));
-      this.dialogRef.close(createdCoopSpace);
+      this.coopSpacesService.create(newCoopSpace).subscribe(createdCoopSpace => {
+        this.uiService.showSuccessMessage(translate('dataManagement.createCoopSpaces.successfullyRequested'));
+        this.dialogRef.close(createdCoopSpace);
+      });
     });
   }
 }
