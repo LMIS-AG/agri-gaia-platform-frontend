@@ -44,6 +44,7 @@ export class CreateCoopSpaceComponent {
     const newCoopSpace: CoopSpace = {
       company: this.formGroup.get('company')?.value,
       name: this.formGroup.get('name')?.value,
+      mandant: 'mgrave',
       member: [],
       role: CoopSpaceRole.Owner,
     };
