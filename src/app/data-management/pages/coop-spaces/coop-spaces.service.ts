@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
+import { environment } from 'src/environments/environment';
 
 // MOCK DATA ! TODO remove later when fetching data from extern
 const MOCK_DATA: CoopSpace[] = [
@@ -51,8 +52,7 @@ export class CoopSpacesService {
 
   public create(coopSpace: CoopSpace): Observable<CoopSpace> {
     this.http
-      //.post('https://ag-platform-ui-frontend.platform.agri-gaia.com/api/coopspaces', {
-      .post('http://localhost:8080/coopspaces', {
+      .post(environment.backend.url + '/coopspaces', {
         name: coopSpace.name,
         company: coopSpace.company,
         mandant: coopSpace.mandant,
@@ -62,6 +62,6 @@ export class CoopSpacesService {
   }
 
   public getMembers(): Observable<Member[]> {
-    return this.http.get<Member[]>('http://localhost:8080/coopspaces/members');
+    return this.http.get<Member[]>(environment.backend.url + '/coopspaces/members');
   }
 }

@@ -54,7 +54,9 @@ export class CreateCoopSpaceComponent {
       };
 
       this.coopSpacesService.create(newCoopSpace).subscribe(createdCoopSpace => {
-        this.uiService.showSuccessMessage(translate('dataManagement.createCoopSpaces.successfullyRequested'));
+        this.uiService.showSuccessMessage(
+          translate('dataManagement.coopSpaces.createCoopSpaces.successfullyRequested')
+        );
         this.dialogRef.close(createdCoopSpace);
       });
     });
