@@ -8,14 +8,28 @@ import { CoopSpacesService } from '../coop-spaces.service';
 
 // TODO get mock data from service in future
 const MOCK_DATA_MEMBER: Member[] = [
-  { id: 1, name: 'Hank Scorpio', email: 'test@test.de', company: 'AgBRAIN', role: CoopSpaceRole.Owner },
-  { id: 2, name: 'Gerald Entscheider', email: 'test@test.de', company: 'Krone', role: CoopSpaceRole.Owner },
-  { id: 3, name: 'Max Power', email: 'test@test.de', company: 'DFKI', role: CoopSpaceRole.Editor },
-  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
-  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer },
+  {
+    id: 1,
+    name: 'Hank Scorpio',
+    email: 'test@test.de',
+    company: 'AgBRAIN',
+    role: CoopSpaceRole.Owner,
+    username: 'hscorpio',
+  },
+  {
+    id: 2,
+    name: 'Gerald Entscheider',
+    email: 'test@test.de',
+    company: 'Krone',
+    role: CoopSpaceRole.Owner,
+    username: 'gentsch',
+  },
+  { id: 3, name: 'Max Power', email: 'test@test.de', company: 'DFKI', role: CoopSpaceRole.Editor, username: 'mpower' },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer, username: 'eliam' },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer, username: 'eliam' },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer, username: 'eliam' },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer, username: 'eliam' },
+  { id: 4, name: 'Emil Liam', email: 'test@test.de', company: 'LMIS', role: CoopSpaceRole.Viewer, username: 'eliam' },
 ];
 
 // TODO get mock data from service in future
