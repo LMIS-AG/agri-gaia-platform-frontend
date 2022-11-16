@@ -57,7 +57,7 @@ export class CoopSpacesService {
         company: coopSpace.company,
         mandant: coopSpace.mandant,
       })
-      .subscribe(x => console.log(x));
+      .subscribe(x => console.log(x)); // TODO remove log
     return of(coopSpace);
   }
 

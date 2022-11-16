@@ -6,5 +6,6 @@ export interface Member {
   company: string;
   email: string;
   role: CoopSpaceRole;
+  username: string;
 }
 // TODO link between member and coopSpace in model is currently missing; adjust role in future
