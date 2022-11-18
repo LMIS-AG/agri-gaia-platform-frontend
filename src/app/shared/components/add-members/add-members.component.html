@@ -1,7 +1,5 @@
 <div fxLayout="column" *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
   <h3>{{ t('addMembers') }}</h3>
-
-  <!-- TODO maybe make this a label-->
   <p>
     {{ t('addMembersInfo') }}
   </p>
@@ -27,15 +25,13 @@
   <!-- LIST OF MEMBERS-->
   <mat-divider></mat-divider>
   <div fxLayout="column">
-    <span *ngFor="let member of members">
+    <span *ngFor="let member of members; let i = index">
       <div
         class="current-user"
         fxLayout="row"
         fxLayoutAlign="space-between center"
         *transloco="let tCommon; read: 'common'"
       >
-        <!--   -->
-
         <a
           style="pointer-events: none"
           routerLink="#"
@@ -55,13 +51,24 @@
           </div>
         </a>
 
-        <div fxLayout="row" fxLayoutAlign="end center" class="full-witdth" fxLayoutGap="30px">
-          <!-- TODO The owner has no add Button! This has to be adjusted. Possibly with ngIfs...-->
-          <div class="role">{{ member.role }}</div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="end center"
+          class="full-witdth"
+          fxLayoutGap="30px"
+          [formGroup]="formGroups[i]"
+        >
+          <!-- TODO The owner has no checkbox! This has to be adjusted. Possibly with ngIfs...-->
+          <mat-form-field>
+            <mat-select formControlName="role" required>
+              <mat-option *ngFor="let role of roles" [value]="role">
+                <span>{{ role }}</span>
+              </mat-option>
+            </mat-select>
+            <mat-error>{{ tCommon('required') }}</mat-error>
+          </mat-form-field>
 
-          <div>
-            <button class="outline-btn" mat-stroked-button color="primary">Hinzufügen</button>
-          </div>
+          <mat-checkbox color="primary" ngDefaultControl formControlName="selected"></mat-checkbox>
         </div>
       </div>
       <mat-divider></mat-divider>

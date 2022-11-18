@@ -92,7 +92,8 @@
             "invalidPrefixHtml": "Der Name darf nicht mit <strong>xn--</strong> beginnen",
             "uniqueness": "Der Name darf nur einmal vorkommen",
             "uniquenessHtml": "Der Name darf nur <strong>einmal</strong> vorkommen"
-          }
+          },
+          "role": "Rolle"
         },
         "successfullyRequested": "Die Anfrage zur Erstellung eines Kooperationsbereichs wurde erfolgreich gestellt."
       },

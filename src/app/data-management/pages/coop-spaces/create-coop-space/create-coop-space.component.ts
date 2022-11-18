@@ -5,6 +5,7 @@ import { translate } from '@ngneat/transloco';
 import { take } from 'rxjs';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
+import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesComponent } from '../coop-spaces.component';
 import { CoopSpacesService } from '../coop-spaces.service';
@@ -43,13 +44,26 @@ export class CreateCoopSpaceComponent {
     });
   }
 
-  public onSave(): void {
+  private formGroupToMember(formGroup: FormGroup): Member {
+    const value = formGroup.value;
+    return {
+      username: value.username,
+      role: value.role,
+    } as Member;
+  }
+
+  public onSave(formGroupsSelected: FormGroup[]): void {
+    let members: Member[] = [];
+    formGroupsSelected.forEach(formGroup => {
+      members.push(this.formGroupToMember(formGroup));
+    });
+
     this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => {
       const newCoopSpace: CoopSpace = {
         company: this.formGroup.get('company')?.value,
         name: this.formGroup.get('name')?.value,
         mandant: profile!.username,
-        member: [],
+        members: members,
         role: CoopSpaceRole.Owner,
       };
 

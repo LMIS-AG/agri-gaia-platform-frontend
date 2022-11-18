@@ -12,7 +12,10 @@ const MOCK_DATA: CoopSpace[] = [
     name: 'Semantische Umfeldwahrnehmung',
     mandant: 'mgrave',
     company: 'Claas',
-    member: ['AgBRAIN', 'Bosch'],
+    members: [
+      { username: 'jende', role: CoopSpaceRole.Viewer } as Member,
+      { username: 'alopez', role: CoopSpaceRole.Viewer } as Member,
+    ],
     role: CoopSpaceRole.Editor,
   },
   {
@@ -20,7 +23,10 @@ const MOCK_DATA: CoopSpace[] = [
     name: 'Befahrbarkeitsanalyse',
     mandant: 'mgrave',
     company: 'AgBRAIN',
-    member: ['Krone', 'DFKI', 'LMIS'],
+    members: [
+      { username: 'jende', role: CoopSpaceRole.Viewer } as Member,
+      { username: 'alopez', role: CoopSpaceRole.Viewer } as Member,
+    ],
     role: CoopSpaceRole.Owner,
   },
   {
@@ -28,7 +34,10 @@ const MOCK_DATA: CoopSpace[] = [
     name: 'Teilfächenspezifisches Düngen',
     company: 'Bosch',
     mandant: 'mgrave',
-    member: ['AgBRAIN', 'Krone'],
+    members: [
+      { username: 'jende', role: CoopSpaceRole.Viewer } as Member,
+      { username: 'alopez', role: CoopSpaceRole.Viewer } as Member,
+    ],
     role: CoopSpaceRole.Viewer,
   },
 ];
@@ -56,6 +65,7 @@ export class CoopSpacesService {
         name: coopSpace.name,
         company: coopSpace.company,
         mandant: coopSpace.mandant,
+        members: coopSpace.members,
       })
       .subscribe(x => console.log(x)); // TODO remove log
     return of(coopSpace);

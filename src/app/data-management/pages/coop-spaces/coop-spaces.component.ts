@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
+import { Member } from 'src/app/shared/model/member';
 import { CoopSpacesService } from './coop-spaces.service';
 import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
 
@@ -54,5 +55,9 @@ export class CoopSpacesComponent implements OnInit {
 
   public onDelete(): void {
     throw Error('Not yet implemented');
+  }
+
+  public membersToString(members: Member[]): string {
+    return members.map(m => m.username).toString();
   }
 }
