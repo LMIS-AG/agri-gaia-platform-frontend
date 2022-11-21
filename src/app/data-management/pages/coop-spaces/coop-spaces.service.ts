@@ -94,6 +94,5 @@ export class CoopSpacesService {
         members: coopSpace.members,
       })
       .subscribe(x => console.log(x)); // TODO remove log
-    console.log('delete'); // TODO remove
   }
 }

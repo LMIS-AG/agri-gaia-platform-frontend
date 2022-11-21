@@ -25,7 +25,7 @@ export class AddMembersComponent implements OnInit {
   public saveEvent!: EventEmitter<void>;
 
   @Output()
-  private handledSelectionEvent: EventEmitter<FormGroup[]> = new EventEmitter();
+  private handledSelectionEvent: EventEmitter<Member[]> = new EventEmitter();
 
   constructor(
     private coopSpaceService: CoopSpacesService,
@@ -83,6 +83,18 @@ export class AddMembersComponent implements OnInit {
   private filterFormGroupsWithSelectedCheckbox(): void {
     const formGroupsSelected: FormGroup[] = this.formGroups.filter(formGroup => formGroup.value.selected);
     // TODO maybe build members already
-    this.handledSelectionEvent.emit(formGroupsSelected);
+    let members: Member[] = [];
+    formGroupsSelected.forEach(formGroup => {
+      members.push(this.formGroupToMember(formGroup));
+    });
+    this.handledSelectionEvent.emit(members);
+  }
+
+  private formGroupToMember(formGroup: FormGroup): Member {
+    const value = formGroup.value;
+    return {
+      username: value.username,
+      role: value.role,
+    } as Member;
   }
 }

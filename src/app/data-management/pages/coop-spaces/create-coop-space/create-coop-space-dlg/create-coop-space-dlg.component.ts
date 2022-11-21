@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
+import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 
 @Component({
@@ -22,12 +23,12 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
   public alwaysEnableSaveButton: boolean = false;
 
   @Output()
-  private saveEventParent: EventEmitter<FormGroup[]> = new EventEmitter();
+  private saveEventParent: EventEmitter<Member[]> = new EventEmitter();
 
   @Output()
   private cancelEvent: EventEmitter<void> = new EventEmitter();
 
-  public saveEventChild: EventEmitter<void> = new EventEmitter(); // TODO make void
+  public saveEventChild: EventEmitter<void> = new EventEmitter();
 
   constructor(protected dialogRef: MatDialogRef<any>, protected uiService: UIService) {}
 
@@ -70,7 +71,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
     return !this.formGroup.invalid && this.formGroup.dirty;
   }
 
-  public handleSelectedMembers(formGroupsSelected: FormGroup[]): void {
-    this.saveEventParent.emit(formGroupsSelected);
+  public handleSelectedMembers(membersSelected: Member[]): void {
+    this.saveEventParent.emit(membersSelected);
   }
 }

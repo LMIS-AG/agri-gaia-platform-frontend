@@ -56,7 +56,7 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public onDelete(selectedElement: CoopSpace): void {
-    this.coopSpacesService.delete(selectedElement); // TODO call service later when dealing with acutal data instead of mock data
+    this.coopSpacesService.delete(selectedElement);
     removeElementFromArray(this.dataSource.data, e => e.name === selectedElement.name);
     // update dataSource
     this.dataSource.data = this.dataSource.data;

@@ -44,26 +44,13 @@ export class CreateCoopSpaceComponent {
     });
   }
 
-  private formGroupToMember(formGroup: FormGroup): Member {
-    const value = formGroup.value;
-    return {
-      username: value.username,
-      role: value.role,
-    } as Member;
-  }
-
-  public onSave(formGroupsSelected: FormGroup[]): void {
-    let members: Member[] = [];
-    formGroupsSelected.forEach(formGroup => {
-      members.push(this.formGroupToMember(formGroup));
-    });
-
+  public onSave(membersSelected: Member[]): void {
     this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => {
       const newCoopSpace: CoopSpace = {
         company: this.formGroup.get('company')?.value,
         name: this.formGroup.get('name')?.value,
         mandant: profile!.username,
-        members: members,
+        members: membersSelected,
         role: CoopSpaceRole.Owner,
       };
 
