@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <div *ngIf="dataSource.length !== 0">
+  <div *ngIf="dataSource.data.length !== 0">
     <table
       mat-table
       [dataSource]="dataSource"
@@ -45,7 +45,7 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button class="delete-button" (click)="onDelete()" mat-menu-item>
+            <button class="delete-button" (click)="onDelete(element)" mat-menu-item>
               <mat-icon aria-hidden="false" aria-label="Mail">delete</mat-icon>
               {{ tCommon('delete') }}
             </button>
@@ -58,7 +58,7 @@
     </table>
   </div>
 
-  <div class="image" *ngIf="dataSource.length === 0" fxLayoutAlign="center center">
+  <div class="image" *ngIf="dataSource.data.length === 0" fxLayoutAlign="center center">
     <img src="/assets/ag_kooperationsbereich_empty_state_01.png" />
   </div>
 </ng-container>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { removeElementFromArray } from 'src/app/shared/array-utils';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { CoopSpacesService } from './coop-spaces.service';
@@ -13,7 +15,7 @@ import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.
 })
 export class CoopSpacesComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'company', 'member', 'role', 'more'];
-  public dataSource: CoopSpace[] = [];
+  public dataSource: MatTableDataSource<CoopSpace> = new MatTableDataSource<CoopSpace>();
 
   constructor(
     private dialog: MatDialog,
@@ -24,7 +26,7 @@ export class CoopSpacesComponent implements OnInit {
 
   public ngOnInit(): void {
     this.coopSpacesService.getAll().subscribe(coopSpaces => {
-      this.dataSource = coopSpaces;
+      this.dataSource.data = coopSpaces;
     });
   }
 
@@ -34,7 +36,7 @@ export class CoopSpacesComponent implements OnInit {
       .afterClosed()
       .subscribe(() => {
         this.coopSpacesService.getAll().subscribe(coopSpaces => {
-          this.dataSource = coopSpaces;
+          this.dataSource.data = coopSpaces;
         });
       });
   }
@@ -53,8 +55,11 @@ export class CoopSpacesComponent implements OnInit {
     this.router.navigate([`${row.id}`], { relativeTo: this.route });
   }
 
-  public onDelete(): void {
-    throw Error('Not yet implemented');
+  public onDelete(selectedElement: CoopSpace): void {
+    //this.coopSpacesService.delete(selectedElement); // TODO call service later when dealing with acutal data instead of mock data
+    removeElementFromArray(this.dataSource.data, e => e.name === selectedElement.name);
+    // update dataSource
+    this.dataSource.data = this.dataSource.data;
   }
 
   public membersToString(members: Member[]): string {

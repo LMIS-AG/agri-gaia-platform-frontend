@@ -75,4 +75,25 @@ export class CoopSpacesService {
   public getMembers(): Observable<Member[]> {
     return this.http.get<Member[]>(environment.backend.url + '/coopspaces/members');
   }
+
+  public delete(coopSpace: CoopSpace): void {
+    // START of mock code section; TODO remove this later
+    coopSpace = {
+      name: 'abc-test04',
+      company: 'LMIS',
+      mandant: 'mgrave',
+      members: [] as Member[],
+    } as CoopSpace;
+    // END of mock code section
+
+    this.http
+      .put(environment.backend.url + '/coopspaces', {
+        name: coopSpace.name,
+        company: coopSpace.company,
+        mandant: coopSpace.mandant,
+        members: coopSpace.members,
+      })
+      .subscribe(x => console.log(x)); // TODO remove log
+    console.log('delete'); // TODO remove
+  }
 }
