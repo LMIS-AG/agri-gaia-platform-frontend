@@ -31,7 +31,11 @@
         fxLayout="row"
         fxLayoutAlign="space-between center"
         *transloco="let tCommon; read: 'common'"
+        [formGroup]="formGroups[i]"
+        fxLayoutGap="20px"
       >
+        <mat-checkbox color="primary" ngDefaultControl formControlName="selected"></mat-checkbox>
+
         <a
           style="pointer-events: none"
           routerLink="#"
@@ -51,25 +55,15 @@
           </div>
         </a>
 
-        <div
-          fxLayout="row"
-          fxLayoutAlign="end center"
-          class="full-witdth"
-          fxLayoutGap="30px"
-          [formGroup]="formGroups[i]"
-        >
-          <!-- TODO The owner has no checkbox! This has to be adjusted. Possibly with ngIfs...-->
-          <mat-form-field>
-            <mat-select formControlName="role" required>
-              <mat-option *ngFor="let role of roles" [value]="role">
-                <span>{{ role }}</span>
-              </mat-option>
-            </mat-select>
-            <mat-error>{{ tCommon('required') }}</mat-error>
-          </mat-form-field>
-
-          <mat-checkbox color="primary" ngDefaultControl formControlName="selected"></mat-checkbox>
-        </div>
+        <!-- TODO The owner has no checkbox! This has to be adjusted. Possibly with ngIfs...-->
+        <mat-form-field class="selector">
+          <mat-select formControlName="role" required>
+            <mat-option *ngFor="let role of roles" [value]="role">
+              <span>{{ role }}</span>
+            </mat-option>
+          </mat-select>
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
       </div>
       <mat-divider></mat-divider>
     </span>
