@@ -18,8 +18,13 @@ import { PoliciesComponent } from './pages/policies/policies.component';
 import { CreatePolicyComponent } from './pages/policies/create-policy/create-policy.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ConstraintsComponent } from './pages/policies/create-policy/constraints/constraints.component';
+import { BucketsComponent } from './pages/buckets/buckets.component';
 
 const routes: Routes = [
+  {
+    path: 'asset-management',
+    component: BucketsComponent,
+  },
   {
     path: 'coop-spaces/:id/focus',
     component: CoopSpaceDetailsFocusComponent,
@@ -61,6 +66,7 @@ const routes: Routes = [
     PoliciesComponent,
     CreatePolicyComponent,
     ConstraintsComponent,
+    BucketsComponent,
   ],
   imports: [
     MatTableModule,
