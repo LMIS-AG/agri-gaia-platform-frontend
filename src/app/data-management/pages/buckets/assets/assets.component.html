@@ -1,1 +1,52 @@
+<ng-container *transloco="let t; read: 'dataManagement.coopSpaces.details'">
+  <div fxLayout="column" fxLayoutAlign="space-between" *transloco="let tCommon; read: 'common'">
+    <!-- Headline -->
+    <div class="card-headline" fxLayout="row" fxLayoutAlign="space-between">
+      <h1 class="headline">{{ coopSpace.name }}</h1>
+    </div>
 
+    <!-- Dataset -->
+    <div class="card" fxLayout="column">
+      <!-- Dataset Table -->
+      <div class="table-container">
+        <table
+          mat-table
+          [dataSource]="datasetDatasource"
+          class="mat-elevation-z0"
+          *transloco="let tTable; read: 'dataManagement.coopSpaces.details.table'"
+        >
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+
+          <!-- Company Column -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+          </ng-container>
+
+          <!-- MyRole Column -->
+          <ng-container matColumnDef="labeling">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('labeling') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.labeling }}</td>
+          </ng-container>
+
+          <!-- More Column -->
+          <ng-container matColumnDef="more">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button (click)="publishAsset(element)">
+                <mat-icon>publish</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-container>
