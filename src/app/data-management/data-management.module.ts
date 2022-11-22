@@ -19,8 +19,13 @@ import { CreatePolicyComponent } from './pages/policies/create-policy/create-pol
 import { MatSelectModule } from '@angular/material/select';
 import { ConstraintsComponent } from './pages/policies/create-policy/constraints/constraints.component';
 import { BucketsComponent } from './pages/buckets/buckets.component';
+import { AssetsComponent } from './pages/buckets/assets/assets.component';
 
 const routes: Routes = [
+  {
+    path: 'asset-management/:id',
+    component: AssetsComponent,
+  },
   {
     path: 'asset-management',
     component: BucketsComponent,
@@ -67,6 +72,7 @@ const routes: Routes = [
     CreatePolicyComponent,
     ConstraintsComponent,
     BucketsComponent,
+    AssetsComponent,
   ],
   imports: [
     MatTableModule,
