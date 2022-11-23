@@ -77,7 +77,7 @@
         "coopSpaceName": "Name Kooperationsbereich",
         "dialog": {
           "addMembers": "Teilnehmer hinzufügen",
-          "addMembersInfo": "Teilnehmer werden automatisch initial als \"Zuschauer\" zu einem Kooperationsbereich hinzugefügt. Später können Sie die Rolle jedes Teilnehmers anpassen.",
+          "addMembersInfo": "Wählen Sie Teilnehmer aus, um diese dem Kooperationsbereich hinzuzufügen. Zudem können Sie hier die Rolle des jeweiligen Teilnehmers einstellen.",
           "search": "Suche",
           "nameRules": {
             "length": "Der Name muss zwischen 3 und 63 Zeichen lang sein.",
