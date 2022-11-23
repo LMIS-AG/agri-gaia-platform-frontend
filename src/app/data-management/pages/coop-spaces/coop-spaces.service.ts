@@ -51,7 +51,7 @@ export class CoopSpacesService {
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<CoopSpace[]> {
-    //this.http.get(environment.backend.url + '/coopspaces').subscribe(x => console.log(x)); // TODO remove log
+    this.http.get(environment.backend.url + '/coopspaces').subscribe(x => console.log(x)); // TODO remove log
     return of(this.mockData);
   }
 
