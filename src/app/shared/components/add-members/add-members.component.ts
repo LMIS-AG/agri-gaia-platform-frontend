@@ -16,6 +16,7 @@ import { $enum } from 'ts-enum-util';
 })
 export class AddMembersComponent implements OnInit {
   public members: Member[] = [];
+  public membersInitial: Member[] = [];
   public myGroup = new FormGroup({
     searchTerm: new FormControl(),
   });
@@ -42,12 +43,21 @@ export class AddMembersComponent implements OnInit {
 
     this.myGroup.controls.searchTerm.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), untilDestroyed(this))
-      .subscribe(value => console.log(value) /*this.datasource.updateFilter(value)*/);
-    // TODO implement search for members
+      .subscribe(value => {
+        if (value !== '') {
+          const filteredMembers = this.membersInitial.filter(
+            member => member.name?.includes(value) || member.email?.includes(value) || member.company?.includes(value)
+          );
+          this.members = filteredMembers;
+        } else {
+          this.members = this.membersInitial;
+        }
+      });
 
     this.coopSpaceService.getMembers().subscribe({
       next: members => {
         this.members = members;
+        this.membersInitial = members;
         this.formGroups = this.initFormGroups(members);
       },
       error: async response => {
