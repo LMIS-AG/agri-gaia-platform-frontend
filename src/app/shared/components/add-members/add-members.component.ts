@@ -82,7 +82,6 @@ export class AddMembersComponent implements OnInit {
 
   private filterFormGroupsWithSelectedCheckbox(): void {
     const formGroupsSelected: FormGroup[] = this.formGroups.filter(formGroup => formGroup.value.selected);
-    // TODO maybe build members already
     let members: Member[] = [];
     formGroupsSelected.forEach(formGroup => {
       members.push(this.formGroupToMember(formGroup));
