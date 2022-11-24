@@ -53,7 +53,7 @@ const MOCK_DATA_DATASET: Dataset[] = [
 export class AssetsComponent implements OnInit {
   public coopSpace!: CoopSpace;
 
-  public displayedColumnsDataset: string[] = ['name', 'date', 'labeling', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'labeling'];
   public datasetDatasource: Dataset[] = MOCK_DATA_DATASET;
 
   constructor(private route: ActivatedRoute, private coopSpacesService: CoopSpacesService) {}
@@ -75,8 +75,8 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public publishAsset(element: any): void {
-    console.log(element); // TODO remove
-    // TODO maybe openDialog which informs the user and let him confirm his publish-action
+  public publishAssets(): void {
+    console.log(this.coopSpace); // TODO remove
+    // TODO openDialog which informs the user and let him confirm his publish-action
   }
 }
