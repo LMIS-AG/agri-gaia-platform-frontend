@@ -58,6 +58,19 @@
     "globalSearch": "Globale Suche"
   },
   "dataManagement": {
+    "buckets": {
+      "headline": "Buckets",
+      "table": {
+        "name": "Name"
+      },
+      "assets": {
+        "table": {
+          "name": "Assets",
+          "date": "Datum",
+          "labeling": "Labeling"
+        }
+      }
+    },
     "coopSpaces": {
       "headline": "Kooperationsbereiche",
       "table": {
