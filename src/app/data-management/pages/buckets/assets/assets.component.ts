@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { Dataset } from 'src/app/shared/model/dataset';
 import { CoopSpacesService } from '../../coop-spaces/coop-spaces.service';
+import { PublishAssetsDlgComponent } from './publish-assets-dlg/publish-assets-dlg.component';
 
 // TODO get mock data from service in future
 const MOCK_DATA_DATASET: Dataset[] = [
@@ -56,7 +58,7 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'labeling'];
   public datasetDatasource: Dataset[] = MOCK_DATA_DATASET;
 
-  constructor(private route: ActivatedRoute, private coopSpacesService: CoopSpacesService) {}
+  constructor(private route: ActivatedRoute, private coopSpacesService: CoopSpacesService, private dialog: MatDialog) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -78,5 +80,14 @@ export class AssetsComponent implements OnInit {
   public publishAssets(): void {
     console.log(this.coopSpace); // TODO remove
     // TODO openDialog which informs the user and let him confirm his publish-action
+    this.dialog
+      .open(PublishAssetsDlgComponent, {
+        minWidth: '60em',
+        panelClass: 'resizable',
+      })
+      .afterClosed()
+      .subscribe(x => {
+        console.log(x); // TODO remove log
+      });
   }
 }

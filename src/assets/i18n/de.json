@@ -11,6 +11,7 @@
     "download": "Herunterladen",
     "delete": "Löschen",
     "save": "Speichern",
+    "publish": "Veröffentlichen",
     "successfullySaved": "Der Datensatz wurde gespeichert.",
     "required": "Pflichtfeld",
     "successMessage": "Aktion war erfolgreich.",
@@ -68,6 +69,9 @@
           "name": "Assets",
           "date": "Datum",
           "labeling": "Labeling"
+        },
+        "dialog": {
+          "headline": "Assets veröffentlichen"
         }
       }
     },
