@@ -94,7 +94,7 @@
         "coopSpaceName": "Name Kooperationsbereich",
         "dialog": {
           "addMembers": "Teilnehmer hinzufügen",
-          "addMembersInfo": "Teilnehmer werden automatisch initial als \"Zuschauer\" zu einem Kooperationsbereich hinzugefügt. Später können Sie die Rolle jedes Teilnehmers anpassen.",
+          "addMembersInfo": "Wählen Sie Teilnehmer aus, um diese dem Kooperationsbereich hinzuzufügen. Zudem können Sie hier die Rolle des jeweiligen Teilnehmers einstellen.",
           "search": "Suche",
           "nameRules": {
             "length": "Der Name muss zwischen 3 und 63 Zeichen lang sein.",
@@ -109,13 +109,15 @@
             "invalidPrefixHtml": "Der Name darf nicht mit <strong>xn--</strong> beginnen",
             "uniqueness": "Der Name darf nur einmal vorkommen",
             "uniquenessHtml": "Der Name darf nur <strong>einmal</strong> vorkommen"
-          }
-        }
+          },
+          "role": "Rolle"
+        },
+        "successfullyRequested": "Die Anfrage zur Erstellung eines Kooperationsbereichs wurde erfolgreich gestellt."
       },
       "details": {
         "tools": "Verfügbare Tools",
         "member": "Teilnehmer",
-        "buckets": "Bucktes",
+        "assets": "Assets",
         "role": {
           "VIEWER": "Zuschauer",
           "EDITOR": "Editor",

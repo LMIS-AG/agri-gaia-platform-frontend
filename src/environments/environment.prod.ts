@@ -5,4 +5,7 @@ export const environment = {
     realm: 'agri-gaia-platform',
     clientId: 'ag-test-platform-ui',
   },
+  backend: {
+    url: 'https://ag-platform-ui-frontend.platform.agri-gaia.com/api',
+  },
 };

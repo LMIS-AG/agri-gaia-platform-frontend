@@ -4,7 +4,7 @@ import { from as fromPromise, Observable, of, switchMap } from 'rxjs';
 import { UserProfile } from '../../shared/user-profile';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationService {
   public isAuthenticated$: Observable<boolean>;
@@ -17,14 +17,15 @@ export class AuthenticationService {
       switchMap(isAuthenticated =>
         isAuthenticated
           ? fromPromise(
-            this.keycloakService.loadUserProfile().then(keycloakProfile => {
-              return <UserProfile>{
-                firstName: keycloakProfile.firstName,
-                lastName: keycloakProfile.lastName,
-                email: keycloakProfile.email,
-              };
-            })
-          )
+              this.keycloakService.loadUserProfile().then(keycloakProfile => {
+                return <UserProfile>{
+                  firstName: keycloakProfile.firstName,
+                  lastName: keycloakProfile.lastName,
+                  email: keycloakProfile.email,
+                  username: keycloakProfile.username,
+                };
+              })
+            )
           : of(null)
       )
     );
@@ -38,4 +39,3 @@ export class AuthenticationService {
     this.keycloakService.logout(redirectUri);
   }
 }
-
