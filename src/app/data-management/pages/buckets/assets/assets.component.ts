@@ -5,6 +5,7 @@ import { filter, map, switchMap } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { Dataset } from 'src/app/shared/model/dataset';
 import { CoopSpacesService } from '../../coop-spaces/coop-spaces.service';
+import { BucketService } from '../bucket.service';
 import { PublishAssetsDlgComponent } from './publish-assets-dlg/publish-assets-dlg.component';
 
 // TODO get mock data from service in future
@@ -58,14 +59,14 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'labeling'];
   public datasetDatasource: Dataset[] = MOCK_DATA_DATASET;
 
-  constructor(private route: ActivatedRoute, private coopSpacesService: CoopSpacesService, private dialog: MatDialog) {}
+  constructor(private route: ActivatedRoute, private bucketService: BucketService, private dialog: MatDialog) {}
 
   public ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        filter(paramMap => paramMap.has('id')),
-        map(paramMap => parseInt(paramMap.get('id')!, 10)),
-        switchMap(id => this.coopSpacesService.getCoopSpaceById(id))
+        filter(paramMap => paramMap.has('name')),
+        map(paramMap => paramMap.get('name')),
+        switchMap(name => this.bucketService.getAssetsByBucketName(name ? name : ''))
       )
       .subscribe(coopSpace => {
         if (coopSpace != null) {
@@ -87,7 +88,7 @@ export class AssetsComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(x => {
-        console.log(x); // TODO remove log
+        console.log(x); // TODO remove
       });
   }
 }

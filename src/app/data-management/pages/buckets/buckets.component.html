@@ -1,13 +1,13 @@
 <ng-container *transloco="let t; read: 'dataManagement.buckets'">
   <h1 class="headline">{{ t('headline') }}</h1>
 
-  <div *ngIf="coopSpaces.length !== 0">
+  <div *ngIf="buckets.length !== 0">
     <ul>
-      <li (click)="openDetails(bucket)" *ngFor="let bucket of coopSpaces">{{ bucket.name }}</li>
+      <li (click)="openDetails(bucket)" *ngFor="let bucket of buckets">{{ bucket.name }}</li>
     </ul>
   </div>
 
-  <div class="image" *ngIf="coopSpaces.length === 0" fxLayoutAlign="center center">
+  <div class="image" *ngIf="buckets.length === 0" fxLayoutAlign="center center">
     <img src="/assets/ag_kooperationsbereich_empty_state_01.png" />
   </div>
 </ng-container>

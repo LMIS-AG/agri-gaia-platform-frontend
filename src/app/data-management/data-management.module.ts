@@ -24,7 +24,7 @@ import { PublishAssetsDlgComponent } from './pages/buckets/assets/publish-assets
 
 const routes: Routes = [
   {
-    path: 'asset-management/:id',
+    path: 'asset-management/:name',
     component: AssetsComponent,
   },
   {
@@ -32,11 +32,11 @@ const routes: Routes = [
     component: BucketsComponent,
   },
   {
-    path: 'coop-spaces/:id/focus',
+    path: 'coop-spaces/:name/focus',
     component: CoopSpaceDetailsFocusComponent,
   },
   {
-    path: 'coop-spaces/:id',
+    path: 'coop-spaces/:name',
     component: CoopSpaceDetailsComponent,
   },
   {

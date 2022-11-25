@@ -55,8 +55,8 @@ export class CoopSpacesService {
     return of(this.mockData);
   }
 
-  public getCoopSpaceById(id: number): Observable<CoopSpace | null> {
-    const res = this.mockData.find(coopSpace => coopSpace.id === id);
+  public getCoopSpaceByName(name: string): Observable<CoopSpace | null> {
+    const res = this.mockData.find(coopSpace => coopSpace.name === name);
     return of(res ? res : null);
   }
 

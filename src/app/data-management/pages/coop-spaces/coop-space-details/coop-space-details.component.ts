@@ -91,9 +91,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        filter(paramMap => paramMap.has('id')),
-        map(paramMap => parseInt(paramMap.get('id')!, 10)),
-        switchMap(id => this.coopSpacesService.getCoopSpaceById(id))
+        filter(paramMap => paramMap.has('name')),
+        map(paramMap => paramMap.get('name')),
+        switchMap(name => this.coopSpacesService.getCoopSpaceByName(name ? name : ''))
       )
       .subscribe(coopSpace => {
         if (coopSpace != null) {

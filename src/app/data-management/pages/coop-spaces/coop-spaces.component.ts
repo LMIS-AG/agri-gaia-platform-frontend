@@ -52,7 +52,7 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public openDetails(row: CoopSpace): void {
-    this.router.navigate([`${row.id}`], { relativeTo: this.route });
+    this.router.navigate([`${row.name}`], { relativeTo: this.route });
   }
 
   public onDelete(selectedElement: CoopSpace): void {
