@@ -12,13 +12,13 @@ import { CreateCoopSpaceComponent } from '../coop-spaces/create-coop-space/creat
 })
 export class BucketsComponent implements OnInit {
   public displayedColumns: string[] = ['name'];
-  public dataSource: CoopSpace[] = [];
+  public coopSpaces: CoopSpace[] = [];
 
   constructor(private coopSpacesService: CoopSpacesService, private router: Router, private route: ActivatedRoute) {}
 
   public ngOnInit(): void {
     this.coopSpacesService.getAll().subscribe(coopSpaces => {
-      this.dataSource = coopSpaces;
+      this.coopSpaces = coopSpaces;
     });
   }
 

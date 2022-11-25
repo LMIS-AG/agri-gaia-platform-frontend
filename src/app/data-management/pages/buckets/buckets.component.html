@@ -1,25 +1,13 @@
 <ng-container *transloco="let t; read: 'dataManagement.buckets'">
   <h1 class="headline">{{ t('headline') }}</h1>
 
-  <div *ngIf="dataSource.length !== 0">
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      class="mat-elevation-z0"
-      *transloco="let tTable; read: 'dataManagement.buckets.table'"
-    >
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row (click)="openDetails(row)" *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+  <div *ngIf="coopSpaces.length !== 0">
+    <ul>
+      <li (click)="openDetails(bucket)" *ngFor="let bucket of coopSpaces">{{ bucket.name }}</li>
+    </ul>
   </div>
 
-  <div class="image" *ngIf="dataSource.length === 0" fxLayoutAlign="center center">
+  <div class="image" *ngIf="coopSpaces.length === 0" fxLayoutAlign="center center">
     <img src="/assets/ag_kooperationsbereich_empty_state_01.png" />
   </div>
 </ng-container>
