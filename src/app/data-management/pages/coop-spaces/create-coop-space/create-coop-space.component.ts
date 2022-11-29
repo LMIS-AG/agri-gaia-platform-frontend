@@ -54,11 +54,11 @@ export class CreateCoopSpaceComponent {
         role: CoopSpaceRole.Owner,
       };
 
-      this.coopSpacesService.create(newCoopSpace).subscribe(createdCoopSpace => {
+      this.coopSpacesService.create(newCoopSpace).subscribe(() => {
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.createCoopSpaces.successfullyRequested')
         );
-        this.dialogRef.close(createdCoopSpace);
+        this.dialogRef.close(true);
       });
     });
   }

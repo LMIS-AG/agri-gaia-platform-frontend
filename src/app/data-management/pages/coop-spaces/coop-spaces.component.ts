@@ -31,19 +31,18 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public addCoopSpace(): void {
-    // TODO maybe get firma from keycloak!?
     this.openCreateCoopSpaceDialog(null)
       .afterClosed()
-      .subscribe(() => {
-        this.coopSpacesService.getAll().subscribe(coopSpaces => {
-          this.dataSource.data = coopSpaces;
-        });
+      .subscribe(result => {
+        if (result) {
+          this.coopSpacesService.getAll().subscribe(coopSpaces => {
+            this.dataSource.data = coopSpaces;
+          });
+        }
       });
   }
 
-  private openCreateCoopSpaceDialog(
-    coopSpace: CoopSpace | null
-  ): MatDialogRef<CreateCoopSpaceComponent, CoopSpace | null> {
+  private openCreateCoopSpaceDialog(coopSpace: CoopSpace | null): MatDialogRef<CreateCoopSpaceComponent, boolean> {
     return this.dialog.open(CreateCoopSpaceComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
@@ -56,10 +55,10 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public onDelete(selectedElement: CoopSpace): void {
-    this.coopSpacesService.delete(selectedElement);
-    removeElementFromArray(this.dataSource.data, e => e.name === selectedElement.name);
-    // update dataSource
-    this.dataSource.data = this.dataSource.data;
+    this.coopSpacesService.delete(selectedElement).subscribe(() => {
+      removeElementFromArray(this.dataSource.data, e => e.name === selectedElement.name);
+      this.dataSource.data = this.dataSource.data;
+    });
   }
 
   public membersToString(members: Member[]): string {

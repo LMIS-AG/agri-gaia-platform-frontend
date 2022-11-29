@@ -77,6 +77,9 @@ export class AddMembersComponent implements OnInit {
         username: [, [Validators.required]],
         role: [, [Validators.required]],
         selected: [false],
+        company: [],
+        name: [],
+        email: [],
       });
       this.applyModelToForm(member, formGroup);
       formGroups.push(formGroup);
@@ -101,9 +104,13 @@ export class AddMembersComponent implements OnInit {
 
   private formGroupToMember(formGroup: FormGroup): Member {
     const value = formGroup.value;
+    console.log(value);
     return {
       username: value.username,
       role: value.role,
+      company: value.company,
+      name: value.name,
+      email: value.email,
     } as Member;
   }
 }
