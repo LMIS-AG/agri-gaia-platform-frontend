@@ -6,21 +6,6 @@ import { Member } from 'src/app/shared/model/member';
 import { environment } from 'src/environments/environment';
 import { CoopSpaceAsset } from '../../../shared/model/coopSpaceAsset';
 
-// MOCK DATA ! TODO remove later when fetching data from extern
-const MOCK_DATA: CoopSpace[] = [
-  {
-    id: 1,
-    name: 'Semantische Umfeldwahrnehmung',
-    mandant: 'mgrave',
-    company: 'Claas',
-    members: [
-      { username: 'jende', role: CoopSpaceRole.Viewer } as Member,
-      { username: 'alopez', role: CoopSpaceRole.Viewer } as Member,
-    ],
-    role: CoopSpaceRole.Editor,
-  },
-];
-
 @Injectable({
   providedIn: 'root',
 })

@@ -10,7 +10,7 @@ import { CoopSpaceAsset } from 'src/app/shared/model/coopSpaceAsset';
 })
 export class CoopSpaceDetailsFocusComponent {
   public data: CoopSpaceAsset[] = [];
-  public displayedColumnsDataset: string[] = ['name', 'date', 'uploadDate', 'size', 'coopSpace', 'labeling', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'coopSpace', 'more'];
 
   constructor(private router: Router, private location: Location) {
     // TODO maybe consider other option of passing or getting the data which is displayed here. Maybe reload data also from Backend. Current solution is easy and does not need it but you cannot reload the page without losing the data.

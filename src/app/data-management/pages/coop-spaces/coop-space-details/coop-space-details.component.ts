@@ -14,7 +14,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public coopSpace?: CoopSpace;
 
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
-  public displayedColumnsDataset: string[] = ['name', 'date', 'labeling', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
   public datasetDatasource: CoopSpaceAsset[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private coopSpacesService: CoopSpacesService) {}

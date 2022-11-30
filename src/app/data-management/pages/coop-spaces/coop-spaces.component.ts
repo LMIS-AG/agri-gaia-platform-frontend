@@ -62,6 +62,10 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public membersToString(members: Member[]): string {
-    return members.map(m => m.username).toString();
+    return members.map(m => m.name).toString();
+  }
+
+  public membersToStrings(members: Member[]): string {
+    return members.map(m => m.name!).join(', ');
   }
 }
