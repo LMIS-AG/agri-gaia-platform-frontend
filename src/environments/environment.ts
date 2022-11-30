@@ -10,8 +10,7 @@ export const environment = {
     clientId: 'ag-test-platform-ui',
   },
   backend: {
-    //url: 'https://ag-platform-ui-frontend.platform.agri-gaia.com/api',
-    url: 'http://localhost:8080',
+    url: 'https://ag-platform-ui-frontend.platform.agri-gaia.com/api',
   },
 };
 
