@@ -39,6 +39,7 @@
     "keycloak-js": "^19.0.2",
     "messageformat": "^2.3.0",
     "rxjs": "7.4",
+    "ts-enum-util": "^4.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

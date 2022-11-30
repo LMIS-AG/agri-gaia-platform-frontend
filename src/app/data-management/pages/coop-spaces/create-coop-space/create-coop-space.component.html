@@ -1,7 +1,7 @@
 <app-create-coop-space-dlg
   [title]="t('new')"
   [formGroup]="formGroup"
-  (saveEvent)="onSave()"
+  (saveEventParent)="onSave($event)"
   *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'"
   class="admin-module"
 >
