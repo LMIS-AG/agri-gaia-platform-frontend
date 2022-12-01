@@ -1,5 +1,5 @@
-export interface Dataset {
-  id?: number;
+export interface CoopSpaceAsset {
+  id?: string;
   name: string;
   date: string;
   uploadDate: string;
