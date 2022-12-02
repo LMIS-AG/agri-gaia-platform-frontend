@@ -71,7 +71,9 @@
           "publish": "Veröffentlichen"
         },
         "dialog": {
-          "headline": "Assets veröffentlichen"
+          "headline": "Assets veröffentlichen",
+          "confirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
+          "confirmationText": "Die Anfrage zur Veröffentlichung dieses Assets wurde erfolgreich gestellt."
         }
       }
     },

@@ -5,6 +5,7 @@ import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
 import { CoopSpaceAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
+import { translate } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-assets',
@@ -42,8 +43,8 @@ export class AssetsComponent implements OnInit {
   // TODO Translate texts
   public publishAssets(element: CoopSpaceAsset): void {
     this.ui
-      .confirm(`${element.name}`, 'Möchten Sie dieses Asset veröffentlichen?', {
-        confirmationText: 'Die Anfrage zur Veröffentlichung wurde erfolgreich abgesetzt.',
+      .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.confirmationQuestion'), {
+        confirmationText: translate('dataManagement.buckets.assets.dialog.confirmationText'),
         buttonLabels: 'confirm',
         confirmButtonColor: 'primary',
       })
