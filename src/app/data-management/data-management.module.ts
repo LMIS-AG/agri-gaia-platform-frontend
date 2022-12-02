@@ -20,7 +20,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { ConstraintsComponent } from './pages/policies/create-policy/constraints/constraints.component';
 import { BucketsComponent } from './pages/buckets/buckets.component';
 import { AssetsComponent } from './pages/buckets/assets/assets.component';
-import { PublishAssetsDlgComponent } from './pages/buckets/assets/publish-assets-dlg/publish-assets-dlg.component';
 
 const routes: Routes = [
   {
@@ -74,7 +73,6 @@ const routes: Routes = [
     ConstraintsComponent,
     BucketsComponent,
     AssetsComponent,
-    PublishAssetsDlgComponent,
   ],
   imports: [
     MatTableModule,

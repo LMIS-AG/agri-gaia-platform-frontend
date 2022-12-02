@@ -1,3 +1,4 @@
+// TODO Rename to general purpose asset
 export interface CoopSpaceAsset {
   id?: string;
   name: string;

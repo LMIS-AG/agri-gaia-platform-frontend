@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
-import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
-import { Member } from 'src/app/shared/model/member';
 import { environment } from 'src/environments/environment';
+import { CoopSpaceAsset } from '../../../shared/model/coopSpaceAsset';
 
 @Injectable({
   providedIn: 'root',
@@ -16,19 +15,12 @@ export class BucketService {
     return this.http.get<Bucket[]>(environment.backend.url + '/buckets');
   }
 
-  public getAssetsByBucketName(name: string): Observable<CoopSpace | null> {
-    // TODO getAssets by Bucket Name
+  public getAssetsByBucketName(name: string): Observable<CoopSpaceAsset[]> {
+    return this.http.get<CoopSpaceAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
+  }
 
-    return of({
-      id: 1,
-      name: name,
-      mandant: 'mgrave',
-      company: 'Claas',
-      members: [
-        { username: 'jende', role: CoopSpaceRole.Viewer } as Member,
-        { username: 'alopez', role: CoopSpaceRole.Viewer } as Member,
-      ],
-      role: CoopSpaceRole.Editor,
-    } as CoopSpace);
+  // TODO Move subscribe to component and look for errors
+  public publish(bucket: string, name: string): void {
+    this.http.post<void>(`${environment.backend.url}/assets/${bucket}/${name}`, {}).subscribe();
   }
 }

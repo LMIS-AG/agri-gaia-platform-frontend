@@ -1,52 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
-import { CoopSpace } from 'src/app/shared/model/coop-spaces';
-import { Dataset } from 'src/app/shared/model/dataset';
-import { CoopSpacesService } from '../../coop-spaces/coop-spaces.service';
 import { BucketService } from '../bucket.service';
-import { PublishAssetsDlgComponent } from './publish-assets-dlg/publish-assets-dlg.component';
-
-// TODO get mock data from service in future
-const MOCK_DATA_DATASET: Dataset[] = [
-  {
-    id: 1,
-    name: 'Feld12b_Mais',
-    date: '01.01.2022',
-    labeling: 'qwr5t',
-    size: '95 kb',
-    coopSpace: 'nicht zugewiesen',
-    uploadDate: '02.02.2022',
-  },
-  {
-    id: 2,
-    name: 'Bodenbeschaffenheit',
-    date: '02.02.2022',
-    labeling: 'ctd3x',
-    size: '95 kb',
-    coopSpace: 'nicht zugewiesen',
-    uploadDate: '05.05.2022',
-  },
-  {
-    id: 3,
-    name: 'Feld05a_Kartoffeln',
-    date: '03.03.2022',
-    labeling: 'acds4',
-    size: '95 kb',
-    coopSpace: 'nicht zugewiesen',
-    uploadDate: '05.05.2022',
-  },
-  {
-    id: 4,
-    name: 'Feld02c_Roggen',
-    date: '04.04.2022',
-    labeling: 'w12rt',
-    size: '95 kb',
-    coopSpace: 'nicht zugewiesen',
-    uploadDate: '05.05.2022',
-  },
-];
+import { CoopSpaceAsset } from '../../../../shared/model/coopSpaceAsset';
+import { UIService } from '../../../../shared/services/ui.service';
 
 @Component({
   selector: 'app-assets',
@@ -54,41 +12,45 @@ const MOCK_DATA_DATASET: Dataset[] = [
   styleUrls: ['./assets.component.scss'],
 })
 export class AssetsComponent implements OnInit {
-  public coopSpace!: CoopSpace;
+  public bucket?: string;
 
-  public displayedColumnsDataset: string[] = ['name', 'date', 'labeling'];
-  public datasetDatasource: Dataset[] = MOCK_DATA_DATASET;
+  public displayedColumnsDataset: string[] = ['name', 'date', 'publish-button'];
+  public datasetDatasource: CoopSpaceAsset[] = [];
 
-  constructor(private route: ActivatedRoute, private bucketService: BucketService, private dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    private bucketService: BucketService,
+    private dialog: MatDialog,
+    private ui: UIService
+  ) {}
 
   public ngOnInit(): void {
     this.route.paramMap
       .pipe(
         filter(paramMap => paramMap.has('name')),
         map(paramMap => paramMap.get('name')),
-        switchMap(name => this.bucketService.getAssetsByBucketName(name ? name : ''))
+        switchMap(name =>
+          this.bucketService.getAssetsByBucketName(name ? name : '').pipe(map(assets => ({ name, assets })))
+        )
       )
-      .subscribe(coopSpace => {
-        if (coopSpace != null) {
-          this.coopSpace = coopSpace;
-        } else {
-          // TODO details not found -> eig error bzw unexpected behaviour/state
-          throw Error('Not yet implemented');
-        }
+      .subscribe(result => {
+        this.bucket = result.name!;
+        this.datasetDatasource = result.assets;
       });
   }
 
-  public publishAssets(): void {
-    console.log(this.coopSpace); // TODO remove
-    // TODO openDialog which informs the user and let him confirm his publish-action
-    this.dialog
-      .open(PublishAssetsDlgComponent, {
-        minWidth: '60em',
-        panelClass: 'resizable',
+  // TODO Translate texts
+  public publishAssets(element: CoopSpaceAsset): void {
+    this.ui
+      .confirm(`${element.name}`, 'Möchten Sie dieses Asset veröffentlichen?', {
+        confirmationText: 'Die Anfrage zur Veröffentlichung wurde erfolgreich abgesetzt.',
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'primary',
       })
-      .afterClosed()
-      .subscribe(x => {
-        console.log(x); // TODO remove
+      .subscribe(result => {
+        if (result) {
+          this.bucketService.publish(this.bucket!, element.name);
+        }
       });
   }
 }
