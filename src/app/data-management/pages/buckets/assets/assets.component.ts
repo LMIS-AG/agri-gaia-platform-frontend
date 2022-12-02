@@ -15,7 +15,7 @@ import { translate } from '@ngneat/transloco';
 export class AssetsComponent implements OnInit {
   public bucket?: string;
 
-  public displayedColumnsDataset: string[] = ['name', 'date', 'publish-button'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'publish-button', 'delete-button'];
   public datasetDatasource: CoopSpaceAsset[] = [];
 
   constructor(
@@ -40,8 +40,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  // TODO Translate texts
-  public publishAssets(element: CoopSpaceAsset): void {
+  public publishAsset(element: CoopSpaceAsset): void {
     this.ui
       .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.confirmationQuestion'), {
         confirmationText: translate('dataManagement.buckets.assets.dialog.confirmationText'),
@@ -51,6 +50,20 @@ export class AssetsComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           this.bucketService.publish(this.bucket!, element.name);
+        }
+      });
+  }
+
+  public deleteAsset(element: CoopSpaceAsset): void {
+    this.ui
+      .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+        confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'primary',
+      })
+      .subscribe(result => {
+        if (result) {
+          this.bucketService.delete(this.bucket!, element.name);
         }
       });
   }

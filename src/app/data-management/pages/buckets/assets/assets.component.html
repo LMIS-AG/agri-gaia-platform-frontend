@@ -27,15 +27,24 @@
             <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd.MM.YYYY' }}</td>
           </ng-container>
 
-          <!-- TODO Fix-->
           <ng-container matColumnDef="publish-button">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('publish') }}</th>
             <td mat-cell *matCellDef="let element">
-              <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="publishAssets(element)">
+              <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="publishAsset(element)">
                 <mat-icon>publish</mat-icon>
               </button>
             </td>
           </ng-container>
+
+          <ng-container matColumnDef="delete-button">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('delete') }}</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="deleteAsset(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
           <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>
         </table>

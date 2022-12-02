@@ -23,4 +23,9 @@ export class BucketService {
   public publish(bucket: string, name: string): void {
     this.http.post<void>(`${environment.backend.url}/assets/${bucket}/${name}`, {}).subscribe();
   }
+
+  // TODO Move subscribe to component and look for errors
+  public delete(bucket: string, name: string): void {
+    this.http.delete<void>(`${environment.backend.url}/assets/${bucket}/${name}`, {}).subscribe();
+  }
 }
