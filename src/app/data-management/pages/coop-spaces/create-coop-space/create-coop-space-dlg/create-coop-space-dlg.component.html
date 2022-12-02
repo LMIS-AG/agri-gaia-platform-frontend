@@ -19,7 +19,10 @@
     </mat-step>
     <mat-step>
       <mat-dialog-content class="dialog-content">
-        <app-add-members></app-add-members>
+        <app-add-members
+          (handledSelectionEvent)="handleSelectedMembers($event)"
+          [saveEvent]="saveEventChild"
+        ></app-add-members>
       </mat-dialog-content>
 
       <br />

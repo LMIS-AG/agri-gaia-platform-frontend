@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
+import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
-
 
 @Component({
   selector: 'app-create-coop-space-dlg',
   templateUrl: './create-coop-space-dlg.component.html',
-  styleUrls: ['./create-coop-space-dlg.component.scss']
+  styleUrls: ['./create-coop-space-dlg.component.scss'],
 })
 export class CreateCoopSpaceDlgComponent implements OnInit {
   @Input()
@@ -23,10 +23,12 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
   public alwaysEnableSaveButton: boolean = false;
 
   @Output()
-  private saveEvent: EventEmitter<void> = new EventEmitter();
+  private saveEventParent: EventEmitter<Member[]> = new EventEmitter();
 
   @Output()
   private cancelEvent: EventEmitter<void> = new EventEmitter();
+
+  public saveEventChild: EventEmitter<void> = new EventEmitter();
 
   constructor(protected dialogRef: MatDialogRef<any>, protected uiService: UIService) {}
 
@@ -59,7 +61,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
     if (!this.canAndShouldSave()) {
       return;
     }
-    this.saveEvent.emit();
+    this.saveEventChild.emit();
   }
 
   public canAndShouldSave(): boolean {
@@ -67,5 +69,9 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
       return true;
     }
     return !this.formGroup.invalid && this.formGroup.dirty;
+  }
+
+  public handleSelectedMembers(membersSelected: Member[]): void {
+    this.saveEventParent.emit(membersSelected);
   }
 }

@@ -1,8 +1,11 @@
+import { Member } from './member';
+
 export interface CoopSpace {
   id?: number;
   name: string;
   company: string;
-  member: string[];
+  mandant: string;
+  members: Member[];
   role: CoopSpaceRole;
 }
 

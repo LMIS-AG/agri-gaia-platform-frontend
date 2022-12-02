@@ -1,7 +1,5 @@
 <div fxLayout="column" *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
   <h3>{{ t('addMembers') }}</h3>
-
-  <!-- TODO maybe make this a label-->
   <p>
     {{ t('addMembersInfo') }}
   </p>
@@ -27,14 +25,16 @@
   <!-- LIST OF MEMBERS-->
   <mat-divider></mat-divider>
   <div fxLayout="column">
-    <span *ngFor="let i of [1, 2, 3]">
+    <span *ngFor="let member of members; let i = index">
       <div
         class="current-user"
         fxLayout="row"
         fxLayoutAlign="space-between center"
         *transloco="let tCommon; read: 'common'"
+        [formGroup]="formGroups[i]"
+        fxLayoutGap="20px"
       >
-        <!--   -->
+        <mat-checkbox color="primary" ngDefaultControl formControlName="selected"></mat-checkbox>
 
         <a
           style="pointer-events: none"
@@ -48,21 +48,22 @@
           <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
           <div fxLayout="column">
             <div fxLayout="row" fxLayoutGap="5px">
-              <div class="name">Hank Scorpio</div>
-              <div class="company">LMIS AG</div>
+              <div class="name">{{ member.name }}</div>
+              <div class="company">{{ member.company }}</div>
             </div>
-            <div class="email">hank.scorpio@lmis.de</div>
+            <div class="email">{{ member.email }}</div>
           </div>
         </a>
 
-        <div fxLayout="row" fxLayoutAlign="end center" class="full-witdth" fxLayoutGap="30px">
-          <!-- TODO The owner has no add Button! This has to be adjusted. Possibly with ngIfs...-->
-          <div class="role">Zuschauer</div>
-
-          <div>
-            <button class="outline-btn" mat-stroked-button color="primary">Hinzufügen</button>
-          </div>
-        </div>
+        <!-- TODO The owner has no checkbox! This has to be adjusted. Possibly with ngIfs...-->
+        <mat-form-field class="selector">
+          <mat-select formControlName="role" required>
+            <mat-option *ngFor="let role of roles" [value]="role">
+              <span>{{ role }}</span>
+            </mat-option>
+          </mat-select>
+          <mat-error>{{ tCommon('required') }}</mat-error>
+        </mat-form-field>
       </div>
       <mat-divider></mat-divider>
     </span>

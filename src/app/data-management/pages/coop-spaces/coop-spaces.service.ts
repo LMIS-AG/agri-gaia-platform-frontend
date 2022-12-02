@@ -1,57 +1,43 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
-
-// MOCK DATA ! TODO remove later when fetching data from extern
-const MOCK_DATA: CoopSpace[] = [
-  {
-    id: 1,
-    name: 'Semantische Umfeldwahrnehmung',
-    company: 'Claas',
-    member: ['AgBRAIN', 'Bosch'],
-    role: CoopSpaceRole.Editor,
-  },
-  {
-    id: 2,
-    name: 'Befahrbarkeitsanalyse',
-    company: 'AgBRAIN',
-    member: ['Krone', 'DFKI', 'LMIS'],
-    role: CoopSpaceRole.Owner,
-  },
-  {
-    id: 3,
-    name: 'Teilfächenspezifisches Düngen',
-    company: 'Bosch',
-    member: ['AgBRAIN', 'Krone'],
-    role: CoopSpaceRole.Viewer,
-  },
-];
+import { Member } from 'src/app/shared/model/member';
+import { environment } from 'src/environments/environment';
+import { CoopSpaceAsset } from '../../../shared/model/coopSpaceAsset';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoopSpacesService {
-  private mockData: CoopSpace[] = MOCK_DATA;
-
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<CoopSpace[]> {
-    return of(this.mockData);
-  }
-
-  public getCoopSpaceById(id: number): Observable<CoopSpace | null> {
-    const res = this.mockData.find(coopSpace => coopSpace.id === id);
-    return of(res ? res : null);
-  }
-
-  public create(coopSpace: CoopSpace): Observable<CoopSpace> {
-    this.http
-      .post('https://ag-platform-ui-frontend.platform.agri-gaia.com/api/coopspaces', {
-        name: coopSpace.name,
-        company: coopSpace.company,
+    return this.http.get<CoopSpace[]>(environment.backend.url + '/coopspaces').pipe(
+      map(cs => {
+        cs.forEach(c => (c.role = CoopSpaceRole.Editor));
+        return cs;
       })
-      .subscribe(x => console.log(x));
-    return of(coopSpace);
+    );
+  }
+
+  public getCoopSpaceById(id: number): Observable<CoopSpace> {
+    return this.http.get<CoopSpace>(`${environment.backend.url}/coopspaces/${id}`);
+  }
+
+  public create(coopSpace: CoopSpace): Observable<void> {
+    return this.http.post<void>(environment.backend.url + '/coopspaces', coopSpace);
+  }
+
+  public getMembers(): Observable<Member[]> {
+    return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/members`);
+  }
+
+  public delete(coopSpace: CoopSpace): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/delete`, coopSpace);
+  }
+
+  public getAssets(id: number): Observable<CoopSpaceAsset[]> {
+    return this.http.get<CoopSpaceAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
   }
 }
