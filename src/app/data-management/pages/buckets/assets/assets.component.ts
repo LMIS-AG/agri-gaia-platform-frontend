@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
-import { CoopSpaceAsset } from '../../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 
@@ -16,7 +16,7 @@ export class AssetsComponent implements OnInit {
   public bucket?: string;
 
   public displayedColumnsDataset: string[] = ['name', 'date', 'publish-button', 'delete-button'];
-  public datasetDatasource: CoopSpaceAsset[] = [];
+  public datasetDatasource: GeneralPurposeAsset[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +40,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public publishAsset(element: CoopSpaceAsset): void {
+  public publishAsset(element: GeneralPurposeAsset): void {
     this.ui
       .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.confirmationQuestion'), {
         confirmationText: translate('dataManagement.buckets.assets.dialog.confirmationText'),
@@ -54,7 +54,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public deleteAsset(element: CoopSpaceAsset): void {
+  public deleteAsset(element: GeneralPurposeAsset): void {
     this.ui
       .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
         confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),

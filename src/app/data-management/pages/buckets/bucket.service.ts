@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
 import { environment } from 'src/environments/environment';
-import { CoopSpaceAsset } from '../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +15,8 @@ export class BucketService {
     return this.http.get<Bucket[]>(environment.backend.url + '/buckets');
   }
 
-  public getAssetsByBucketName(name: string): Observable<CoopSpaceAsset[]> {
-    return this.http.get<CoopSpaceAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
+  public getAssetsByBucketName(name: string): Observable<GeneralPurposeAsset[]> {
+    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
   }
 
   // TODO Move subscribe to component and look for errors
