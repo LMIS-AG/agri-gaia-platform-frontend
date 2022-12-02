@@ -68,7 +68,7 @@
         "table": {
           "name": "Assets",
           "date": "Datum",
-          "labeling": "Labeling"
+          "publish": "Veröffentlichen"
         },
         "dialog": {
           "headline": "Assets veröffentlichen"
