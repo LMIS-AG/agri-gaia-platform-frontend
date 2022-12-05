@@ -15,7 +15,7 @@ import { translate } from '@ngneat/transloco';
 export class AssetsComponent implements OnInit {
   public bucket?: string;
 
-  public displayedColumnsDataset: string[] = ['name', 'date', 'publish-button', 'delete-button'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'publish-button'];
   public datasetDatasource: GeneralPurposeAsset[] = [];
 
   constructor(
