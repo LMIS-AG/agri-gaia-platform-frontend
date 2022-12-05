@@ -70,6 +70,10 @@ export class AddMembersComponent implements OnInit {
     });
   }
 
+  public getInitialIndexOfMember(member: Member): number {
+    return this.membersInitial.indexOf(member);
+  }
+
   private initFormGroups(members: Member[]): FormGroup[] {
     const formGroups: FormGroup[] = [];
     members.forEach(member => {
