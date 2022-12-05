@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, filter, map, switchMap } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
-import { CoopSpaceAsset } from 'src/app/shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
   public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
-  public datasetDatasource: CoopSpaceAsset[] = [];
+  public datasetDatasource: GeneralPurposeAsset[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private coopSpacesService: CoopSpacesService) {}
 

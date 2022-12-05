@@ -70,6 +70,10 @@ export class AddMembersComponent implements OnInit {
     });
   }
 
+  public getInitialIndexOfMember(member: Member): number {
+    return this.membersInitial.indexOf(member);
+  }
+
   private initFormGroups(members: Member[]): FormGroup[] {
     const formGroups: FormGroup[] = [];
     members.forEach(member => {
@@ -104,7 +108,6 @@ export class AddMembersComponent implements OnInit {
 
   private formGroupToMember(formGroup: FormGroup): Member {
     const value = formGroup.value;
-    console.log(value);
     return {
       username: value.username,
       role: value.role,

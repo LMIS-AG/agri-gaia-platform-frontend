@@ -11,6 +11,7 @@
     "download": "Herunterladen",
     "delete": "Löschen",
     "save": "Speichern",
+    "publish": "Veröffentlichen",
     "successfullySaved": "Der Datensatz wurde gespeichert.",
     "required": "Pflichtfeld",
     "successMessage": "Aktion war erfolgreich.",
@@ -58,6 +59,27 @@
     "globalSearch": "Globale Suche"
   },
   "dataManagement": {
+    "buckets": {
+      "headline": "Buckets",
+      "table": {
+        "name": "Name"
+      },
+      "assets": {
+        "table": {
+          "name": "Assets",
+          "date": "Datum",
+          "publish": "Veröffentlichen",
+          "delete": "Löschen"
+        },
+        "dialog": {
+          "headline": "Assets veröffentlichen",
+          "confirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
+          "confirmationText": "Die Anfrage zur Veröffentlichung dieses Assets wurde erfolgreich gestellt.",
+          "deleteConfirmationQuestion": "Möchten Sie dieses Asset wirklich löschen?",
+          "deleteConfirmationText": "Die Anfrage zur Löschung dieses Assets wurde erfolgreich gestellt."
+        }
+      }
+    },
     "coopSpaces": {
       "headline": "Kooperationsbereiche",
       "table": {
