@@ -31,11 +31,11 @@ const routes: Routes = [
     component: BucketsComponent,
   },
   {
-    path: 'coop-spaces/:name/focus',
+    path: 'coop-spaces/:id/focus',
     component: CoopSpaceDetailsFocusComponent,
   },
   {
-    path: 'coop-spaces/:name',
+    path: 'coop-spaces/:id',
     component: CoopSpaceDetailsComponent,
   },
   {
