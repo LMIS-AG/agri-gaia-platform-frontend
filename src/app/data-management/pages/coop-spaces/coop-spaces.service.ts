@@ -4,7 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { environment } from 'src/environments/environment';
-import { CoopSpaceAsset } from '../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +37,7 @@ export class CoopSpacesService {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/delete`, coopSpace);
   }
 
-  public getAssets(id: number): Observable<CoopSpaceAsset[]> {
-    return this.http.get<CoopSpaceAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
+  public getAssets(id: number): Observable<GeneralPurposeAsset[]> {
+    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
   }
 }

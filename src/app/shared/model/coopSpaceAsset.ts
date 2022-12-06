@@ -1,4 +1,4 @@
-export interface CoopSpaceAsset {
+export interface GeneralPurposeAsset {
   id?: string;
   name: string;
   date: string;

@@ -1,0 +1,80 @@
+@import '../../../../styles/common/variables';
+@import '../../../../styles/common/mixins';
+
+.headline {
+  @include calluna-font();
+  color: $primary;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  th {
+    color: $primary;
+    font-size: 16px;
+    font-weight: bold;
+    border-color: $primary;
+    border-width: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  td {
+    padding-left: 0px;
+    padding-right: 0px;
+    border-color: gray;
+    button {
+      color: $primary;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  .mat-column-more {
+    width: 32px;
+  }
+}
+
+.image {
+  height: 100%;
+}
+
+img {
+  height: 448px;
+  width: 443px;
+  margin-bottom: 75px;
+}
+
+.mat-row .mat-cell {
+  cursor: pointer;
+}
+
+.delete-button {
+  color: red;
+  mat-icon {
+    color: red;
+  }
+}
+
+ul {
+  padding-top: 15px;
+  list-style: none;
+
+  li {
+    padding-top: 20px;
+    font-size: 21px;
+  }
+  /* changed color of bullets; inspired from https://www.w3schools.com/howto/howto_css_bullet_color.asp */
+  li::before {
+    content: '\2022'; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: $primary; /* Change the color */
+    font-weight: bolder;
+    display: inline-block; /* Needed to add space between the bullet and the text */
+    width: 1em; /* Also needed for space*/
+    margin-left: -1em; /* Also needed for space (tweak if needed) */
+  }
+  li:hover {
+    cursor: pointer;
+  }
+}
