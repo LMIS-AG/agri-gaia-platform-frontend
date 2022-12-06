@@ -3,7 +3,10 @@
 
   <div *ngIf="buckets.length !== 0">
     <ul>
-      <li (click)="openDetails(bucket)" *ngFor="let bucket of buckets">{{ bucket.name }}</li>
+      <li (click)="openDetails(bucket)" *ngFor="let bucket of buckets">
+        <mat-icon>folder</mat-icon>
+        <span>{{ bucket.name }}</span>
+      </li>
     </ul>
   </div>
 
