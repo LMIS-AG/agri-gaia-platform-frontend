@@ -51,7 +51,7 @@ export class CreateCoopSpaceComponent {
         name: this.formGroup.get('name')?.value,
         mandant: profile!.username,
         members: membersSelected,
-        role: CoopSpaceRole.Owner,
+        role: CoopSpaceRole.Admin,
       };
 
       this.coopSpacesService.create(newCoopSpace).subscribe(() => {
