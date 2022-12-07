@@ -75,7 +75,7 @@
           "headline": "Assets veröffentlichen",
           "confirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
           "confirmationText": "Die Anfrage zur Veröffentlichung dieses Assets wurde erfolgreich gestellt.",
-          "deleteConfirmationQuestion": "Möchten Sie dieses Asset wirklich löschen?",
+          "deleteConfirmationQuestion": "Möchten Sie dieses Asset vom Marktplatz entfernen?",
           "deleteConfirmationText": "Die Anfrage zur Löschung dieses Assets wurde erfolgreich gestellt."
         }
       }
