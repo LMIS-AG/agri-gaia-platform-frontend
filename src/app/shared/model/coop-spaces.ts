@@ -10,7 +10,7 @@ export interface CoopSpace {
 }
 
 export enum CoopSpaceRole {
-  Viewer = 'VIEWER',
-  Editor = 'EDITOR',
-  Owner = 'OWNER',
+  Guest = 'GUEST',
+  User = 'USER',
+  Admin = 'ADMIN',
 }

@@ -55,11 +55,11 @@
           </div>
         </a>
 
-        <!-- TODO The owner has no checkbox! This has to be adjusted. Possibly with ngIfs...-->
-        <mat-form-field class="selector">
+        <!-- TODO The admin has no checkbox! This has to be adjusted. Possibly with ngIfs...-->
+        <mat-form-field class="selector" *transloco="let tCoopSpaceRoles; read: 'dataManagement.coopSpaces.role'">
           <mat-select formControlName="role" required>
             <mat-option *ngFor="let role of roles" [value]="role">
-              <span>{{ role }}</span>
+              <span>{{ tCoopSpaceRoles(role) }}</span>
             </mat-option>
           </mat-select>
           <mat-error>{{ tCommon('required') }}</mat-error>

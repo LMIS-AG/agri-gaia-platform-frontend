@@ -89,9 +89,9 @@
         "myRole": "Meine Rolle"
       },
       "role": {
-        "VIEWER": "Zuschauer",
-        "EDITOR": "Editor",
-        "OWNER": "Inhaber"
+        "GUEST": "Gast",
+        "USER": "User",
+        "ADMIN": "Admin"
       },
       "createCoopSpaces": {
         "new": "Neuen Kooperationsbereich erstellen",
@@ -124,9 +124,9 @@
         "member": "Teilnehmer",
         "assets": "Assets",
         "role": {
-          "VIEWER": "Zuschauer",
-          "EDITOR": "Editor",
-          "OWNER": "Inhaber"
+          "GUEST": "Gast",
+          "USER": "User",
+          "ADMIN": "Admin"
         },
         "table": {
           "name": "Name",
