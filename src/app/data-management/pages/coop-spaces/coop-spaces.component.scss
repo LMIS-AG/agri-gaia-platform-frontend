@@ -56,3 +56,8 @@ img {
     color: red;
   }
 }
+
+.disable-button {
+  opacity: 0.5;
+  pointer-events: none;
+}

@@ -7,6 +7,7 @@ import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { CoopSpacesService } from './coop-spaces.service';
 import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -17,16 +18,35 @@ export class CoopSpacesComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'company', 'member', 'role', 'more'];
   public dataSource: MatTableDataSource<CoopSpace> = new MatTableDataSource<CoopSpace>();
 
+  disableButton: boolean = true;
+
   constructor(
     private dialog: MatDialog,
     private coopSpacesService: CoopSpacesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authenticationService: AuthenticationService
+     
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit() {
     this.coopSpacesService.getAll().subscribe(coopSpaces => {
-      this.dataSource.data = coopSpaces;
+      this.authenticationService.userProfile$.subscribe(userProfile => {
+        if(userProfile) {
+          coopSpaces.forEach(coopSpace => {
+            const user = coopSpace.members.find(
+              member => member.username === userProfile.username
+            );
+            if (user) {
+              coopSpace.myrole = user.role;
+              if (coopSpace.myrole === 'ADMIN') {
+                this.disableButton = false
+              }
+            }
+          });
+          this.dataSource.data = coopSpaces;
+        }
+      });
     });
   }
 
@@ -54,9 +74,9 @@ export class CoopSpacesComponent implements OnInit {
     this.router.navigate([`${row.id}`], { relativeTo: this.route });
   }
 
-  public onDelete(selectedElement: CoopSpace): void {
-    this.coopSpacesService.delete(selectedElement).subscribe(() => {
-      removeElementFromArray(this.dataSource.data, e => e.name === selectedElement.name);
+  public onDelete(selectedCoopSpace: CoopSpace): void {
+    this.coopSpacesService.delete(selectedCoopSpace).subscribe(() => {
+      removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
       this.dataSource.data = this.dataSource.data;
     });
   }
