@@ -7,7 +7,6 @@ export interface CoopSpace {
   mandant: string;
   members: Member[];
   role: CoopSpaceRole;
-  myrole?: string;
 }
 
 export enum CoopSpaceRole {
