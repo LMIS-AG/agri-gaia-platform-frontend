@@ -13,12 +13,7 @@ export class CoopSpacesService {
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<CoopSpace[]> {
-    return this.http.get<CoopSpace[]>(environment.backend.url + '/coopspaces').pipe(
-      map(cs => {
-        cs.forEach(c => (c.role = CoopSpaceRole.User));
-        return cs;
-      })
-    );
+    return this.http.get<CoopSpace[]>(environment.backend.url + '/coopspaces')
   }
 
   public getCoopSpaceById(id: number): Observable<CoopSpace> {

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { removeElementFromArray } from 'src/app/shared/array-utils';
-import { CoopSpace } from 'src/app/shared/model/coop-spaces';
-import { Member } from 'src/app/shared/model/member';
-import { CoopSpacesService } from './coop-spaces.service';
-import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
+import {ActivatedRoute, Router} from '@angular/router';
+import {removeElementFromArray} from 'src/app/shared/array-utils';
+import {CoopSpace} from 'src/app/shared/model/coop-spaces';
+import {Member} from 'src/app/shared/model/member';
+import {CoopSpacesService} from './coop-spaces.service';
+import {CreateCoopSpaceComponent} from './create-coop-space/create-coop-space.component';
+import {AuthenticationService} from 'src/app/core/authentication/authentication.service';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -17,17 +18,39 @@ export class CoopSpacesComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'company', 'member', 'role', 'more'];
   public dataSource: MatTableDataSource<CoopSpace> = new MatTableDataSource<CoopSpace>();
 
+  public userName: string | undefined;
+
   constructor(
     private dialog: MatDialog,
     private coopSpacesService: CoopSpacesService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private authenticationService: AuthenticationService
+  ) {
+  }
 
   public ngOnInit(): void {
-    this.coopSpacesService.getAll().subscribe(coopSpaces => {
+    this.authenticationService.userProfile$.subscribe(userProfile => {
+      if (userProfile === null) throw Error("userProfile was null.")
+      this.userName = userProfile.username;
+    });
+    this.coopSpacesService.getAll().subscribe((coopSpaces: CoopSpace[]) => {
       this.dataSource.data = coopSpaces;
     });
+  }
+
+  public getUserRoleAsString(coopSpaceId: number): string {
+    let coopSpace: CoopSpace | undefined = this.dataSource.data.find(c => c.id === coopSpaceId);
+    if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`)
+    // NOTE: this.userName could be undefined here. I'm not checking for it because if it is, members will be undefined
+    // and the Error logging this.username will be thrown.
+    let member = coopSpace.members.find(m => m.username === this.userName)
+    if (member === undefined) throw Error(`Could not find member with username ${this.userName}.`)
+    return member.role.toString();
+  }
+
+  public isAdmin(id: number): boolean {
+    return this.getUserRoleAsString(id) === "ADMIN";
   }
 
   public addCoopSpace(): void {
@@ -51,12 +74,12 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public openDetails(row: CoopSpace): void {
-    this.router.navigate([`${row.id}`], { relativeTo: this.route });
+    this.router.navigate([`${row.id}`], {relativeTo: this.route});
   }
 
-  public onDelete(selectedElement: CoopSpace): void {
-    this.coopSpacesService.delete(selectedElement).subscribe(() => {
-      removeElementFromArray(this.dataSource.data, e => e.name === selectedElement.name);
+  public onDelete(selectedCoopSpace: CoopSpace): void {
+    this.coopSpacesService.delete(selectedCoopSpace).subscribe(() => {
+      removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
       this.dataSource.data = this.dataSource.data;
     });
   }
