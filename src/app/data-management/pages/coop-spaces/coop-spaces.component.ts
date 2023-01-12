@@ -45,7 +45,10 @@ export class CoopSpacesComponent implements OnInit {
     // NOTE: this.userName could be undefined here. I'm not checking for it because if it is, members will be undefined
     // and the Error logging this.username will be thrown.
     let member = coopSpace.members.find(m => m.username === this.userName)
-    if (member === undefined) throw Error(`Could not find member with username ${this.userName}.`)
+    if (member === undefined) {
+      console.warn(`Could not find member with username ${this.userName} in coop space ${coopSpace.name}. This should only happen for MinIO admins!`)
+      return "NONE";
+    }
     return member.role.toString();
   }
 
