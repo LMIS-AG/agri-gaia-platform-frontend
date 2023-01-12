@@ -34,7 +34,7 @@
       <!-- MyRole Column -->
       <ng-container matColumnDef="role">
         <th mat-header-cell *matHeaderCellDef>{{ tTable('myRole') }}</th>
-        <td mat-cell *matCellDef="let element">{{ t('role.' + getUserRoleAsString(element.id)) }}</td>
+        <td mat-cell *matCellDef="let element">{{ t('role.' + getUserRole(element.id)) }}</td>
       </ng-container>
 
       <!-- More Column -->

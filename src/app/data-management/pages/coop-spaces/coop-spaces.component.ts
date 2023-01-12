@@ -39,16 +39,17 @@ export class CoopSpacesComponent implements OnInit {
     });
   }
 
-  public getUserRoleAsString(coopSpaceId: number): string {
+  public getUserRole(coopSpaceId: number): CoopSpaceRole {
     let coopSpace: CoopSpace | undefined = this.dataSource.data.find(c => c.id === coopSpaceId);
     if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`)
     let member = coopSpace.members.find(m => m.username === this.userName)
-    if (member === undefined) return CoopSpaceRole.None.toString();
-    return member.role.toString();
+    if (member === undefined) return CoopSpaceRole.None;
+    // return CoopSpaceRole.None;
+    return member.role;
   }
 
   public isAdmin(id: number): boolean {
-    return this.getUserRoleAsString(id) === "ADMIN";
+    return this.getUserRole(id) === "ADMIN";
   }
 
   public addCoopSpace(): void {
