@@ -18,7 +18,7 @@ export class CoopSpacesComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'company', 'member', 'role', 'more'];
   public dataSource: MatTableDataSource<CoopSpace> = new MatTableDataSource<CoopSpace>();
 
-  disableButton: boolean = true;
+  public userName: string | undefined;
 
   constructor(
     private dialog: MatDialog,
@@ -48,6 +48,20 @@ export class CoopSpacesComponent implements OnInit {
         }
       });
     });
+  }
+
+  public getUserRoleAsString(coopSpaceId: number): string {
+    let coopSpace: CoopSpace | undefined = this.dataSource.data.find(c => c.id === coopSpaceId);
+    if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`)
+    // NOTE: this.userName could be undefined here. I'm not checking for it because if it is, members will be undefined
+    // and the Error logging this.username will be thrown.
+    let member = coopSpace.members.find(m => m.username === this.userName)
+    if (member === undefined) throw Error(`Could not find member with username ${this.userName}.`)
+    return member.role.toString();
+  }
+
+  public isAdmin(id: number): boolean {
+    return this.getUserRoleAsString(id) === "ADMIN";
   }
 
   public addCoopSpace(): void {
