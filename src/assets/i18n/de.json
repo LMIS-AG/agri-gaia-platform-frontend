@@ -89,7 +89,7 @@
         "myRole": "Meine Rolle"
       },
       "role": {
-        "NONE": "--nicht Mitglied--",
+        "NONE": "-- kein Mitglied --",
         "GUEST": "Gast",
         "USER": "User",
         "ADMIN": "Admin"

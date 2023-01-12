@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {removeElementFromArray} from 'src/app/shared/array-utils';
-import {CoopSpace} from 'src/app/shared/model/coop-spaces';
+import {CoopSpace, CoopSpaceRole} from 'src/app/shared/model/coop-spaces';
 import {Member} from 'src/app/shared/model/member';
 import {CoopSpacesService} from './coop-spaces.service';
 import {CreateCoopSpaceComponent} from './create-coop-space/create-coop-space.component';
@@ -42,13 +42,8 @@ export class CoopSpacesComponent implements OnInit {
   public getUserRoleAsString(coopSpaceId: number): string {
     let coopSpace: CoopSpace | undefined = this.dataSource.data.find(c => c.id === coopSpaceId);
     if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`)
-    // NOTE: this.userName could be undefined here. I'm not checking for it because if it is, members will be undefined
-    // and the Error logging this.username will be thrown.
     let member = coopSpace.members.find(m => m.username === this.userName)
-    if (member === undefined) {
-      console.warn(`Could not find member with username ${this.userName} in coop space ${coopSpace.name}. This should only happen for MinIO admins!`)
-      return "NONE";
-    }
+    if (member === undefined) return CoopSpaceRole.None.toString();
     return member.role.toString();
   }
 
