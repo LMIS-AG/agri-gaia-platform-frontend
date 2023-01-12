@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { removeElementFromArray } from 'src/app/shared/array-utils';
-import { CoopSpace } from 'src/app/shared/model/coop-spaces';
-import { Member } from 'src/app/shared/model/member';
-import { CoopSpacesService } from './coop-spaces.service';
-import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
-import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
+import {ActivatedRoute, Router} from '@angular/router';
+import {removeElementFromArray} from 'src/app/shared/array-utils';
+import {CoopSpace} from 'src/app/shared/model/coop-spaces';
+import {Member} from 'src/app/shared/model/member';
+import {CoopSpacesService} from './coop-spaces.service';
+import {CreateCoopSpaceComponent} from './create-coop-space/create-coop-space.component';
+import {AuthenticationService} from 'src/app/core/authentication/authentication.service';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -26,27 +26,16 @@ export class CoopSpacesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService
-     
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {
-    this.coopSpacesService.getAll().subscribe(coopSpaces => {
-      this.authenticationService.userProfile$.subscribe(userProfile => {
-        if(userProfile) {
-          coopSpaces.forEach(coopSpace => {
-            const user = coopSpace.members.find(
-              member => member.username === userProfile.username
-            );
-            if (user) {
-              coopSpace.myrole = user.role;
-              if (coopSpace.myrole === 'ADMIN') {
-                this.disableButton = false
-              }
-            }
-          });
-          this.dataSource.data = coopSpaces;
-        }
-      });
+  public ngOnInit(): void {
+    this.authenticationService.userProfile$.subscribe(userProfile => {
+      if (userProfile === null) throw Error("userProfile was null.")
+      this.userName = userProfile.username;
+    });
+    this.coopSpacesService.getAll().subscribe((coopSpaces: CoopSpace[]) => {
+      this.dataSource.data = coopSpaces;
     });
   }
 
@@ -85,7 +74,7 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public openDetails(row: CoopSpace): void {
-    this.router.navigate([`${row.id}`], { relativeTo: this.route });
+    this.router.navigate([`${row.id}`], {relativeTo: this.route});
   }
 
   public onDelete(selectedCoopSpace: CoopSpace): void {
