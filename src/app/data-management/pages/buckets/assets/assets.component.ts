@@ -15,8 +15,8 @@ import { translate } from '@ngneat/transloco';
 export class AssetsComponent implements OnInit {
   public bucket?: string;
 
-  public displayedColumnsDataset: string[] = ['name', 'date', 'buttons'];
-  public datasetDatasource: GeneralPurposeAsset[] = [];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
+  public dataSource: GeneralPurposeAsset[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +36,7 @@ export class AssetsComponent implements OnInit {
       )
       .subscribe(result => {
         this.bucket = result.name!;
-        this.datasetDatasource = result.assets;
+        this.dataSource = result.assets;
       });
   }
 
@@ -54,7 +54,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public deleteAsset(element: GeneralPurposeAsset): void {
+  public unpublishAsset(element: GeneralPurposeAsset): void {
     this.ui
       .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
         confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
@@ -63,7 +63,7 @@ export class AssetsComponent implements OnInit {
       })
       .subscribe(result => {
         if (result) {
-          this.bucketService.delete(this.bucket!, element.name);
+          this.bucketService.unpublishAsset(this.bucket!, element.name);
         }
       });
   }

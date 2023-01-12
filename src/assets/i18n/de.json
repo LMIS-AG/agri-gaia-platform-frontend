@@ -12,6 +12,7 @@
     "delete": "Löschen",
     "save": "Speichern",
     "publish": "Veröffentlichen",
+    "unpublish": "Entfernen",
     "successfullySaved": "Der Datensatz wurde gespeichert.",
     "required": "Pflichtfeld",
     "successMessage": "Aktion war erfolgreich.",
