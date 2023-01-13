@@ -19,7 +19,6 @@
 }
 
 table {
-  background-color: white;
   width: 100%;
   th {
     color: $primary;
@@ -39,11 +38,12 @@ table {
       color: $primary;
       background-color: transparent;
       border: none;
+      cursor: pointer;
     }
   }
 
-  .mat-column-buttons {
-    width: 80px;
+  .mat-column-more {
+    width: 32px;
   }
 }
 

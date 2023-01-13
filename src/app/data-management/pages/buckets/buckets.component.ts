@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Bucket } from 'src/app/shared/model/bucket';
-import { CoopSpace } from 'src/app/shared/model/coop-spaces';
-import { CoopSpacesService } from '../coop-spaces/coop-spaces.service';
-import { CreateCoopSpaceComponent } from '../coop-spaces/create-coop-space/create-coop-space.component';
 import { BucketService } from './bucket.service';
 
 @Component({
