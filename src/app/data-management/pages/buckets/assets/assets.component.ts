@@ -6,6 +6,7 @@ import { BucketService } from '../bucket.service';
 import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
+import { convertSize } from '../../../../shared/utils/convert-utils';
 
 @Component({
   selector: 'app-assets',
@@ -15,7 +16,7 @@ import { translate } from '@ngneat/transloco';
 export class AssetsComponent implements OnInit {
   public bucket?: string;
 
-  public displayedColumnsDataset: string[] = ['name', 'date', 'buttons'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'buttons'];
   public datasetDatasource: GeneralPurposeAsset[] = [];
 
   constructor(
@@ -36,6 +37,10 @@ export class AssetsComponent implements OnInit {
       )
       .subscribe(result => {
         this.bucket = result.name!;
+        result.assets.forEach(asset => {
+          // convert the displayed file size 
+          asset.size = convertSize(asset.size)
+        })
         this.datasetDatasource = result.assets;
       });
   }
