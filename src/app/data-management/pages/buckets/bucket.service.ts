@@ -1,6 +1,6 @@
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {catchError, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Bucket} from 'src/app/shared/model/bucket';
 import {environment} from 'src/environments/environment';
 import {GeneralPurposeAsset} from '../../../shared/model/coopSpaceAsset';
@@ -20,12 +20,10 @@ export class BucketService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
   }
 
-  // TODO Move subscribe to component and look for errors
   public publishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     return this.http.post(`${environment.backend.url}/assets/${bucket}/${name}`, {}, {observe: "response"});
   }
 
-  // TODO Move subscribe to component and look for errors
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     return this.http.delete(`${environment.backend.url}/assets/${bucket}/${name}`, {observe: "response"});
   }
