@@ -7,7 +7,7 @@ import { BucketService } from '../bucket.service';
 import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
-import { convertSize } from '../../../../shared/utils/convert-utils';
+import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import {HttpResponse} from "@angular/common/http";
 
 @Component({
@@ -41,8 +41,8 @@ export class AssetsComponent implements OnInit {
       .subscribe(result => {
         this.bucket = result.name!;
         result.assets.forEach(asset => {
-          // convert the displayed file size 
-          asset.size = convertSize(asset.size)
+          // convert the displayed file size
+          asset.size = prettyPrintFileSize(asset.size)
         })
         this.dataSource = result.assets;
 

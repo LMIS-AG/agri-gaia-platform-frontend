@@ -1,4 +1,4 @@
-export function convertSize(size: string):string {
+export function prettyPrintFileSize(size: string):string {
     if (!isNaN(Number(size))) {
       if (size.length < 4) {
         return size + ' B';
@@ -8,11 +8,11 @@ export function convertSize(size: string):string {
       }
       else if (8 <= size.length && size.length < 12) {
         return (Number(size) / (1024**2)).toFixed(1) + ' MiB';
-      }      
+      }
       else if (12 <= size.length && size.length < 16) {
         return (Number(size) / (1024**3)).toFixed(1) + ' GiB';
-      }  
+      }
     }
-    
+
     return "";
 }
