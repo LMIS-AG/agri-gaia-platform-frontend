@@ -69,7 +69,8 @@
           "name": "Assets",
           "date": "Datum",
           "publish": "Veröffentlichen",
-          "delete": "Löschen"
+          "delete": "Löschen",
+          "size": "Größe"
         },
         "dialog": {
           "headline": "Assets veröffentlichen",
