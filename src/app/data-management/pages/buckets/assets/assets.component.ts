@@ -18,7 +18,7 @@ import {HttpResponse} from "@angular/common/http";
 export class AssetsComponent implements OnInit {
   public bucket?: string;
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
-  public datasource: GeneralPurposeAsset[] = [];
+  public dataSource: GeneralPurposeAsset[] = [];
 
 
   constructor(
@@ -44,7 +44,7 @@ export class AssetsComponent implements OnInit {
           // convert the displayed file size 
           asset.size = convertSize(asset.size)
         })
-        this.datasource = result.assets;
+        this.dataSource = result.assets;
 
       });
   }
