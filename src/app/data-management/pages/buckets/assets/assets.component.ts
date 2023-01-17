@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
-import {catchError, filter, map, switchMap} from 'rxjs';
-import {BucketService} from '../bucket.service';
-import {GeneralPurposeAsset} from '../../../../shared/model/coopSpaceAsset';
-import {UIService} from '../../../../shared/services/ui.service';
-import {translate} from '@ngneat/transloco';
+
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { filter, map, switchMap } from 'rxjs';
+import { BucketService } from '../bucket.service';
+import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
+import { UIService } from '../../../../shared/services/ui.service';
+import { translate } from '@ngneat/transloco';
+import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import {HttpResponse} from "@angular/common/http";
 
 @Component({
@@ -15,9 +17,9 @@ import {HttpResponse} from "@angular/common/http";
 })
 export class AssetsComponent implements OnInit {
   public bucket?: string;
-
-  public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public dataSource: GeneralPurposeAsset[] = [];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +40,12 @@ export class AssetsComponent implements OnInit {
       )
       .subscribe(result => {
         this.bucket = result.name!;
+        result.assets.forEach(asset => {
+          // convert the displayed file size
+          asset.size = prettyPrintFileSize(asset.size)
+        })
         this.dataSource = result.assets;
+
       });
   }
 
@@ -79,7 +86,6 @@ export class AssetsComponent implements OnInit {
         });
       });
   }
-
   public handlePublishSuccess(response: HttpResponse<unknown>): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'))
   }
@@ -96,3 +102,4 @@ export class AssetsComponent implements OnInit {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.unpublishErrorText') + err.status)
   }
 }
+
