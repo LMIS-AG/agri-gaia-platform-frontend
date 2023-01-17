@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, filter, map, switchMap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
 import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
