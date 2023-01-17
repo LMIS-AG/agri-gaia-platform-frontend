@@ -12,6 +12,7 @@
     "delete": "Löschen",
     "save": "Speichern",
     "publish": "Veröffentlichen",
+    "unpublish": "Entfernen",
     "successfullySaved": "Der Datensatz wurde gespeichert.",
     "required": "Pflichtfeld",
     "successMessage": "Aktion war erfolgreich.",
@@ -74,10 +75,12 @@
         },
         "dialog": {
           "headline": "Assets veröffentlichen",
-          "confirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
-          "confirmationText": "Die Anfrage zur Veröffentlichung dieses Assets wurde erfolgreich gestellt.",
-          "deleteConfirmationQuestion": "Möchten Sie dieses Asset vom Marktplatz entfernen?",
-          "deleteConfirmationText": "Die Anfrage zur Löschung dieses Assets wurde erfolgreich gestellt."
+          "publishConfirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
+          "publishConfirmationText": "Die Anfrage zur Veröffentlichung dieses Assets wurde erfolgreich gestellt.",
+          "publishErrorText": "Die Anfrage zur Veröffentlichung dieses Assets ist leider fehlgeschlagen. Fehlercode: ",
+          "unpublishConfirmationQuestion": "Möchten Sie dieses Asset vom Marktplatz entfernen?",
+          "unpublishConfirmationText": "Die Anfrage zur Entfernung dieses Assets wurde erfolgreich gestellt.",
+          "unpublishErrorText": "Die Anfrage zur Entfernung dieses Assets ist leider fehlgeschlagen. Fehlercode: "
         }
       }
     },
@@ -90,6 +93,7 @@
         "myRole": "Meine Rolle"
       },
       "role": {
+        "NONE": "-- kein Mitglied --",
         "GUEST": "Gast",
         "USER": "User",
         "ADMIN": "Admin"

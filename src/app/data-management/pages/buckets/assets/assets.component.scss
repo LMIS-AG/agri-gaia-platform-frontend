@@ -9,7 +9,7 @@
     color: $primary;
     font-weight: bold;
     font-size: 36px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding-bottom: 10px;
   }
 }
@@ -19,7 +19,6 @@
 }
 
 table {
-  background-color: white;
   width: 100%;
   th {
     color: $primary;
@@ -27,23 +26,24 @@ table {
     font-weight: bold;
     border-color: $primary;
     border-width: 2px;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   td {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
     border-color: gray;
     button {
       color: $primary;
       background-color: transparent;
       border: none;
+      cursor: pointer;
     }
   }
 
-  .mat-column-buttons {
-    width: 80px;
+  .mat-column-more {
+    width: 32px;
   }
 }
 
@@ -52,4 +52,11 @@ table {
   height: 325px;
   padding: 15px;
   border-radius: 6px;
+}
+
+.delete-button {
+  color: $error;
+  mat-icon {
+    color: $error;
+  }
 }

@@ -11,7 +11,7 @@
       <div class="table-container">
         <table
           mat-table
-          [dataSource]="datasetDatasource"
+          [dataSource]="dataSource"
           class="mat-elevation-z0"
           *transloco="let tTable; read: 'dataManagement.buckets.assets.table'"
         >
@@ -33,15 +33,24 @@
             <td mat-cell *matCellDef="let element">{{ element.size }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="buttons">
+          <!-- More Column -->
+          <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-mini-fab class="mat-elevation-z0" (click)="publishAsset(element)">
-                <mat-icon color="primary">publish</mat-icon>
+            <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+              <button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
               </button>
-              <button mat-mini-fab class="mat-elevation-z0" (click)="deleteAsset(element)">
-                <mat-icon color="warn">delete</mat-icon>
-              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="publishAsset(element)">
+                  <mat-icon color="primary">publish</mat-icon>
+                  {{ tCommon('publish') }}
+                </button>
+                <button mat-menu-item class="delete-button" (click)="unpublishAsset(element)">
+<!--                  TODO: Get a better icon.-->
+                  <mat-icon>unpublished</mat-icon>
+                  {{ tCommon('unpublish') }}
+                </button>
+              </mat-menu>
             </td>
           </ng-container>
 
