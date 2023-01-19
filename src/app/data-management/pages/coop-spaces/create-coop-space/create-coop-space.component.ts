@@ -18,6 +18,7 @@ import { CoopSpaceValidator } from './coop-space-validator';
 })
 export class CreateCoopSpaceComponent {
   public formGroup: FormGroup;
+  public companies!: string[];
 
   constructor(
     private dialogRef: MatDialogRef<CoopSpacesComponent>,
@@ -42,6 +43,12 @@ export class CreateCoopSpaceComponent {
         ],
       ],
     });
+    this.coopSpacesService.getValidCompanyNames().subscribe({
+      next: (validCompanyNames) => {
+        this.companies = validCompanyNames;
+      },
+    });
+    
   }
 
   public onSave(membersSelected: Member[]): void {
