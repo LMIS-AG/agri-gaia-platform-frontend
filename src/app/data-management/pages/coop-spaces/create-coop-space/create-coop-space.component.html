@@ -5,12 +5,16 @@
   *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'"
   class="admin-module"
 >
-  <ng-container fields *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
-    <div fxLayout="column" *transloco="let tCommon; read: 'common'">
-      <mat-form-field appearance="fill" color="primary" class="bg">
-        <mat-label>{{ t('company') }}</mat-label>
-        <input matInput formControlName="company" required />
-        <mat-error *ngIf="formGroup.controls['company'].hasError('required')">{{ tCommon('required') }}</mat-error>
+    <ng-container fields *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
+      <div fxLayout="column" *transloco="let tCommon; read: 'common'">
+        <mat-form-field appearance="fill" color="primary" class="bg">
+          <mat-label>{{ t('company') }}</mat-label>
+          <mat-select formControlName="company" required>
+            <mat-option *ngFor="let company of companies" [value]="company">
+              {{ company }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formGroup.controls['company'].hasError('required')">{{ tCommon('required') }}</mat-error>   
       </mat-form-field>
 
       <!-- NAME -->

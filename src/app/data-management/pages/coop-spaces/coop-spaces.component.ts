@@ -82,12 +82,7 @@ export class CoopSpacesComponent implements OnInit {
       this.dataSource.data = this.dataSource.data;
     });
   }
-
   public membersToString(members: Member[]): string {
-    return members.map(m => m.name).toString();
-  }
-
-  public membersToStrings(members: Member[]): string {
     return members.map(m => m.name!).join(', ');
   }
 }
