@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { translate } from '@ngneat/transloco';
@@ -16,7 +16,7 @@ import { CoopSpaceValidator } from './coop-space-validator';
   templateUrl: './create-coop-space.component.html',
   styleUrls: ['./create-coop-space.component.scss'],
 })
-export class CreateCoopSpaceComponent {
+export class CreateCoopSpaceComponent implements OnInit {
   public formGroup: FormGroup;
   public companies: string[] = [];
 
@@ -43,10 +43,12 @@ export class CreateCoopSpaceComponent {
         ],
       ],
     });
+  }
+
+  public ngOnInit(): void {
     this.coopSpacesService.getValidCompanyNames().subscribe(validCompanyNames => {
       this.companies = validCompanyNames;
     });
-    
   }
 
   public onSave(membersSelected: Member[]): void {
