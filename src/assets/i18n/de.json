@@ -136,7 +136,7 @@
         "table": {
           "name": "Name",
           "date": "Datum",
-          "uploadDate": "Hochgleaden am",
+          "uploadDate": "Hochgeladen am",
           "size": "Größe",
           "labeling": "Labeling",
           "coopSpace": "Kooperationsbereich",
