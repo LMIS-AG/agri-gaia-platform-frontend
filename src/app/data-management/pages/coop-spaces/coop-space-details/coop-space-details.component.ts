@@ -4,6 +4,9 @@ import { concatMap, filter, map, switchMap } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
+import {removeElementFromArray} from 'src/app/shared/array-utils';
+import { Member } from 'src/app/shared/model/member';
+
 
 @Component({
   selector: 'app-coop-space-details',
@@ -44,6 +47,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
       });
   }
 
+  public onDeleteMember(member: Member): void {
+    if (member.id) {
+        this.coopSpacesService.deleteMember(member.id).subscribe(() => {
+ //         removeElementFromArray(coopSpace.members, m => m.username === member.username);
+        });
+    }
+  }
+
   public openSettings(): void {
     throw Error('Not yet implemented');
   }
@@ -66,21 +77,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public onTogglePlay(): void {
     throw Error('Not yet implemented');
-  }
-
-  // TODO
-  public getUsedImage(index: number): string {
-    let filename = '';
-    if (index === 1) {
-      filename = 'Bitmap_jupyter_notebook.png';
-    }
-    if (index === 2) {
-      filename = 'Bitmap_harbor_ai.png';
-    }
-    if (index === 3) {
-      filename = 'Bitmap_argo_cd.png';
-    }
-    return `assets/tools_png/${filename}`;
   }
 
   public openInFull(): void {

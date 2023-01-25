@@ -137,15 +137,7 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item>
-                    <mat-icon aria-hidden="false" aria-label="Phone">edit</mat-icon>
-                    {{ tCommon('edit') }}
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon aria-hidden="false" aria-label="Mail">download</mat-icon>
-                    {{ tCommon('download') }}
-                  </button>
-                  <button class="delete-button" mat-menu-item>
+                  <button class="delete-button" mat-menu-item (click)="onDeleteMember(element)">
                     <mat-icon aria-hidden="false" aria-label="Mail">delete</mat-icon>
                     {{ tCommon('delete') }}
                   </button>
