@@ -40,7 +40,7 @@ export class CoopSpacesService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
   }
 
-  public deleteMember(memberId: Number): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, memberId);
+  public deleteMember(username: String, role: String, coopSpaceName: String): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {username, role, coopSpaceName});
 }
 }
