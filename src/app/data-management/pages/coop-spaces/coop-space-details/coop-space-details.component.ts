@@ -50,10 +50,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public onDeleteMember(member: Member): void {
     let role = member.role.toLowerCase();
     role = role.charAt(0).toUpperCase() + role.slice(1);
-    
-    this.coopSpacesService.deleteMember(member.username, role, this.coopSpace!.name).subscribe(() => {
-//         removeElementFromArray(coopSpace.members, m => m.username === member.username);
-    });
+
+    this.coopSpacesService.deleteMember(member.username, role, this.coopSpace!.name, this.coopSpace!.company).subscribe();
 }
 
 
