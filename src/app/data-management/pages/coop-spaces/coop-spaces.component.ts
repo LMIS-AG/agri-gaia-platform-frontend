@@ -39,12 +39,11 @@ export class CoopSpacesComponent implements OnInit {
     });
   }
 
-  public getUserRole(coopSpaceId: number): CoopSpaceRole {
+  public getUserRole(coopSpaceId: number): CoopSpaceRole | null {
     let coopSpace: CoopSpace | undefined = this.dataSource.data.find(c => c.id === coopSpaceId);
     if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`)
     let member = coopSpace.members.find(m => m.username === this.userName)
-    if (member === undefined) return CoopSpaceRole.None;
-    // return CoopSpaceRole.None;
+    if (member === undefined) return null;
     return member.role;
   }
 
@@ -82,6 +81,7 @@ export class CoopSpacesComponent implements OnInit {
       this.dataSource.data = this.dataSource.data;
     });
   }
+
   public membersToString(members: Member[]): string {
     return members.map(m => m.name!).join(', ');
   }

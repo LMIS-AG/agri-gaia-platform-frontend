@@ -93,7 +93,7 @@
         "myRole": "Meine Rolle"
       },
       "role": {
-        "NONE": "-- kein Mitglied --",
+        "null": "-- kein Mitglied --",
         "GUEST": "Gast",
         "USER": "User",
         "ADMIN": "Admin"
@@ -136,7 +136,7 @@
         "table": {
           "name": "Name",
           "date": "Datum",
-          "uploadDate": "Hochgleaden am",
+          "uploadDate": "Hochgeladen am",
           "size": "Größe",
           "labeling": "Labeling",
           "coopSpace": "Kooperationsbereich",
