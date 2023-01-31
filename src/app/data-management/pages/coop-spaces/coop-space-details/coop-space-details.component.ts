@@ -50,10 +50,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public onDeleteMember(member: Member): void {
     let role = member.role.toLowerCase();
     role = role.charAt(0).toUpperCase() + role.slice(1);
-
-    this.coopSpacesService.deleteMember(member.username, role, this.coopSpace!.name, this.coopSpace!.company).subscribe();
-}
-
+    this.coopSpacesService.deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
+      .subscribe(() => {
+        this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
+      });
+  }
 
   public openSettings(): void {
     throw Error('Not yet implemented');
