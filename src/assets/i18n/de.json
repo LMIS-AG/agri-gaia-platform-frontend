@@ -131,6 +131,10 @@
           "USER": "User",
           "ADMIN": "Admin"
         },
+        "dialog": {
+            "publishConfirmationQuestion": "Möchten Sie diese Person aus dem Kooperationsbereich entfernen?",
+            "publishConfirmationText": "Die Person wurde erfolgreich aus dem Kooperationsbereich entfernt?"
+        },
         "table": {
           "name": "Name",
           "date": "Datum",

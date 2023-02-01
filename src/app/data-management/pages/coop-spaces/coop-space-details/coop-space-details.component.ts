@@ -6,6 +6,8 @@ import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import {removeElementFromArray} from 'src/app/shared/array-utils';
 import { Member } from 'src/app/shared/model/member';
+import { UIService } from 'src/app/shared/services/ui.service';
+import { translate } from '@ngneat/transloco';
 
 
 @Component({
@@ -20,7 +22,12 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
   public datasetDatasource: GeneralPurposeAsset[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private coopSpacesService: CoopSpacesService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private coopSpacesService: CoopSpacesService,
+    private uiService: UIService
+    ) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -48,13 +55,24 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   public onDeleteMember(member: Member): void {
-    let role = member.role.toLowerCase();
-    role = role.charAt(0).toUpperCase() + role.slice(1);
-    this.coopSpacesService.deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
-      .subscribe(() => {
-        this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
-      });
+    this.uiService.confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.publishConfirmationQuestion'), {
+      confirmationText: translate('dataManagement.coopSpaces.details.dialog.publishConfirmationText'),
+      buttonLabels: 'confirm',
+      confirmButtonColor: 'primary',
+    }).subscribe(result => {
+      if (result) {
+
+        let role = member.role.toLowerCase();
+        role = role.charAt(0).toUpperCase() + role.slice(1);
+
+        this.coopSpacesService.deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
+          .subscribe(() => {
+            this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
+          });
+      }
+    });
   }
+  
 
   public openSettings(): void {
     throw Error('Not yet implemented');
