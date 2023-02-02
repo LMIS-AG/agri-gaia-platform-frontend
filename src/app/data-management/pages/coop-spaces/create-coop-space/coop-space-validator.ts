@@ -1,7 +1,7 @@
 import { FormControl, ValidationErrors } from '@angular/forms';
 export class CoopSpaceValidator {
   static validCharacters(control: FormControl): ValidationErrors | null {
-    const validCharactersPattern = new RegExp('^[a-z|0-9|.|-]{1,}$');
+    const validCharactersPattern = new RegExp('^[a-z|0-9|-]{1,}$');
     return validCharactersPattern.test(control.value)
       ? null
       : {
@@ -25,15 +25,6 @@ export class CoopSpaceValidator {
       : {
           invalidEndCharacter: { valid: false },
         };
-  }
-
-  static noIPAddressPattern(control: FormControl): ValidationErrors | null {
-    const ipAddressPattern = new RegExp('^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$');
-    return ipAddressPattern.test(control.value)
-      ? {
-          ipAddressPattern: { valid: false },
-        }
-      : null;
   }
 
   static validPrefix(control: FormControl): ValidationErrors | null {

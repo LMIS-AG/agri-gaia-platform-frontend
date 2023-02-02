@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { translate } from '@ngneat/transloco';
@@ -39,7 +39,6 @@ export class CreateCoopSpaceComponent implements OnInit {
           CoopSpaceValidator.validCharacters,
           CoopSpaceValidator.validStartCharacter,
           CoopSpaceValidator.validEndCharacter,
-          CoopSpaceValidator.noIPAddressPattern,
         ],
       ],
     });
