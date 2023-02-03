@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, map, switchMap } from 'rxjs';
+import { catchError, concatMap, filter, map, of, switchMap, throwError } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
-import {removeElementFromArray} from 'src/app/shared/array-utils';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
-import { HttpResponse } from '@angular/common/http';
-
 
 @Component({
   selector: 'app-coop-space-details',
@@ -30,31 +27,35 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private uiService: UIService
     ) {}
 
-  public ngOnInit(): void {
-    this.route.paramMap
-      .pipe(
-        filter(paramMap => paramMap.has('id')),
-        map(paramMap => parseInt(paramMap.get('id')!, 10)),
-        switchMap(id =>
-          this.coopSpacesService
-            .getCoopSpaceById(id)
-            .pipe(
-              concatMap(coopSpace =>
-                this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
+    public ngOnInit(): void {
+      this.route.paramMap
+        .pipe(
+          filter(paramMap => paramMap.has('id')),
+          map(paramMap => parseInt(paramMap.get('id')!, 10)),
+          switchMap(id =>
+            this.coopSpacesService
+              .getCoopSpaceById(id)
+              .pipe(
+                concatMap(coopSpace =>
+                  this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
+                )
               )
-            )
+          )
         )
-      )
-      .subscribe(result => {
-        if (result.coopSpace != null) {
-          this.coopSpace = result.coopSpace;
-        } else {
-          this.router.navigateByUrl('/coopspaces');
-        }
-        this.datasetDatasource = result.assets;
-      });
-  }
-
+        .subscribe({
+          next: result => {
+            if (result.coopSpace != null) {
+              this.coopSpace = result.coopSpace;
+            } 
+            this.datasetDatasource = result.assets;
+          },
+          error: error => {
+            console.error(error);
+            this.router.navigateByUrl('/coopspaces');
+          }
+        });
+    }
+    
   public onDeleteMember(member: Member): void {
     this.uiService
     .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationQuestion'), {
