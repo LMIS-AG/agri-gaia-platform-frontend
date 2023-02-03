@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, filter, map, switchMap } from 'rxjs';
-import { CoopSpace } from 'src/app/shared/model/coop-spaces';
+import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import {removeElementFromArray} from 'src/app/shared/array-utils';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
+import { HttpResponse } from '@angular/common/http';
 
 
 @Component({
@@ -55,24 +56,31 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   public onDeleteMember(member: Member): void {
-    this.uiService.confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.publishConfirmationQuestion'), {
-      confirmationText: translate('dataManagement.coopSpaces.details.dialog.publishConfirmationText'),
+    this.uiService
+    .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationQuestion'), {
       buttonLabels: 'confirm',
       confirmButtonColor: 'primary',
-    }).subscribe(result => {
+    })
+    .subscribe(result => {
       if (result) {
-
+        // modify the string before sending it, e.g. "USER" becomes "User"
         let role = member.role.toLowerCase();
         role = role.charAt(0).toUpperCase() + role.slice(1);
-
-        this.coopSpacesService.deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
-          .subscribe(() => {
-            this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
-          });
-      }
-    });
-  }
   
+      // send the necessary data and remove the user from the member table 
+      this.coopSpacesService.deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
+      .subscribe({
+        next: () => {
+          this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
+          this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText'));
+        },
+        error: () => {
+          this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'));
+        }
+      });
+    }
+  });
+}
 
   public openSettings(): void {
     throw Error('Not yet implemented');
@@ -104,4 +112,13 @@ export class CoopSpaceDetailsComponent implements OnInit {
       state: { datasetDatasource: this.datasetDatasource },
     });
   }
+
+  public handleDeleteMemberSuccess(): void {
+    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText'))
+  }
+
+  public handleDeleteMemberError(): void {
+    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'))
+  }
+  
 }
