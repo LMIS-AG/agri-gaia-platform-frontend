@@ -5,16 +5,16 @@
   *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'"
   class="admin-module"
 >
-    <ng-container fields *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
-      <div fxLayout="column" *transloco="let tCommon; read: 'common'">
-        <mat-form-field appearance="fill" color="primary" class="bg">
-          <mat-label>{{ t('company') }}</mat-label>
-          <mat-select formControlName="company" required>
-            <mat-option *ngFor="let company of companies" [value]="company">
-              {{ company }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="formGroup.controls['company'].hasError('required')">{{ tCommon('required') }}</mat-error>   
+  <ng-container fields *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
+    <div fxLayout="column" *transloco="let tCommon; read: 'common'">
+      <mat-form-field appearance="fill" color="primary" class="bg">
+        <mat-label>{{ t('company') }}</mat-label>
+        <mat-select formControlName="company" required>
+          <mat-option *ngFor="let company of companies" [value]="company">
+            {{ company }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formGroup.controls['company'].hasError('required')">{{ tCommon('required') }}</mat-error>
       </mat-form-field>
 
       <!-- NAME -->
@@ -38,9 +38,6 @@
           "
           >{{ tDialog('nameRules.startingAndEndingCharacters') }}</mat-error
         >
-        <mat-error *ngIf="formGroup.controls['name'].hasError('ipAddressPattern')">{{
-          tDialog('nameRules.noIPAddress')
-        }}</mat-error>
         <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
           tDialog('nameRules.invalidPrefix')
         }}</mat-error>
@@ -53,7 +50,6 @@
       <li [innerHTML]="tDialog('nameRules.lengthHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
-      <li [innerHTML]="tDialog('nameRules.noIPAddressHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.invalidPrefixHtml')"></li>
       <li [innerHTML]="tDialog('nameRules.uniquenessHtml')"></li>
     </ul>
