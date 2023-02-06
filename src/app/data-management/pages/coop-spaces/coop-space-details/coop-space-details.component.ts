@@ -22,6 +22,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public datasetDatasource: GeneralPurposeAsset[] = [];
 
   public userName: string | undefined;
+  public fullName: string | undefined;
 
   constructor(
     private route: ActivatedRoute, 
@@ -62,6 +63,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         this.authenticationService.userProfile$.subscribe(userProfile => {
           if (userProfile === null) throw Error("userProfile was null.")
           this.userName = userProfile.username;
+          this.fullName = `${userProfile.firstName} ${userProfile.lastName}`
         });
     }
     
@@ -139,5 +141,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public isAdmin(): boolean {
     return this.getUserRole() === CoopSpaceRole.Admin
+  }   
+
+  public isOneSelf(): String | undefined  {
+    return this.fullName
   }
+
 }
