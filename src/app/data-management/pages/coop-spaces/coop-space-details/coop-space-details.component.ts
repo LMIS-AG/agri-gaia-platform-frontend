@@ -7,6 +7,7 @@ import { CoopSpacesService } from '../coop-spaces.service';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -20,11 +21,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
   public datasetDatasource: GeneralPurposeAsset[] = [];
 
+  public userName: string | undefined;
+
   constructor(
     private route: ActivatedRoute, 
     private router: Router, 
     private coopSpacesService: CoopSpacesService,
-    private uiService: UIService
+    private uiService: UIService,
+    private authenticationService: AuthenticationService
     ) {}
 
     public ngOnInit(): void {
@@ -53,6 +57,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
             console.error(error);
             this.router.navigateByUrl('/coopspaces');
           }
+        });
+        this.authenticationService.userProfile$.subscribe(userProfile => {
+          if (userProfile === null) throw Error("userProfile was null.")
+          this.userName = userProfile.username;
         });
     }
     
@@ -120,6 +128,15 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public handleDeleteMemberError(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'))
+  }  
+
+  public getUserRole(coopSpaceId: number): CoopSpaceRole {
+    let member = this.coopSpace!.members.find(m => m.username === this.userName)
+    if (member === undefined) return CoopSpaceRole.None;
+    return member.role;
   }
-  
+
+  public isAdmin(id: number): boolean {
+    return this.getUserRole(id) === "ADMIN";
+  }
 }
