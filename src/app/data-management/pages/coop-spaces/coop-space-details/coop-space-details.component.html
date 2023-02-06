@@ -139,9 +139,9 @@
                 <mat-menu #menu="matMenu">
                   <button
                   mat-menu-item
-                  [ngClass]="{'delete-button': isAdmin(element.id)}"
-                  [disabled]="!isAdmin(element.id)"
-                  (click)="isAdmin(element.id) && onDeleteMember(element)"
+                  [ngClass]="{'delete-button': isAdmin()}"
+                  [disabled]="!isAdmin()"
+                  (click)="isAdmin() && onDeleteMember(element)"
                 >
                   <mat-icon aria-hidden="false" aria-label="Mail">delete</mat-icon>
                   {{ tCommon('delete') }}

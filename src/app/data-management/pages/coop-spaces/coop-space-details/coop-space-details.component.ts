@@ -58,6 +58,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
             this.router.navigateByUrl('/coopspaces');
           }
         });
+        // retrieve the username of the user that is currently logged in
         this.authenticationService.userProfile$.subscribe(userProfile => {
           if (userProfile === null) throw Error("userProfile was null.")
           this.userName = userProfile.username;
@@ -130,13 +131,13 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'))
   }  
 
-  public getUserRole(coopSpaceId: number): CoopSpaceRole {
+  public getUserRole(): CoopSpaceRole {
     let member = this.coopSpace!.members.find(m => m.username === this.userName)
     if (member === undefined) return CoopSpaceRole.None;
     return member.role;
   }
 
-  public isAdmin(id: number): boolean {
-    return this.getUserRole(id) === "ADMIN";
+  public isAdmin(): boolean {
+    return this.getUserRole() === CoopSpaceRole.Admin
   }
 }
