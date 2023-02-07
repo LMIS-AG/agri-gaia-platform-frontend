@@ -133,9 +133,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'))
   }  
 
-  public getUserRole(): CoopSpaceRole {
+  public getUserRole(): CoopSpaceRole | undefined {
     let member = this.coopSpace!.members.find(m => m.username === this.userName)
-    if (member === undefined) return CoopSpaceRole.None;
+    if (member === undefined) return undefined;
     return member.role;
   }
 
