@@ -143,7 +143,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     return this.getUserRole() === CoopSpaceRole.Admin
   }   
 
-  public isOneSelf(): String | undefined  {
+  public returnFullName(): String | undefined  {
     return this.fullName
   }
 

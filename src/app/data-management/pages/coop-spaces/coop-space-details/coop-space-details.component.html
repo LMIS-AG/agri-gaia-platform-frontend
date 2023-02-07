@@ -140,7 +140,7 @@
                   <button
                   mat-menu-item
                   [ngClass]="{'delete-button': isAdmin()}"
-                  [disabled]="!isAdmin() || element.name === isOneSelf()"
+                  [disabled]="!isAdmin() || element.name === returnFullName()"
                   (click)="isAdmin() && onDeleteMember(element)"
                 >
                   <mat-icon aria-hidden="false" aria-label="Mail">delete</mat-icon>
