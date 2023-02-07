@@ -131,6 +131,11 @@
           "USER": "User",
           "ADMIN": "Admin"
         },
+        "dialog": {
+            "deleteMemberConfirmationQuestion": "Möchten Sie diese Person aus dem Kooperationsbereich entfernen?",
+            "deleteMemberConfirmationText": "Die Person wurde erfolgreich aus dem Kooperationsbereich entfernt.",
+            "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen."
+        },
         "table": {
           "name": "Name",
           "date": "Datum",

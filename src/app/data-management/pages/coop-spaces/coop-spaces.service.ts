@@ -39,4 +39,8 @@ export class CoopSpacesService {
   public getAssets(id: number): Observable<GeneralPurposeAsset[]> {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
   }
+
+  public deleteMember(memberId: Number, username: String, role: String, coopSpaceName: String, companyName: String): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {memberId, username, role, coopSpaceName, companyName});
+  }
 }
