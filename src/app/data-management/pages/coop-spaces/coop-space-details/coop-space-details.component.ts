@@ -151,7 +151,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public addMemberToCoopSpace() {
 
     this.member_test = [ 
-        { name: "GUI Testbenutzer", company: "LMIS", email: "gui-testbenutzer@testbenutzer.de", role: CoopSpaceRole.User, username: "gui-testbenutzer" } 
+        { name: "GUI Testbenutzer", company: "LMIS", email: "gui-testbenutzer@testbenutzer.de", role: CoopSpaceRole.User, username: "gui-testbenutzer" }, 
+        { name: "Marcel Ruland", company: "LMIS", email: "marcel.ruland@lmis.de", role: CoopSpaceRole.Guest, username: "mruland" }
       ]
     
     this.coopSpacesService.addMember(this.coopSpace?.id!, this.member_test)
