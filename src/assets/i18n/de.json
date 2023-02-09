@@ -134,7 +134,10 @@
         "dialog": {
             "deleteMemberConfirmationQuestion": "Möchten Sie diese Person aus dem Kooperationsbereich entfernen?",
             "deleteMemberConfirmationText": "Die Person wurde erfolgreich aus dem Kooperationsbereich entfernt.",
-            "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen."
+            "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen.",
+            "addMemberConfirmationQuestion": "Möchten Sie diese Person zu dem Kooperationsbereich hinzufügen?",
+            "addMemberConfirmationText": "Die Person wurde erfolgreich zu dem Kooperationsbereich hinzugefügt.",
+            "addMemberErrorText": "Die Anfrage zum Hinzufügen ist fehlgeschlagen."
         },
         "table": {
           "name": "Name",
