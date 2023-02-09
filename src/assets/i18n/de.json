@@ -109,7 +109,7 @@
           "nameRules": {
             "length": "Der Name muss zwischen 3 und 63 Zeichen lang sein.",
             "lengthHtml": "Der Name muss zwischen <strong>3</strong> und <strong>63</strong> Zeichen lang sein.",
-            "generalCharacters": "Der Name darf nur aus Kleinbuchstaben, Zahlen und Bindestrichen bestehen.",
+            "generalCharacters": "Der Name darf nur aus Kleinbuchstaben (keine Umlaute), Zahlen und Bindestrichen bestehen.",
             "generalCharactersHtml": "Der Name darf nur aus <strong>Kleinbuchstaben</strong>, <strong>Zahlen</strong> und <strong>Bindestrichen</strong> bestehen.",
             "startingAndEndingCharacters": "Der Name muss mit einem Kleinbuchstaben oder einer Zahl beginnen und enden.",
             "startingAndEndingCharactersHtml": "Der Name muss mit einem <strong>Kleinbuchstaben</strong> oder einer <strong>Zahl</strong> beginnen und enden.",
