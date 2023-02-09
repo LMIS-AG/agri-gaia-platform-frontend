@@ -89,7 +89,7 @@
       "table": {
         "name": "Name",
         "company": "Inhaber",
-        "members": "Beteiligte",
+        "admins": "Administratoren",
         "myRole": "Meine Rolle"
       },
       "role": {

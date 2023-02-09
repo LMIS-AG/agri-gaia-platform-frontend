@@ -82,7 +82,11 @@ export class CoopSpacesComponent implements OnInit {
     });
   }
 
-  public membersToString(members: Member[]): string {
-    return members.map(m => m.name!).join(', ');
+  public membersToString(members: Member[]): string {  
+    return members
+        .filter(m => m.role === CoopSpaceRole.Admin)
+        .map(m => m.name!)
+        .join(', ');
   }
+
 }
