@@ -41,10 +41,10 @@ export class CoopSpacesService {
   }
 
   public deleteMember(memberId: Number, username: String, role: String, coopSpaceName: String, companyName: String): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {memberId, username, role, coopSpaceName, companyName});
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {memberId, username, role, companyName, coopSpaceName});
   }
 
-  public addMember(coopSpaceId: Number, coopSpaceName: String, member: Member): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, {coopSpaceId, coopSpaceName, member});
+  public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, {coopSpaceId, member});
   }
 }
