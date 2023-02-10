@@ -134,7 +134,10 @@
         "dialog": {
             "deleteMemberConfirmationQuestion": "Möchten Sie diese Person aus dem Kooperationsbereich entfernen?",
             "deleteMemberConfirmationText": "Die Person wurde erfolgreich aus dem Kooperationsbereich entfernt.",
-            "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen."
+            "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen.",
+            "changeRoleConfirmationQuestion": "Möchten Sie die Rolle dieser Person verändern?",
+            "changeRoleConfirmationText": "Die Rolle wurde erfolgreich verändert.",
+            "changeRoleMemberErrorText": "Die Anfrage für die Veränderung der Rolle ist fehlgeschlagen."
         },
         "table": {
           "name": "Name",
