@@ -24,7 +24,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public userName: string | undefined;
   public fullName: string | undefined;
   public originalRole: string = "";
-  public newRole: string = "";
   public roles: CoopSpaceRole[] = [CoopSpaceRole.Admin, CoopSpaceRole.User, CoopSpaceRole.Guest];
 
   constructor(
