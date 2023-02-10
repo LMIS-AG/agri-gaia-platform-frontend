@@ -6,7 +6,7 @@ import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
-import { translate } from '@ngneat/transloco';
+import { translate, TranslocoModule } from '@ngneat/transloco';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public userName: string | undefined;
   public fullName: string | undefined;
+  public roles: CoopSpaceRole[] = [CoopSpaceRole.Admin, CoopSpaceRole.User, CoopSpaceRole.Guest];
 
   constructor(
     private route: ActivatedRoute, 
@@ -93,6 +94,23 @@ export class CoopSpaceDetailsComponent implements OnInit {
     }
   });
 }
+
+  public onRoleChange(member: Member) {
+    this.uiService
+    .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.changeRoleConfirmationQuestion'), {
+      buttonLabels: 'confirm',
+      confirmButtonColor: 'primary',
+    })
+    .subscribe(result => {
+      if (result) {
+        // modify the string before sending it, e.g. "USER" becomes "User"
+        let role = member.role.toLowerCase();
+        role = role.charAt(0).toUpperCase() + role.slice(1);
+        console.log('New role:', role);
+      }
+    })
+  }
+
 
   public openSettings(): void {
     throw Error('Not yet implemented');
