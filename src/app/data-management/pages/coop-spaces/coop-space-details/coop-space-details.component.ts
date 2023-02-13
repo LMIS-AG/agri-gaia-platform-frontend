@@ -6,7 +6,7 @@ import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
-import { translate } from '@ngneat/transloco';
+import { translate, TranslocoModule } from '@ngneat/transloco';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
@@ -23,6 +23,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public userName: string | undefined;
   public fullName: string | undefined;
+  public originalRole: string = "";
+  public roles: CoopSpaceRole[] = [CoopSpaceRole.Admin, CoopSpaceRole.User, CoopSpaceRole.Guest];
 
   constructor(
     private route: ActivatedRoute, 
@@ -67,32 +69,53 @@ export class CoopSpaceDetailsComponent implements OnInit {
         });
     }
     
-  public onDeleteMember(member: Member): void {
+    public onDeleteMember(member: Member): void {
+      this.uiService
+      .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationQuestion'), {
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'primary',
+      })
+      .subscribe(result => {
+        if (result) {
+    
+        // send the necessary data and remove the user from the member table 
+        this.coopSpacesService.deleteMember(this.coopSpace!.name, member)
+        .subscribe({
+          next: () => {
+            this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
+            this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText'));
+          },
+          error: () => {
+            this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'));
+          }
+        });
+      }
+    });
+  }
+
+// change the role of a user and thereby its respective rights
+public onRoleChange(originalRole: string, member: Member) {
     this.uiService
-    .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationQuestion'), {
+    .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.changeMemberRoleConfirmationQuestion'), {
       buttonLabels: 'confirm',
       confirmButtonColor: 'primary',
     })
     .subscribe(result => {
       if (result) {
-        // modify the string before sending it, e.g. "USER" becomes "User"
-        let role = member.role.toLowerCase();
-        role = role.charAt(0).toUpperCase() + role.slice(1);
-  
-      // send the necessary data and remove the user from the member table 
-      this.coopSpacesService.deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
-      .subscribe({
-        next: () => {
-          this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
-          this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText'));
-        },
-        error: () => {
-          this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'));
-        }
-      });
-    }
-  });
-}
+        // send the necessary data, originalRole must be included for finding the appropiate Keycloak group and deleting the user from it
+        this.coopSpacesService.changeMemberRole(this.coopSpace!.id!, originalRole, member)
+        .subscribe({
+          next: () => {
+            this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.changeMemberRoleConfirmationText'));
+          },
+          error: () => {
+            this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.changeMemberRoleErrorText'));
+          }
+        });
+      }
+    })
+  }
+
 
   public openSettings(): void {
     throw Error('Not yet implemented');

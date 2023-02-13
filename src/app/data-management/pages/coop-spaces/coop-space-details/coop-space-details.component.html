@@ -123,12 +123,26 @@
               <td mat-cell *matCellDef="let element">{{ element.company }}</td>
             </ng-container>
 
-            <!-- MyRole Column -->
+            <!-- Role -->
             <ng-container matColumnDef="role">
               <th mat-header-cell *matHeaderCellDef>{{ tTable('role') }}</th>
-              <td mat-cell *matCellDef="let element">{{ t('role.' + element.role) }}</td>
+              <td mat-cell *matCellDef="let element">
+                <ng-container *ngIf="isAdmin() && element.name !== returnFullName()">
+                  <mat-form-field>
+                    <mat-select #roleSelect [(ngModel)]="element.role" (focus)="originalRole = element.role" (ngModelChange)="onRoleChange(originalRole, element)">
+                      <mat-option *ngFor="let role of roles" [value]="role">
+                        {{ t('role.' + role) }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="!isAdmin() || element.name === returnFullName()">
+                  {{ t('role.' + element.role) }}
+                </ng-container>
+              </td>
             </ng-container>
-
+                      
+            
             <!-- More Column -->
             <ng-container matColumnDef="more">
               <th mat-header-cell *matHeaderCellDef></th>
