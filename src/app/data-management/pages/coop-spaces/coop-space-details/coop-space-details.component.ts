@@ -26,6 +26,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public userName: string | undefined;
   public fullName: string | undefined;
   public member_test: Member[] | undefined;
+  dialogRef: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -166,25 +168,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
     return this.fullName;
   }
 
-  public addMemberToCoopSpace() {
-    this.member_test = [
-      {
-        name: 'GUI Testbenutzer',
-        company: 'LMIS',
-        email: 'gui-testbenutzer@testbenutzer.de',
-        role: CoopSpaceRole.User,
-        username: 'gui-testbenutzer',
-      },
-      {
-        name: 'Marcel Ruland',
-        company: 'LMIS',
-        email: 'marcel.ruland@lmis.de',
-        role: CoopSpaceRole.Guest,
-        username: 'mruland',
-      },
-    ];
-
-    this.coopSpacesService.addMember(this.coopSpace?.id!, this.member_test).subscribe({
+  public onSave(membersSelected: Member[]): void {
+    this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
@@ -194,5 +179,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
       },
     });
+    };
   }
-}
+
