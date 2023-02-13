@@ -93,6 +93,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
+// change the role of a user and thereby its respective rights
 public onRoleChange(originalRole: string, member: Member) {
     this.uiService
     .confirm(`${member.name}`, translate('dataManagement.coopSpaces.details.dialog.changeMemberRoleConfirmationQuestion'), {
@@ -101,7 +102,7 @@ public onRoleChange(originalRole: string, member: Member) {
     })
     .subscribe(result => {
       if (result) {
-        
+        // send the necessary data, originalRole must be included for finding the appropiate Keycloak group and deleting the user from it
         this.coopSpacesService.changeMemberRole(this.coopSpace!.id!, originalRole, member)
         .subscribe({
           next: () => {
