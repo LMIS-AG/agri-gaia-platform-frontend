@@ -21,10 +21,14 @@
     </mat-step>
     <mat-step>
       <mat-dialog-content class="dialog-content">
-        <app-add-members
-          (handledSelectionEvent)="handleSelectedMembers($event)"
-          [saveEvent]="saveEventChild"
-        ></app-add-members>
+        <ng-container *ngIf="selectableMembers?.length">
+          <app-add-members
+            (handledSelectionEvent)="handleSelectedMembers($event)"
+            [saveEvent]="saveEventChild"
+            [members]="selectableMembers"
+          >
+          </app-add-members>
+        </ng-container>
       </mat-dialog-content>
 
       <br />

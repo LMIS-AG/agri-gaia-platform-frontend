@@ -1,9 +1,13 @@
 <ng-container *transloco="let tCommon; read: 'common'">
   <mat-dialog-content class="dialog-content">
-    <app-add-members
-      (handledSelectionEvent)="handleSelectedMembers($event)"
-      [saveEvent]="saveEventChild"
-    ></app-add-members>
+    <ng-container *ngIf="selectableMembers?.length">
+      <app-add-members
+        (handledSelectionEvent)="handleSelectedMembers($event)"
+        [saveEvent]="saveEventChild"
+        [members]="selectableMembers"
+      ></app-add-members>
+    </ng-container>
+    <!-- TODO else Loading Spinner!? -->
   </mat-dialog-content>
 
   <br />
@@ -14,9 +18,7 @@
       {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
     </button>
 
-    <button class="save" mat-flat-button color="primary"
-      (click)="save()"
-    >
+    <button class="save" mat-flat-button color="primary" (click)="save()">
       {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
     </button>
   </mat-dialog-actions>

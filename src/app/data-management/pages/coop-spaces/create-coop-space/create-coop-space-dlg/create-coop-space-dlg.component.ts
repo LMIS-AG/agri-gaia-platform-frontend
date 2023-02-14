@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { KeycloakService } from 'keycloak-angular';
 import { Observable, of } from 'rxjs';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
+import { CoopSpacesService } from '../../coop-spaces.service';
 
 @Component({
   selector: 'app-create-coop-space-dlg',
@@ -30,7 +32,14 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
 
   public saveEventChild: EventEmitter<void> = new EventEmitter();
 
-  constructor(protected dialogRef: MatDialogRef<any>, protected uiService: UIService) {}
+  public selectableMembers: Member[] = [];
+
+  constructor(
+    protected dialogRef: MatDialogRef<any>,
+    protected uiService: UIService,
+    protected readonly keycloak: KeycloakService,
+    private coopSpaceService: CoopSpacesService
+  ) {}
 
   public ngOnInit(): void {
     this.dialogRef.disableClose = true;
@@ -39,6 +48,19 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
       if (event.key === 'Escape') {
         this.cancelEdit();
       }
+    });
+
+    this.coopSpaceService.getMembers().subscribe({
+      next: members => {
+        this.selectableMembers = members;
+      },
+      error: async response => {
+        if (response.status === 401) {
+          await this.keycloak.login();
+        } else {
+          throw response;
+        }
+      },
     });
   }
 

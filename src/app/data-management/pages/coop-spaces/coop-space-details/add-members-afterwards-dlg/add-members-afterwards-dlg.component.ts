@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild  } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Member } from 'src/app/shared/model/member';
 import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CoopSpacesService } from '../../coop-spaces.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-add-members-afterwards-dlg',
@@ -20,14 +22,33 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
 
   @Output()
   public cancelEvent: EventEmitter<void> = new EventEmitter();
-  @Output() 
+  @Output()
   public membersSelected = new EventEmitter<Member[]>();
+
+  public selectableMembers: Member[] = [];
 
   constructor(
     private uiService: UIService,
+    protected readonly keycloak: KeycloakService,
+    private coopSpaceService: CoopSpacesService
   ) {}
-  
-  public ngOnInit(): void {}
+
+  public ngOnInit(): void {
+    // TODO: filter members. in order to do that maybe pass the coopspace as data into this dialog component (when opening it)
+
+    this.coopSpaceService.getMembers().subscribe({
+      next: members => {
+        this.selectableMembers = members;
+      },
+      error: async response => {
+        if (response.status === 401) {
+          await this.keycloak.login();
+        } else {
+          throw response;
+        }
+      },
+    });
+  }
 
   public cancelEdit(): void {
     this.canClose().subscribe((canClose: boolean) => {
