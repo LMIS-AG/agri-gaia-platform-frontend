@@ -13,7 +13,7 @@ export class CoopSpacesService {
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<CoopSpace[]> {
-    return this.http.get<CoopSpace[]>(environment.backend.url + '/coopspaces')
+    return this.http.get<CoopSpace[]>(environment.backend.url + '/coopspaces');
   }
 
   public getCoopSpaceById(id: number): Observable<CoopSpace> {
@@ -40,11 +40,31 @@ export class CoopSpacesService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
   }
 
-  public deleteMember(memberId: Number, username: String, role: String, coopSpaceName: String, companyName: String): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {memberId, username, role, companyName, coopSpaceName});
+  public deleteMember(
+    memberId: Number,
+    username: String,
+    role: String,
+    coopSpaceName: String,
+    companyName: String
+  ): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {
+      memberId,
+      username,
+      role,
+      companyName,
+      coopSpaceName,
+    });
   }
 
   public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, {coopSpaceId, member});
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, { coopSpaceId, member });
+  }
+
+  public changeMemberRole(coopSpaceId: Number, originalRole: String, member: Member): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/changeMemberRole`, {
+      coopSpaceId,
+      originalRole,
+      member,
+    });
   }
 }
