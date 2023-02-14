@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, concatMap, filter, map, of, switchMap, throwError } from 'rxjs';
-import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
+import { concatMap, filter, map, switchMap } from 'rxjs';
+import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
-import { translate, TranslocoModule } from '@ngneat/transloco';
+import { translate } from '@ngneat/transloco';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { $enum } from 'ts-enum-util';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -24,7 +25,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public userName: string | undefined;
   public fullName: string | undefined;
   public originalRole: string = '';
-  public roles: CoopSpaceRole[] = [CoopSpaceRole.Admin, CoopSpaceRole.User, CoopSpaceRole.Guest];
+  public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
   constructor(
     private route: ActivatedRoute,
@@ -125,6 +126,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
               );
             },
           });
+        } else {
+          member.role = fromStringToCoopSpaceRole(originalRole);
         }
       });
   }
