@@ -1,21 +1,23 @@
 <ng-container *transloco="let tCommon; read: 'common'">
-  
-        <mat-dialog-content class="dialog-content">
-          <app-add-members
-            (handledSelectionEvent)="handleSelectedMembers($event)"
-            [saveEvent]="saveEventChild"
-          ></app-add-members>
-        </mat-dialog-content>
-  
-        <br />
-        <br />
-        <mat-dialog-actions class="dialog-actions">
-        <button mat-flat-button (click)="cancelEdit()">
-            {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
-            </button>
-          <button class="save" mat-flat-button color="primary" (click)="save()">
-            {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
-          </button>
-        </mat-dialog-actions>
-  </ng-container>
-  
+  <mat-dialog-content class="dialog-content">
+    <app-add-members
+      (handledSelectionEvent)="handleSelectedMembers($event)"
+      [saveEvent]="saveEventChild"
+    ></app-add-members>
+  </mat-dialog-content>
+
+  <br />
+  <br />
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-flat-button (click)="cancelEdit()">
+      {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+    </button>
+
+    <button class="save" mat-flat-button color="primary"
+      (click)="save()"
+    >
+      {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>

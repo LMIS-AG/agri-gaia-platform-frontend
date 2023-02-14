@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, concatMap, filter, map, of, switchMap, throwError } from 'rxjs';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
@@ -9,7 +9,7 @@ import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -25,9 +25,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public userName: string | undefined;
   public fullName: string | undefined;
-  public member_test: Member[] | undefined;
-  dialogRef: any;
-
+  public membersSelected: Member[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -121,13 +119,37 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public addMember(): void {
-    this.dialog.open(AddMembersAfterwardsDlgComponent, {
+  public addMember(membersSelected: Member[], dialogRef: MatDialogRef<AddMembersAfterwardsDlgComponent>): void {
+    this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
+      next: () => {
+        this.uiService.showSuccessMessage(
+          translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
+        );
+        dialogRef.close(membersSelected);
+      },
+      error: () => {
+        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
+      },
+    });
+  }  
+  
+  public openAddMembersAfterwardsDialog(): void {
+    const dialogRef = this.dialog.open(AddMembersAfterwardsDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      //data: coopSpace,
     });
-  }
+  
+    dialogRef.componentInstance.membersSelected.subscribe((membersSelected: Member[]) => {
+      this.addMember(membersSelected, dialogRef);
+      dialogRef.close(); // close the dialog when the user clicks on save
+    });
+    
+    dialogRef.componentInstance.cancelEvent.subscribe(() => {
+      dialogRef.close(); // close the dialog when the user clicks on cancel
+    });
+    
+    dialogRef.afterClosed().subscribe();
+  }    
 
   public onMore(): void {
     throw Error('Not yet implemented');
@@ -167,18 +189,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public returnFullName(): String | undefined {
     return this.fullName;
   }
-
-  public onSave(membersSelected: Member[]): void {
-    this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
-      next: () => {
-        this.uiService.showSuccessMessage(
-          translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
-        );
-      },
-      error: () => {
-        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
-      },
-    });
-    };
+  
   }
 

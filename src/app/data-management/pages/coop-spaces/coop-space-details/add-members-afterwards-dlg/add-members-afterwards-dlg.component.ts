@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild  } from '@angular/core';
 import { Member } from 'src/app/shared/model/member';
 import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { UIService } from 'src/app/shared/services/ui.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-members-afterwards-dlg',
@@ -13,18 +14,14 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
   public saveEventChild: EventEmitter<void> = new EventEmitter();
 
   @Input()
-  public formGroup!: FormGroup;
-  @Input()
   public saveButtonLabel: string = '';
   @Input()
   public cancelButtonLabel: string = '';
 
   @Output()
-  private cancelEvent: EventEmitter<void> = new EventEmitter();
-  @Output()
-  private saveEventParent: EventEmitter<Member[]> = new EventEmitter();
-
-  public membersSelected: Member[] = [];
+  public cancelEvent: EventEmitter<void> = new EventEmitter();
+  @Output() 
+  public membersSelected = new EventEmitter<Member[]>();
 
   constructor(
     private uiService: UIService,
@@ -41,8 +38,6 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
   }
 
   private canClose(): Observable<boolean> {
-    if (!this.formGroup.dirty) return of(true);
-
     return this.uiService.confirmDiscardingUnsavedChanges();
   }
 
@@ -52,6 +47,6 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
   }
 
   public handleSelectedMembers(membersSelected: Member[]): void {
-    this.saveEventParent.emit(membersSelected);
+    this.membersSelected.emit(membersSelected);
   }
 }
