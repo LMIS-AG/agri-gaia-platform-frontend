@@ -20,6 +20,7 @@ import { uniqueNameAsyncValidator } from './unique-name-async-validator';
 export class CreateCoopSpaceComponent implements OnInit {
   public formGroup: FormGroup;
   public companies: string[] = [];
+  public isNameInputDisabled: boolean = true;
 
   constructor(
     private dialogRef: MatDialogRef<CoopSpacesComponent>,
@@ -31,7 +32,7 @@ export class CreateCoopSpaceComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       company: ['', Validators.required],
       name: [
-        '',
+        { value: '', disabled: true },
         [
           Validators.required,
           Validators.minLength(3),
@@ -50,6 +51,8 @@ export class CreateCoopSpaceComponent implements OnInit {
     this.coopSpacesService.getValidCompanyNames().subscribe(validCompanyNames => {
       this.companies = validCompanyNames;
     });
+
+    this.formGroup.get('company')?.valueChanges.subscribe(() => this.formGroup.get('name')?.enable());
   }
 
   public onSave(membersSelected: Member[]): void {
