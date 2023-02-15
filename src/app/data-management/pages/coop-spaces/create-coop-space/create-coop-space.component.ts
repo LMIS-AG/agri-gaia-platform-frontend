@@ -10,6 +10,7 @@ import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesComponent } from '../coop-spaces.component';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { CoopSpaceValidator } from './coop-space-validator';
+import { uniqueNameAsyncValidator } from './unique-name-async-validator';
 
 @Component({
   selector: 'app-create-coop-space',
@@ -40,6 +41,7 @@ export class CreateCoopSpaceComponent implements OnInit {
           CoopSpaceValidator.validStartCharacter,
           CoopSpaceValidator.validEndCharacter,
         ],
+        [uniqueNameAsyncValidator(this.coopSpacesService)],
       ],
     });
   }

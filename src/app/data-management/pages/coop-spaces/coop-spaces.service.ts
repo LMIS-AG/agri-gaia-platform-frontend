@@ -67,4 +67,8 @@ export class CoopSpacesService {
       member,
     });
   }
+
+  public checkIfCoopSpaceAlreadyExistsByName(name: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.backend.url}/coopspaces/existsbyname/${name}`);
+  }
 }
