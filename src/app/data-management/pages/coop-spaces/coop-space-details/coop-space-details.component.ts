@@ -170,6 +170,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public openAddMembersAfterwardsDialog(): void {
     const dialogRef = this.dialog.open(AddMembersAfterwardsDlgComponent, {
+      data: this.coopSpace,
       minWidth: '60em',
       panelClass: 'resizable',
     });

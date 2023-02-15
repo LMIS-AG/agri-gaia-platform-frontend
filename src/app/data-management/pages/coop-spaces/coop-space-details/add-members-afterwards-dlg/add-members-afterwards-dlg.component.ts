@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { Member } from 'src/app/shared/model/member';
 import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -6,6 +6,8 @@ import { UIService } from 'src/app/shared/services/ui.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CoopSpacesService } from '../../coop-spaces.service';
 import { KeycloakService } from 'keycloak-angular';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 
 @Component({
   selector: 'app-add-members-afterwards-dlg',
@@ -30,15 +32,18 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
   constructor(
     private uiService: UIService,
     protected readonly keycloak: KeycloakService,
-    private coopSpaceService: CoopSpacesService
+    private coopSpaceService: CoopSpacesService,
+    @Inject(MAT_DIALOG_DATA) public data: CoopSpace
   ) {}
 
   public ngOnInit(): void {
     // TODO: filter members. in order to do that maybe pass the coopspace as data into this dialog component (when opening it)
-
+    
     this.coopSpaceService.getMembers().subscribe({
       next: members => {
-        this.selectableMembers = members;
+        this.selectableMembers = members.filter(member => {
+          return !this.data.members.some(coopSpaceMember => coopSpaceMember.username === member.username);
+        });
       },
       error: async response => {
         if (response.status === 401) {
