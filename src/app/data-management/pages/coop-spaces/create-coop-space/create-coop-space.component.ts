@@ -20,7 +20,6 @@ import { uniqueNameAsyncValidator } from './unique-name-async-validator';
 export class CreateCoopSpaceComponent implements OnInit {
   public formGroup: FormGroup;
   public companies: string[] = [];
-  public isNameInputDisabled: boolean = true;
 
   constructor(
     private dialogRef: MatDialogRef<CoopSpacesComponent>,
