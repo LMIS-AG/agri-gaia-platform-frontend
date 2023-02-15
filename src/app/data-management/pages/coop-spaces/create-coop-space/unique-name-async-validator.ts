@@ -4,8 +4,12 @@ import { CoopSpacesService } from '../coop-spaces.service';
 
 export function uniqueNameAsyncValidator(coopSpacesService: CoopSpacesService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const name = control.value;
+    const company = control.parent?.get('company')?.value?.toLowerCase();
+    const nameInMinio = `prj-${company}-${name}`;
+
     return coopSpacesService
-      .checkIfCoopSpaceAlreadyExistsByName(control.value)
+      .checkIfCoopSpaceAlreadyExistsByName(nameInMinio)
       .pipe(map(result => (result ? { coopSpaceNameAlreadyExists: true } : null)));
   };
 }
