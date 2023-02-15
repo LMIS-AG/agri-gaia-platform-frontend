@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
-import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
+import { Observable } from 'rxjs';
+import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { environment } from 'src/environments/environment';
 import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
