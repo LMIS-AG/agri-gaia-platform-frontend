@@ -86,26 +86,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
       )
       .subscribe(result => {
         if (result) {
-          // modify the string before sending it, e.g. "USER" becomes "User"
-          let role = member.role.toLowerCase();
-          role = role.charAt(0).toUpperCase() + role.slice(1);
-
           // send the necessary data and remove the user from the member table
-          this.coopSpacesService
-            .deleteMember(member.id!, member.username, role, this.coopSpace!.name, this.coopSpace!.company)
-            .subscribe({
-              next: () => {
-                this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
-                this.uiService.showSuccessMessage(
-                  translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
-                );
-              },
-              error: () => {
-                this.uiService.showErrorMessage(
-                  translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText')
-                );
-              },
-            });
+          this.coopSpacesService.deleteMember(this.coopSpace!.name, member).subscribe({
+            next: () => {
+              this.coopSpace!.members = this.coopSpace!.members.filter(m => m.id !== member.id);
+              this.uiService.showSuccessMessage(
+                translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
+              );
+            },
+            error: () => {
+              this.uiService.showErrorMessage(
+                translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText')
+              );
+            },
+          });
         }
       });
   }

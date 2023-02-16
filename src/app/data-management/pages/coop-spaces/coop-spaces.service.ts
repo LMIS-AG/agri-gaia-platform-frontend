@@ -42,7 +42,8 @@ export class CoopSpacesService {
 
   public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, { coopSpaceId, member });
-
+  }
+  
   public deleteMember(coopSpaceName: String, member: Member): Observable<void> {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, { coopSpaceName, member });
   }
