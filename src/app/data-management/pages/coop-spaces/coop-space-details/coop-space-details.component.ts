@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, filter, map, switchMap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
@@ -148,13 +148,12 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public addMember(membersSelected: Member[], dialogRef: MatDialogRef<AddMembersAfterwardsDlgComponent>): void {
+  public addMember(membersSelected: Member[]): void {
     this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
         );
-        dialogRef.close(membersSelected);
       },
       error: () => {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
@@ -170,15 +169,13 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
 
     dialogRef.componentInstance.membersSelected.subscribe((membersSelected: Member[]) => {
-      this.addMember(membersSelected, dialogRef);
+      this.addMember(membersSelected);
       dialogRef.close(); // close the dialog when the user clicks on save
     });
 
     dialogRef.componentInstance.cancelEvent.subscribe(() => {
       dialogRef.close(); // close the dialog when the user clicks on cancel
     });
-
-    dialogRef.afterClosed().subscribe();
   }
 
   public onMore(): void {
