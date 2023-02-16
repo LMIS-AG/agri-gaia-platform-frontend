@@ -10,6 +10,7 @@ import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesComponent } from '../coop-spaces.component';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { CoopSpaceValidator } from './coop-space-validator';
+import { uniqueNameAsyncValidator } from './unique-name-async-validator';
 
 @Component({
   selector: 'app-create-coop-space',
@@ -30,7 +31,7 @@ export class CreateCoopSpaceComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       company: ['', Validators.required],
       name: [
-        '',
+        { value: '', disabled: true },
         [
           Validators.required,
           Validators.minLength(3),
@@ -40,6 +41,7 @@ export class CreateCoopSpaceComponent implements OnInit {
           CoopSpaceValidator.validStartCharacter,
           CoopSpaceValidator.validEndCharacter,
         ],
+        [uniqueNameAsyncValidator(this.coopSpacesService)],
       ],
     });
   }
@@ -48,6 +50,8 @@ export class CreateCoopSpaceComponent implements OnInit {
     this.coopSpacesService.getValidCompanyNames().subscribe(validCompanyNames => {
       this.companies = validCompanyNames;
     });
+
+    this.formGroup.get('company')?.valueChanges.subscribe(() => this.formGroup.get('name')?.enable());
   }
 
   public onSave(membersSelected: Member[]): void {

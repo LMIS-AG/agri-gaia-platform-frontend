@@ -41,6 +41,9 @@
         <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
           tDialog('nameRules.invalidPrefix')
         }}</mat-error>
+        <mat-error *ngIf="formGroup.controls['name'].hasError('coopSpaceNameAlreadyExists')">{{
+          tDialog('nameRules.uniqueness')
+        }}</mat-error>
       </mat-form-field>
     </div>
 
