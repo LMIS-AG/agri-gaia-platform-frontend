@@ -1,15 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { Member } from 'src/app/shared/model/member';
-import { FormGroup } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UIService } from 'src/app/shared/services/ui.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CoopSpacesService } from '../../coop-spaces.service';
 import { KeycloakService } from 'keycloak-angular';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 
 @Component({
   selector: 'app-add-members-afterwards-dlg',
@@ -39,8 +35,6 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    // TODO: filter members. in order to do that maybe pass the coopspace as data into this dialog component (when opening it)
-    
     this.coopSpaceService.getMembers().subscribe({
       next: members => {
         this.selectableMembers = members.filter(member => {
