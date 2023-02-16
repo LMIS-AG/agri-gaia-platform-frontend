@@ -8,6 +8,8 @@ import { CoopSpacesService } from '../../coop-spaces.service';
 import { KeycloakService } from 'keycloak-angular';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-add-members-afterwards-dlg',

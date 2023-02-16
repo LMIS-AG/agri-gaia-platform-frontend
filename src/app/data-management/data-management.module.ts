@@ -21,6 +21,7 @@ import { ConstraintsComponent } from './pages/policies/create-policy/constraints
 import { BucketsComponent } from './pages/buckets/buckets.component';
 import { AssetsComponent } from './pages/buckets/assets/assets.component';
 import { AddMembersAfterwardsDlgComponent } from './pages/coop-spaces/coop-space-details/add-members-afterwards-dlg/add-members-afterwards-dlg.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   {
@@ -89,6 +90,7 @@ const routes: Routes = [
     MatStepperModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    MatProgressSpinnerModule,
   ],
 })
 export class DataManagementModule {}

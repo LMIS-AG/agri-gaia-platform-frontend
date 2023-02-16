@@ -1,13 +1,20 @@
 <ng-container *transloco="let tCommon; read: 'common'">
   <mat-dialog-content class="dialog-content">
-    <ng-container *ngIf="selectableMembers?.length">
+    <ng-container *ngIf="selectableMembers?.length; else loading">
       <app-add-members
         (handledSelectionEvent)="handleSelectedMembers($event)"
         [saveEvent]="saveEventChild"
         [members]="selectableMembers"
       ></app-add-members>
     </ng-container>
-    <!-- TODO else Loading Spinner!? -->
+    <ng-template #loading>
+      <div class="d-flex justify-content-center align-items-center">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <mat-spinner></mat-spinner>
+          <p>Lädt...</p>
+        </div>
+      </div>
+    </ng-template>
   </mat-dialog-content>
 
   <br />
