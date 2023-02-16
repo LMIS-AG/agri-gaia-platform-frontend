@@ -1,0 +1,33 @@
+<ng-container *transloco="let tCommon; read: 'common'">
+  <mat-dialog-content class="dialog-content">
+    <ng-container *ngIf="selectableMembers?.length; else loading">
+      <app-add-members
+        (handledSelectionEvent)="handleSelectedMembers($event)"
+        [saveEvent]="saveEventChild"
+        [members]="selectableMembers"
+      ></app-add-members>
+    </ng-container>
+    <ng-template #loading>
+      <div class="d-flex justify-content-center align-items-center">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <mat-spinner></mat-spinner>
+          <br />
+          <p>Lädt...</p>
+        </div>
+      </div>
+    </ng-template>
+  </mat-dialog-content>
+
+  <br />
+  <br />
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-flat-button (click)="cancelEdit()">
+      {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+    </button>
+
+    <button class="save" mat-flat-button color="primary" (click)="save()">
+      {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>

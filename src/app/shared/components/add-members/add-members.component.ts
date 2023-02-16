@@ -15,9 +15,10 @@ import { $enum } from 'ts-enum-util';
   styleUrls: ['./add-members.component.scss'],
 })
 export class AddMembersComponent implements OnInit {
-  public members: Member[] = [];
+  @Input()
+  public members!: Member[];
   public membersInitial: Member[] = [];
-  public myGroup = new FormGroup({
+  public searchFromGroup = new FormGroup({
     searchTerm: new FormControl(),
   });
   public formGroups!: FormGroup[];
@@ -28,11 +29,7 @@ export class AddMembersComponent implements OnInit {
   @Output()
   private handledSelectionEvent: EventEmitter<Member[]> = new EventEmitter();
 
-  constructor(
-    private coopSpaceService: CoopSpacesService,
-    protected readonly keycloak: KeycloakService,
-    private fb: FormBuilder
-  ) {}
+  constructor(protected readonly keycloak: KeycloakService, private fb: FormBuilder) {}
 
   public ngOnInit(): void {
     if (this.saveEvent) {
@@ -41,7 +38,7 @@ export class AddMembersComponent implements OnInit {
       });
     }
 
-    this.myGroup.controls.searchTerm.valueChanges
+    this.searchFromGroup.controls.searchTerm.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), untilDestroyed(this))
       .subscribe(value => {
         if (value !== '') {
@@ -54,20 +51,8 @@ export class AddMembersComponent implements OnInit {
         }
       });
 
-    this.coopSpaceService.getMembers().subscribe({
-      next: members => {
-        this.members = members;
-        this.membersInitial = members;
-        this.formGroups = this.initFormGroups(members);
-      },
-      error: async response => {
-        if (response.status === 401) {
-          await this.keycloak.login();
-        } else {
-          throw response;
-        }
-      },
-    });
+    this.membersInitial = this.members;
+    this.formGroups = this.initFormGroups(this.members);
   }
 
   public getInitialIndexOfMember(member: Member): number {

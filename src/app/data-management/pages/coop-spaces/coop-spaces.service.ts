@@ -40,6 +40,10 @@ export class CoopSpacesService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
   }
 
+  public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, { coopSpaceId, member });
+  }
+  
   public deleteMember(coopSpaceName: String, member: Member): Observable<void> {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, { coopSpaceName, member });
   }
@@ -51,7 +55,7 @@ export class CoopSpacesService {
       member,
     });
   }
-
+  
   public checkIfCoopSpaceAlreadyExistsByName(name: string): Observable<boolean> {
     return this.http.get<boolean>(`${environment.backend.url}/coopspaces/existsbyname/${name}`);
   }

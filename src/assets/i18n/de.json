@@ -132,12 +132,15 @@
           "ADMIN": "Admin"
         },
         "dialog": {
-            "deleteMemberConfirmationQuestion": "Möchten Sie diese Person aus dem Kooperationsbereich entfernen?",
-            "deleteMemberConfirmationText": "Die Person wurde erfolgreich aus dem Kooperationsbereich entfernt.",
-            "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen.",
-            "changeMemberRoleConfirmationQuestion": "Möchten Sie die Rolle dieser Person verändern?",
-            "changeMemberRoleConfirmationText": "Die Rolle wurde erfolgreich verändert.",
-            "changeMemberRoleErrorText": "Die Anfrage für die Veränderung der Rolle ist fehlgeschlagen."
+          "deleteMemberConfirmationQuestion": "Möchten Sie diese Person aus dem Kooperationsbereich entfernen?",
+          "deleteMemberConfirmationText": "Die Person wurde erfolgreich aus dem Kooperationsbereich entfernt.",
+          "deleteMemberErrorText": "Die Anfrage zum Entfernen ist fehlgeschlagen.",
+          "addMemberConfirmationQuestion": "Möchten Sie diese Person zu dem Kooperationsbereich hinzufügen?",
+          "addMemberConfirmationText": "Die Anfrage zum Hinzufügen wurde erfolgreich gestellt.",
+          "addMemberErrorText": "Die Anfrage zum Hinzufügen ist fehlgeschlagen.",
+          "changeMemberRoleConfirmationQuestion": "Möchten Sie die Rolle dieser Person verändern?",
+          "changeMemberRoleConfirmationText": "Die Rolle wurde erfolgreich verändert.",
+          "changeMemberRoleErrorText": "Die Anfrage für die Veränderung der Rolle ist fehlgeschlagen."
         },
         "table": {
           "name": "Name",

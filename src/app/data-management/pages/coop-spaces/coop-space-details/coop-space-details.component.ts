@@ -8,6 +8,8 @@ import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
 
 @Component({
@@ -24,6 +26,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public userName: string | undefined;
   public fullName: string | undefined;
+  public membersSelected: Member[] = [];
   public originalRole: string = '';
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
@@ -32,6 +35,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private router: Router,
     private coopSpacesService: CoopSpacesService,
     private uiService: UIService,
+    private dialog: MatDialog,
     private authenticationService: AuthenticationService
   ) {}
 
@@ -144,8 +148,34 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public addMember(): void {
-    throw Error('Not yet implemented');
+  public addMember(membersSelected: Member[]): void {
+    this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
+      next: () => {
+        this.uiService.showSuccessMessage(
+          translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
+        );
+      },
+      error: () => {
+        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
+      },
+    });
+  }
+
+  public openAddMembersAfterwardsDialog(): void {
+    const dialogRef = this.dialog.open(AddMembersAfterwardsDlgComponent, {
+      data: this.coopSpace,
+      minWidth: '60em',
+      panelClass: 'resizable',
+    });
+
+    dialogRef.componentInstance.membersSelected.subscribe((membersSelected: Member[]) => {
+      this.addMember(membersSelected);
+      dialogRef.close(); // close the dialog when the user clicks on save
+    });
+
+    dialogRef.componentInstance.cancelEvent.subscribe(() => {
+      dialogRef.close(); // close the dialog when the user clicks on cancel
+    });
   }
 
   public onMore(): void {
