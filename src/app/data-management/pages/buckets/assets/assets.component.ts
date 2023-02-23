@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs';
+import { filter, finalize, map, Subscription, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
 import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
@@ -18,6 +18,7 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public dataSource: GeneralPurposeAsset[] = [];
   public fileToUpload: File | null = null;
+  public uploadSub: Subscription | undefined; // TODO do i need this?
 
   constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService) {}
 
@@ -41,7 +42,40 @@ export class AssetsComponent implements OnInit {
   }
 
   public onFileSelected(event: any) {
-    //console.log(event); TODO remove
+    const bucket = this.bucket;
+    if (bucket == null) {
+      throw Error('Bucket was null in onFileSelected().');
+    }
+
+    /*
+    console.log(event); //TODO remove
+    console.log(event.target); //TODO remove
+    console.log(event.target.files); //TODO remove
+    console.log(event.target.files[0]); //TODO remove
+*/
+
+    const filesToUpload: File[] = event.target.files;
+
+    // TODO add uploading multiple files
+    if (filesToUpload && filesToUpload.length !== 0) {
+      const file: File = filesToUpload[0];
+      const formData = new FormData();
+      formData.append('test1', file);
+
+      const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
+
+      this.uploadSub = upload$.subscribe({ complete: () => this.uiService.showSuccessMessage('upload complete') });
+    }
+  }
+
+  // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
+  public cancelUpload(): void {
+    this.uploadSub!.unsubscribe(); // TODO check if this causes erros
+    this.reset();
+  }
+
+  private reset(): void {
+    this.uploadSub = undefined;
   }
 
   public publishAsset(element: GeneralPurposeAsset): void {
@@ -53,9 +87,13 @@ export class AssetsComponent implements OnInit {
         confirmButtonColor: 'primary',
       })
       .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
+        if (!userConfirmed) {
+          return;
+        }
         let bucket = this.bucket;
-        if (bucket == null) throw Error('Bucket was null in publishAsset().');
+        if (bucket == null) {
+          throw Error('Bucket was null in publishAsset().');
+        }
         this.bucketService.publishAsset(bucket, element.name).subscribe({
           next: response => this.handlePublishSuccess(response),
           error: err => this.handlePublishError(err),
