@@ -47,24 +47,21 @@ export class AssetsComponent implements OnInit {
       throw Error('Bucket was null in onFileSelected().');
     }
 
-    /*
-    console.log(event); //TODO remove
-    console.log(event.target); //TODO remove
-    console.log(event.target.files); //TODO remove
-    console.log(event.target.files[0]); //TODO remove
-*/
-
     const filesToUpload: File[] = event.target.files;
 
-    // TODO add uploading multiple files
     if (filesToUpload && filesToUpload.length !== 0) {
-      const file: File = filesToUpload[0];
       const formData = new FormData();
-      formData.append('test1', file);
+
+      for (let index = 0; index < filesToUpload.length; index++) {
+        const file = filesToUpload[index];
+        formData.append('files', file);
+      }
 
       const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
-
-      this.uploadSub = upload$.subscribe({ complete: () => this.uiService.showSuccessMessage('upload complete') });
+      this.uploadSub = upload$.subscribe({
+        complete: () => this.uiService.showSuccessMessage('upload complete'),
+        error: e => console.log(e),
+      });
     }
   }
 
