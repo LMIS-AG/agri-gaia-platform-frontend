@@ -3,6 +3,22 @@
     <!-- Headline -->
     <div class="card-headline" fxLayout="row" fxLayoutAlign="space-between">
       <h1 class="headline">{{ bucket ?? '...' }}</h1>
+      <button mat-mini-fab class="mat-elevation-z0" color="primary" [matMenuTriggerFor]="menuForUpload">
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-menu #menuForUpload="matMenu">
+        <!-- actual input for file upload is hidden because it is hard to style -->
+        <div>
+          <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload />
+        </div>
+        <!-- workaround to provide a good UI for the user -->
+        <div>
+          <button (click)="fileUpload.click()">
+            <mat-icon>upload</mat-icon>
+            Datei hochladen
+          </button>
+        </div>
+      </mat-menu>
     </div>
 
     <!-- Dataset -->
@@ -46,7 +62,7 @@
                   {{ tCommon('publish') }}
                 </button>
                 <button mat-menu-item class="delete-button" (click)="unpublishAsset(element)">
-<!--                  TODO: Get a better icon.-->
+                  <!--                  TODO: Get a better icon.-->
                   <mat-icon>unpublished</mat-icon>
                   {{ tCommon('unpublish') }}
                 </button>
