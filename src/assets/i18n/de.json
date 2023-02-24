@@ -66,6 +66,8 @@
         "name": "Name"
       },
       "assets": {
+        "uploadFile": "Datei hochladen",
+        "uploadedFile": "Die Datei(en) wurde(n) hochgeladen",
         "table": {
           "name": "Assets",
           "date": "Datum",

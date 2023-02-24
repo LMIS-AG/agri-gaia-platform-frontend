@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'dataManagement.coopSpaces.details'">
+<ng-container *transloco="let t; read: 'dataManagement.buckets.assets'">
   <div fxLayout="column" fxLayoutAlign="space-between" *transloco="let tCommon; read: 'common'">
     <!-- Headline -->
     <div class="card-headline" fxLayout="row" fxLayoutAlign="space-between">
@@ -11,11 +11,10 @@
         <div>
           <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
         </div>
-        <!-- workaround to provide a good UI for the user -->
         <div>
           <button class="upload-button" (click)="fileUpload.click()">
             <mat-icon>upload</mat-icon>
-            <p>Datei hochladen</p>
+            <p>{{ t('uploadFile') }}</p>
           </button>
         </div>
       </mat-menu>
