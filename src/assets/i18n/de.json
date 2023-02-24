@@ -67,7 +67,8 @@
       },
       "assets": {
         "uploadFile": "Datei hochladen",
-        "uploadedFile": "Die Datei(en) wurde(n) hochgeladen",
+        "uploadedFile": "Der Upload war erfolgreich.",
+        "uploadFileError": "Der Upload ist fehlgeschlagen.",
         "table": {
           "name": "Assets",
           "date": "Datum",
