@@ -20,11 +20,11 @@ export class BucketService {
   }
 
   public publishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/assets/${bucket}/${name}`, {}, { observe: 'response' });
+    return this.http.post(`${environment.backend.url}/assets/publish/${bucket}/${name}`, {}, { observe: 'response' });
   }
 
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/assets/${bucket}/${name}`, { observe: 'response' });
+    return this.http.delete(`${environment.backend.url}/assets/publish/${bucket}/${name}`, { observe: 'response' });
   }
 
   public uploadAsset(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
