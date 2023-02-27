@@ -162,10 +162,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
-  public groupMember(members: Member[]) {
-    this.coopSpacesService.getMembers()
-  }
-
   public openAddMembersAfterwardsDialog(): void {
     const dialogRef = this.dialog.open(AddMembersAfterwardsDlgComponent, {
       data: this.coopSpace,
