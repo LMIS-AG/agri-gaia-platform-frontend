@@ -58,6 +58,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         next: result => {
           if (result.coopSpace != null) {
             this.coopSpace = result.coopSpace;
+            this.coopSpace.members.sort((a, b) => (a.name! < b.name! ? -1 : 1));
           }
           this.datasetDatasource = result.assets;
         },
