@@ -58,6 +58,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         next: result => {
           if (result.coopSpace != null) {
             this.coopSpace = result.coopSpace;
+            this.coopSpace.members.sort((a, b) => (a.name! < b.name! ? -1 : 1));
           }
           this.datasetDatasource = result.assets;
         },
@@ -159,6 +160,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
       },
     });
+  }
+
+  public groupMember(members: Member[]) {
+    this.coopSpacesService.getMembers()
   }
 
   public openAddMembersAfterwardsDialog(): void {
