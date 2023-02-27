@@ -41,7 +41,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public onFileSelected(event: any) {
+  public onFileSelected(event: any): void {
     const bucket = this.bucket;
     if (bucket == null) {
       throw Error('Bucket was null in onFileSelected().');
