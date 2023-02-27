@@ -60,7 +60,7 @@ export class AssetsComponent implements OnInit {
       const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
       this.uploadSub = upload$.subscribe({
         complete: () => this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile')),
-        error: () => this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadFileError')),
+        error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
       });
     }
   }
