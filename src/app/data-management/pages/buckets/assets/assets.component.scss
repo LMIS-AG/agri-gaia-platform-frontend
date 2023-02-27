@@ -49,7 +49,6 @@ table {
 
 .card {
   background-color: white;
-  height: 325px;
   padding: 15px;
   border-radius: 6px;
 }
@@ -59,4 +58,27 @@ table {
   mat-icon {
     color: $error;
   }
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+
+  p {
+    margin: 0 0 0 8px;
+  }
+}
+
+.upload-button:hover {
+  cursor: pointer;
+}
+
+::ng-deep.mat-menu-panel {
+  min-height: 0px !important;
 }

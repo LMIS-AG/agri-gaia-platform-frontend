@@ -66,6 +66,9 @@
         "name": "Name"
       },
       "assets": {
+        "uploadFile": "Datei hochladen",
+        "uploadedFile": "Der Upload war erfolgreich.",
+        "uploadFileError": "Der Upload ist fehlgeschlagen.",
         "table": {
           "name": "Assets",
           "date": "Datum",
