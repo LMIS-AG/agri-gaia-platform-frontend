@@ -69,6 +69,8 @@
         "uploadFile": "Datei hochladen",
         "uploadedFile": "Der Upload war erfolgreich.",
         "uploadFileError": "Der Upload ist fehlgeschlagen.",
+        "publishFile": "Auf Marktplatz veröffentlichen",
+        "unpublishFile": "Von Marktplatz entfernen",
         "table": {
           "name": "Assets",
           "date": "Datum",
