@@ -70,7 +70,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
           }
           result.assets.forEach(asset => {
             // convert the displayed file size
-            asset.size = prettyPrintFileSize(asset.size);
+            asset.size = prettyPrintFileSize(parseInt(asset.size));
           });
           this.datasetDatasource = result.assets;
         },
