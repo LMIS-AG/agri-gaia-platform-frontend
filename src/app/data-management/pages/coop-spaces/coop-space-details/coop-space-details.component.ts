@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, map, switchMap } from 'rxjs';
+import { concatMap, filter, finalize, map, Subscription, switchMap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
@@ -11,6 +11,9 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
 import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
+import { BucketService } from 'src/app/data-management/pages/buckets/bucket.service';
+import { Bucket } from 'src/app/shared/model/bucket';
+import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -21,7 +24,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public coopSpace?: CoopSpace;
 
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
-  public displayedColumnsDataset: string[] = ['name', 'date', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public datasetDatasource: GeneralPurposeAsset[] = [];
 
   public userName: string | undefined;
@@ -30,13 +33,17 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public originalRole: string = '';
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
+  public bucket?: string;
+  public uploadSub: Subscription | undefined; // TODO do i need this?
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private coopSpacesService: CoopSpacesService,
     private uiService: UIService,
     private dialog: MatDialog,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private bucketService: BucketService
   ) {}
 
   public ngOnInit(): void {
@@ -58,8 +65,13 @@ export class CoopSpaceDetailsComponent implements OnInit {
         next: result => {
           if (result.coopSpace != null) {
             this.coopSpace = result.coopSpace;
+            this.bucket = `prj-${this.coopSpace.company.toLocaleLowerCase()}-${this.coopSpace.name}`;
             this.coopSpace.members.sort((a, b) => (a.name! < b.name! ? -1 : 1));
           }
+          result.assets.forEach(asset => {
+            // convert the displayed file size
+            asset.size = prettyPrintFileSize(asset.size);
+          });
           this.datasetDatasource = result.assets;
         },
         error: error => {
@@ -147,6 +159,40 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public addDataset(): void {
     throw Error('Not yet implemented');
+  }
+
+  public onFileSelected(event: any): void {
+    const bucket = this.bucket;
+    if (bucket == null) {
+      throw Error('Bucket was null in onFileSelected().');
+    }
+
+    const filesToUpload: File[] = event.target.files;
+
+    if (filesToUpload && filesToUpload.length !== 0) {
+      const formData = new FormData();
+
+      for (let index = 0; index < filesToUpload.length; index++) {
+        const file = filesToUpload[index];
+        formData.append('files', file);
+      }
+
+      const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
+      this.uploadSub = upload$.subscribe({
+        complete: () => this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
+        error: () => this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
+      });
+    }
+  }
+
+  // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
+  public cancelUpload(): void {
+    this.uploadSub!.unsubscribe(); // TODO check if this causes erros
+    this.reset();
+  }
+
+  private reset(): void {
+    this.uploadSub = undefined;
   }
 
   public addMember(membersSelected: Member[]): void {
