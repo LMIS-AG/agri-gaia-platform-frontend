@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
@@ -58,5 +58,12 @@ export class CoopSpacesService {
   
   public checkIfCoopSpaceAlreadyExistsByName(name: string): Observable<boolean> {
     return this.http.get<boolean>(`${environment.backend.url}/coopspaces/existsbyname/${name}`);
+  }
+
+  public uploadAsset(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
+    return this.http.post(`${environment.backend.url}/coopspaces/upload/${bucket}`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 }

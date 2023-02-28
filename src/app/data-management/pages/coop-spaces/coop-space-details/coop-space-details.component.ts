@@ -177,7 +177,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         formData.append('files', file);
       }
 
-      const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
+      const upload$ = this.coopSpacesService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
       this.uploadSub = upload$.subscribe({
         complete: () => this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
         error: () => this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
