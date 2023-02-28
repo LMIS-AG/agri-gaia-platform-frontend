@@ -43,7 +43,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private uiService: UIService,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
-    private bucketService: BucketService
   ) {}
 
   public ngOnInit(): void {
