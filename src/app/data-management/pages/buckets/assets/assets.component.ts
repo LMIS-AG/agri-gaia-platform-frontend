@@ -19,6 +19,7 @@ export class AssetsComponent implements OnInit {
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public uploadSub: Subscription | undefined; // TODO do i need this?
+  public isLoading = false;
 
   constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService) {}
 
@@ -57,14 +58,21 @@ export class AssetsComponent implements OnInit {
         formData.append('files', file);
       }
 
+      this.isLoading = true;
       this.uploadSub = this.bucketService
         .uploadAsset(bucket, formData)
         .pipe(finalize(() => this.reset()))
         .subscribe({
-          complete: () => this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile')),
+          complete: () => this.handleUploadSuccess(),
           error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
         });
     }
+  }
+
+  private handleUploadSuccess(): void {
+    this.isLoading = false;
+
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
@@ -117,7 +125,7 @@ export class AssetsComponent implements OnInit {
   }
 
   private updateAssets(asset: GeneralPurposeAsset): void {
-    this.dataSource.data = this.dataSource.data.filter(e => e.id !== asset.id);
+    this.dataSource.data = this.dataSource.data.filter(e => e.name !== asset.name);
   }
 
   public unpublishAsset(asset: GeneralPurposeAsset): void {

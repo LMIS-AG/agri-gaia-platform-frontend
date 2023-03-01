@@ -9,6 +9,7 @@
     "back": "Zurück",
     "edit": "Bearbeiten",
     "download": "Herunterladen",
+    "loading": "Lädt",
     "delete": "Löschen",
     "save": "Speichern",
     "publish": "Veröffentlichen",
@@ -69,6 +70,8 @@
         "uploadFile": "Datei hochladen",
         "uploadedFile": "Der Upload war erfolgreich.",
         "uploadFileError": "Der Upload ist fehlgeschlagen.",
+        "ongoingUpload1": "Datei wird hochgeladen...",
+        "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
         "table": {
