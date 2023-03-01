@@ -157,21 +157,25 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   public addFile(event: any): void {
-    const bucket = this.bucket
+    const bucket = this.bucket;
     if (bucket == null) {
       throw Error('Bucket was null in addFile().');
-      }
+    }
 
     const formData = this.bucketOperations.onFileSelected(event);
     if (formData == null) {
       throw Error('formData was null in addFile()');
     }
-      
-    const upload$ = this.coopSpacesService.uploadAsset(bucket, formData).pipe(finalize(() => this.bucketOperations.reset()));
-        this.uploadSub = upload$.subscribe({
-            complete: () => this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
-            error: () => this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
-        });
+
+    this.uploadSub = this.coopSpacesService
+      .uploadAsset(bucket, formData)
+      .pipe(finalize(() => this.bucketOperations.reset()))
+      .subscribe({
+        complete: () =>
+          this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
+        error: () =>
+          this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
+      });
   }
 
   public addMember(membersSelected: Member[]): void {

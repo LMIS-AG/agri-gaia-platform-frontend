@@ -57,11 +57,13 @@ export class AssetsComponent implements OnInit {
         formData.append('files', file);
       }
 
-      const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
-      this.uploadSub = upload$.subscribe({
-        complete: () => this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile')),
-        error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
-      });
+      this.uploadSub = this.bucketService
+        .uploadAsset(bucket, formData)
+        .pipe(finalize(() => this.reset()))
+        .subscribe({
+          complete: () => this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile')),
+          error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
+        });
     }
   }
 
