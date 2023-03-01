@@ -76,6 +76,15 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>
         </table>
+        <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <br />
+            <mat-spinner></mat-spinner>
+            <br />
+            <p>{{ t('ongoingUpload1') }}</p>
+            <p>{{ t('ongoingUpload2') }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
