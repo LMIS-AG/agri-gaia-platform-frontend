@@ -34,6 +34,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public bucket?: string;
   public uploadSub: Subscription | undefined; // TODO do i need this?
+  public isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -157,10 +158,21 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   public addFile(event: any): void {
-    const bucket = this.bucket
+    const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in addFile().');
-    
-    this.fileService.onFileSelected(event, bucket)
+
+    this.isLoading = true;
+    this.uploadSub = this.fileService.onFileSelected(event, bucket).subscribe({
+      complete: () => this.handleUploadSuccess(),
+      error: () =>
+        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
+    });
+  }
+
+  private handleUploadSuccess(): void {
+    this.isLoading = false;
+
+    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
   }
 
   public addMember(membersSelected: Member[]): void {

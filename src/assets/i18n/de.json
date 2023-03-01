@@ -138,6 +138,8 @@
         "member": "Teilnehmer",
         "assets": "Assets",
         "uploadFile": "Datei hochladen",
+        "ongoingUpload1": "Datei wird hochgeladen...",
+        "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
         "role": {
           "GUEST": "Gast",
           "USER": "User",

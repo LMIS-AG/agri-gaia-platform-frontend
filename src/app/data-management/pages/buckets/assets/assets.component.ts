@@ -23,7 +23,12 @@ export class AssetsComponent implements OnInit {
   public uploadSub: Subscription | undefined; // TODO do i need this?
   public isLoading = false;
 
-  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private fileService: FileService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private bucketService: BucketService,
+    private uiService: UIService,
+    private fileService: FileService
+  ) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -46,31 +51,13 @@ export class AssetsComponent implements OnInit {
 
   public onFileSelected(event: any): void {
     const bucket = this.bucket;
-    if (bucket == null) {
-      throw Error('Bucket was null in onFileSelected().');
-    }
+    if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
-    const filesToUpload: File[] = event.target.files;
-
-    if (filesToUpload && filesToUpload.length !== 0) {
-      const formData = new FormData();
-
-      for (let index = 0; index < filesToUpload.length; index++) {
-        const file = filesToUpload[index];
-        formData.append('files', file);
-      }
-
-      this.isLoading = true;
-      this.uploadSub = this.fileService
-        .uploadAsset(bucket, formData)
-        .pipe(finalize(() => this.reset()))
-        .subscribe({
-          complete: () => this.handleUploadSuccess(),
-          error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
-        });
-    }
-
-    this.fileService.onFileSelected(event, bucket)
+    this.isLoading = true;
+    this.uploadSub = this.fileService.onFileSelected(event, bucket).subscribe({
+      complete: () => this.handleUploadSuccess(),
+      error: () => this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError')),
+    });
   }
 
   private handleUploadSuccess(): void {
