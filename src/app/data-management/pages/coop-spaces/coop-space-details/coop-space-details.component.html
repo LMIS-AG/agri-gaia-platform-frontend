@@ -12,8 +12,13 @@
         <div fxLayout="row" fxLayoutAlign="space-between">
           <h3 class="headline">{{ t('assets') }}</h3>
           <div fxLayout="row" fxLayoutGap="10px">
-            <button mat-mini-fab class="mat-elevation-z0" color="primary" [matMenuTriggerFor]="menuForUpload">
-              <mat-icon>add</mat-icon>
+            <button
+              mat-mini-fab
+              class="mat-elevation-z0 button24-add"
+              color="primary"
+              [matMenuTriggerFor]="menuForUpload"
+            >
+              <mat-icon class="icon24-add">add</mat-icon>
             </button>
             <mat-menu #menuForUpload="matMenu">
               <!-- actual input for file upload is hidden because it is hard to style -->
