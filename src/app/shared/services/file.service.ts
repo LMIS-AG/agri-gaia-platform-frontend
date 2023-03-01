@@ -35,7 +35,7 @@ export class FileService {
   }
 
   public uploadAsset(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
-    return this.http.post(`${environment.backend.url}/coopspaces/upload/${bucket}`, formData, {
+    return this.http.post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
       reportProgress: true,
       observe: 'events',
     });
