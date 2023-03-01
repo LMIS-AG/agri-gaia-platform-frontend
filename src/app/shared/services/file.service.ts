@@ -1,6 +1,5 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { translate } from '@ngneat/transloco';
 import { finalize, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
