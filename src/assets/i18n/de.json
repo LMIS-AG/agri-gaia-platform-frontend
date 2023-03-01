@@ -134,6 +134,7 @@
         "tools": "Verfügbare Tools",
         "member": "Teilnehmer",
         "assets": "Assets",
+        "uploadFile": "Datei hochladen",
         "role": {
           "GUEST": "Gast",
           "USER": "User",
@@ -148,7 +149,9 @@
           "addMemberErrorText": "Die Anfrage zum Hinzufügen ist fehlgeschlagen.",
           "changeMemberRoleConfirmationQuestion": "Möchten Sie die Rolle dieser Person verändern?",
           "changeMemberRoleConfirmationText": "Die Rolle wurde erfolgreich verändert.",
-          "changeMemberRoleErrorText": "Die Anfrage für die Veränderung der Rolle ist fehlgeschlagen."
+          "changeMemberRoleErrorText": "Die Anfrage für die Veränderung der Rolle ist fehlgeschlagen.",
+          "uploadedFile": "Der Upload war erfolgreich.",
+          "uploadFileError": "Der Upload ist fehlgeschlagen."
         },
         "table": {
           "name": "Name",

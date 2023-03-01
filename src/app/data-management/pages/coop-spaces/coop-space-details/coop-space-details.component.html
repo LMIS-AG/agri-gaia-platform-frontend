@@ -12,9 +12,21 @@
         <div fxLayout="row" fxLayoutAlign="space-between">
           <h3 class="headline">{{ t('assets') }}</h3>
           <div fxLayout="row" fxLayoutGap="10px">
-            <button mat-mini-fab class="mat-elevation-z0 button24-add" color="primary" (click)="addDataset()">
-              <mat-icon class="icon24-add">add</mat-icon>
+            <button mat-mini-fab class="mat-elevation-z0" color="primary" [matMenuTriggerFor]="menuForUpload">
+              <mat-icon>add</mat-icon>
             </button>
+            <mat-menu #menuForUpload="matMenu">
+              <!-- actual input for file upload is hidden because it is hard to style -->
+              <div>
+                <input type="file" multiple class="file-input" (change)="addFile($event)" #fileUpload />
+              </div>
+              <div>
+                <button class="upload-button" (click)="fileUpload.click()">
+                  <mat-icon>upload</mat-icon>
+                  <p>{{ t('uploadFile') }}</p>
+                </button>
+              </div>
+            </mat-menu>
             <button mat-mini-fab class="mat-elevation-z0 button24" color="primary" (click)="openInFull()">
               <mat-icon class="icon24-arrow">open_in_full</mat-icon>
             </button>
@@ -35,10 +47,16 @@
               <td mat-cell *matCellDef="let element">{{ element.name }}</td>
             </ng-container>
 
-            <!-- Company Column -->
+            <!-- Date Column -->
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
               <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd.MM.YYYY' }}</td>
+            </ng-container>
+
+          <!-- Size Column -->
+            <ng-container matColumnDef="size">
+              <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
+              <td mat-cell *matCellDef="let element">{{ element.size }}</td>
             </ng-container>
 
             <!-- MyRole Column -->
