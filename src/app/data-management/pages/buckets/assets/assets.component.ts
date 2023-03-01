@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, finalize, map, Subscription, switchMap } from 'rxjs';
+import { filter, map, Subscription, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
 import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpResponse } from '@angular/common/http';
-import { FileService } from 'src/app/shared/services/file.service';
 
 @Component({
   selector: 'app-assets',
@@ -20,15 +18,9 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
-  public uploadSub: Subscription | undefined; // TODO do i need this?
   public isLoading = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private bucketService: BucketService,
-    private uiService: UIService,
-    private fileService: FileService
-  ) {}
+  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -54,7 +46,7 @@ export class AssetsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
     this.isLoading = true;
-    this.uploadSub = this.fileService.onFileSelected(event, bucket).subscribe({
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError')),
     });
@@ -64,16 +56,6 @@ export class AssetsComponent implements OnInit {
     this.isLoading = false;
 
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
-  }
-
-  // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
-  public cancelUpload(): void {
-    this.uploadSub!.unsubscribe(); // TODO check if this causes erros
-    this.reset();
-  }
-
-  private reset(): void {
-    this.uploadSub = undefined;
   }
 
   public deleteAsset(asset: GeneralPurposeAsset): void {

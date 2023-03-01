@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, finalize, map, Subscription, switchMap } from 'rxjs';
+import { concatMap, filter, map, Subscription, switchMap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 import { CoopSpacesService } from '../coop-spaces.service';
@@ -9,10 +9,10 @@ import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
 import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
-import { FileService } from 'src/app/shared/services/file.service';
+import { BucketService } from '../../buckets/bucket.service';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -33,7 +33,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
   public bucket?: string;
-  public uploadSub: Subscription | undefined; // TODO do i need this?
   public isLoading = false;
 
   constructor(
@@ -43,7 +42,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private uiService: UIService,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
-    private fileService: FileService
+    private bucketService: BucketService
   ) {}
 
   public ngOnInit(): void {
@@ -162,7 +161,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in addFile().');
 
     this.isLoading = true;
-    this.uploadSub = this.fileService.onFileSelected(event, bucket).subscribe({
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () =>
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
