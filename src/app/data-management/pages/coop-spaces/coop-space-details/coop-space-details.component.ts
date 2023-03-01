@@ -163,8 +163,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
       }
 
     const formData = this.bucketOperations.onFileSelected(event);
-    if (formData == null)
-      throw Error('formData was null in addFile()')
+    if (formData == null) {
+      throw Error('formData was null in addFile()');
+    }
       
     const upload$ = this.coopSpacesService.uploadAsset(bucket, formData).pipe(finalize(() => this.bucketOperations.reset()));
         this.uploadSub = upload$.subscribe({
