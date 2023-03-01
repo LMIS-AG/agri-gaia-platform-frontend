@@ -18,7 +18,7 @@
             <mat-menu #menuForUpload="matMenu">
               <!-- actual input for file upload is hidden because it is hard to style -->
               <div>
-                <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
+                <input type="file" multiple class="file-input" (change)="addFile($event)" #fileUpload />
               </div>
               <div>
                 <button class="upload-button" (click)="fileUpload.click()">

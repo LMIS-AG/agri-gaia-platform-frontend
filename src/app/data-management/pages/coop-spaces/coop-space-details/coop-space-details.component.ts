@@ -11,9 +11,8 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
 import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
-import { BucketService } from 'src/app/data-management/pages/buckets/bucket.service';
-import { Bucket } from 'src/app/shared/model/bucket';
 import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
+import { BucketOperations } from 'src/app/shared/services/bucket-operations';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -43,6 +42,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private uiService: UIService,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
+    private bucketOperations: BucketOperations
   ) {}
 
   public ngOnInit(): void {
@@ -156,42 +156,21 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public addDataset(): void {
-    throw Error('Not yet implemented');
-  }
-
-  public onFileSelected(event: any): void {
-    const bucket = this.bucket;
+  public addFile(event: any): void {
+    const bucket = this.bucket
     if (bucket == null) {
-      throw Error('Bucket was null in onFileSelected().');
-    }
-
-    const filesToUpload: File[] = event.target.files;
-
-    if (filesToUpload && filesToUpload.length !== 0) {
-      const formData = new FormData();
-
-      for (let index = 0; index < filesToUpload.length; index++) {
-        const file = filesToUpload[index];
-        formData.append('files', file);
+      throw Error('Bucket was null in addFile().');
       }
 
-      const upload$ = this.coopSpacesService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
-      this.uploadSub = upload$.subscribe({
-        complete: () => this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
-        error: () => this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
-      });
-    }
-  }
-
-  // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
-  public cancelUpload(): void {
-    this.uploadSub!.unsubscribe(); // TODO check if this causes erros
-    this.reset();
-  }
-
-  private reset(): void {
-    this.uploadSub = undefined;
+    const formData = this.bucketOperations.onFileSelected(event);
+    if (formData == null)
+      throw Error('formData was null in addFile()')
+      
+    const upload$ = this.coopSpacesService.uploadAsset(bucket, formData).pipe(finalize(() => this.bucketOperations.reset()));
+        this.uploadSub = upload$.subscribe({
+            complete: () => this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
+            error: () => this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
+        });
   }
 
   public addMember(membersSelected: Member[]): void {
