@@ -60,10 +60,4 @@ export class CoopSpacesService {
     return this.http.get<boolean>(`${environment.backend.url}/coopspaces/existsbyname/${name}`);
   }
 
-  public uploadAsset(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
-    return this.http.post(`${environment.backend.url}/coopspaces/upload/${bucket}`, formData, {
-      reportProgress: true,
-      observe: 'events',
-    });
-  }
 }

@@ -26,11 +26,4 @@ export class BucketService {
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     return this.http.delete(`${environment.backend.url}/assets/publish/${bucket}/${name}`, { observe: 'response' });
   }
-
-  public uploadAsset(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
-    return this.http.post(`${environment.backend.url}/assets/upload/${bucket}`, formData, {
-      reportProgress: true,
-      observe: 'events',
-    });
-  }
 }

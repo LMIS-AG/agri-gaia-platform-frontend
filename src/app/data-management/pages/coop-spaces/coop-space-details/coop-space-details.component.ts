@@ -12,7 +12,7 @@ import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/a
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
 import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
-import { BucketOperations } from 'src/app/shared/services/bucket-operations';
+import { FileService } from 'src/app/shared/services/file.service';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -42,7 +42,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private uiService: UIService,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
-    private bucketOperations: BucketOperations
+    private fileService: FileService
   ) {}
 
   public ngOnInit(): void {
@@ -158,20 +158,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public addFile(event: any): void {
     const bucket = this.bucket
-    if (bucket == null) {
-      throw Error('Bucket was null in addFile().');
-      }
-
-    const formData = this.bucketOperations.onFileSelected(event);
-    if (formData == null) {
-      throw Error('formData was null in addFile()');
-    }
-      
-    const upload$ = this.coopSpacesService.uploadAsset(bucket, formData).pipe(finalize(() => this.bucketOperations.reset()));
-        this.uploadSub = upload$.subscribe({
-            complete: () => this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile')),
-            error: () => this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
-        });
+    if (bucket == null) throw Error('Bucket was null in addFile().');
+    
+    this.fileService.onFileSelected(event, bucket)
   }
 
   public addMember(membersSelected: Member[]): void {

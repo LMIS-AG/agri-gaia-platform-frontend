@@ -7,6 +7,7 @@ import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { HttpResponse } from '@angular/common/http';
+import { FileService } from 'src/app/shared/services/file.service';
 
 @Component({
   selector: 'app-assets',
@@ -20,7 +21,7 @@ export class AssetsComponent implements OnInit {
   public fileToUpload: File | null = null;
   public uploadSub: Subscription | undefined; // TODO do i need this?
 
-  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService) {}
+  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private fileService: FileService) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -42,27 +43,10 @@ export class AssetsComponent implements OnInit {
   }
 
   public onFileSelected(event: any): void {
-    const bucket = this.bucket;
-    if (bucket == null) {
-      throw Error('Bucket was null in onFileSelected().');
-    }
-
-    const filesToUpload: File[] = event.target.files;
-
-    if (filesToUpload && filesToUpload.length !== 0) {
-      const formData = new FormData();
-
-      for (let index = 0; index < filesToUpload.length; index++) {
-        const file = filesToUpload[index];
-        formData.append('files', file);
-      }
-
-      const upload$ = this.bucketService.uploadAsset(bucket, formData).pipe(finalize(() => this.reset()));
-      this.uploadSub = upload$.subscribe({
-        complete: () => this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile')),
-        error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
-      });
-    }
+    const bucket = this.bucket
+    if (bucket == null) throw Error('Bucket was null in addFile().');
+    
+    this.fileService.onFileSelected(event, bucket)
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
