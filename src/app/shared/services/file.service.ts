@@ -3,13 +3,12 @@ import { Injectable } from '@angular/core';
 import { translate } from '@ngneat/transloco';
 import { finalize, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UIService } from './ui.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileService {
-  constructor(private http: HttpClient, private uiService: UIService) {}
+  constructor(private http: HttpClient) {}
 
   public uploadSub: Subscription | undefined; // TODO do i need this?
 
