@@ -219,7 +219,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   public getUserRole(): CoopSpaceRole | undefined {
-    let member = this.coopSpace!.members.find(m => m.username === this.userName);
+    let member = this.coopSpace?.members.find(m => m.username === this.userName);
     if (member === undefined) return undefined;
     return member.role;
   }

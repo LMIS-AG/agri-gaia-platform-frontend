@@ -6,6 +6,7 @@ import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
+import { MatTableDataSource } from '@angular/material/table';
 import { HttpResponse } from '@angular/common/http';
 import { FileService } from 'src/app/shared/services/file.service';
 
@@ -17,9 +18,10 @@ import { FileService } from 'src/app/shared/services/file.service';
 export class AssetsComponent implements OnInit {
   public bucket?: string;
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
-  public dataSource: GeneralPurposeAsset[] = [];
+  public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public uploadSub: Subscription | undefined; // TODO do i need this?
+  public isLoading = false;
 
   constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private fileService: FileService) {}
 
@@ -38,15 +40,43 @@ export class AssetsComponent implements OnInit {
           // convert the displayed file size
           asset.size = prettyPrintFileSize(parseInt(asset.size));
         });
-        this.dataSource = result.assets;
+        this.dataSource.data = result.assets;
       });
   }
 
   public onFileSelected(event: any): void {
-    const bucket = this.bucket
-    if (bucket == null) throw Error('Bucket was null in addFile().');
-    
+    const bucket = this.bucket;
+    if (bucket == null) {
+      throw Error('Bucket was null in onFileSelected().');
+    }
+
+    const filesToUpload: File[] = event.target.files;
+
+    if (filesToUpload && filesToUpload.length !== 0) {
+      const formData = new FormData();
+
+      for (let index = 0; index < filesToUpload.length; index++) {
+        const file = filesToUpload[index];
+        formData.append('files', file);
+      }
+
+      this.isLoading = true;
+      this.uploadSub = this.fileService
+        .uploadAsset(bucket, formData)
+        .pipe(finalize(() => this.reset()))
+        .subscribe({
+          complete: () => this.handleUploadSuccess(),
+          error: () => this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError')),
+        });
+    }
+
     this.fileService.onFileSelected(event, bucket)
+  }
+
+  private handleUploadSuccess(): void {
+    this.isLoading = false;
+
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
@@ -59,32 +89,52 @@ export class AssetsComponent implements OnInit {
     this.uploadSub = undefined;
   }
 
-  public publishAsset(element: GeneralPurposeAsset): void {
+  public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
-      .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.publishConfirmationQuestion'), {
+      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+        // TODO: This argument isn't used anywhere.
+        confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'warn',
+      })
+      .subscribe((userConfirmed: boolean) => {
+        if (!userConfirmed) return;
+        let bucket = this.bucket;
+        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+        this.bucketService.deleteAsset(bucket, asset.name).subscribe({
+          next: () => this.handleDeleteSuccess(),
+          complete: () => this.updateAssets(asset),
+          error: err => this.handleDeleteError(err),
+        });
+      });
+  }
+
+  public publishAsset(asset: GeneralPurposeAsset): void {
+    this.uiService
+      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.publishConfirmationQuestion'), {
         // TODO: This argument isn't used anywhere.
         confirmationText: translate('dataManagement.buckets.assets.dialog.publishConfirmationText'),
         buttonLabels: 'confirm',
         confirmButtonColor: 'primary',
       })
       .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) {
-          return;
-        }
+        if (!userConfirmed) return;
         let bucket = this.bucket;
-        if (bucket == null) {
-          throw Error('Bucket was null in publishAsset().');
-        }
-        this.bucketService.publishAsset(bucket, element.name).subscribe({
-          next: response => this.handlePublishSuccess(response),
+        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+        this.bucketService.publishAsset(bucket, asset.name).subscribe({
+          next: () => this.handlePublishSuccess(),
           error: err => this.handlePublishError(err),
         });
       });
   }
 
-  public unpublishAsset(element: GeneralPurposeAsset): void {
+  private updateAssets(asset: GeneralPurposeAsset): void {
+    this.dataSource.data = this.dataSource.data.filter(e => e.name !== asset.name);
+  }
+
+  public unpublishAsset(asset: GeneralPurposeAsset): void {
     this.uiService
-      .confirm(`${element.name}`, translate('dataManagement.buckets.assets.dialog.unpublishConfirmationQuestion'), {
+      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.unpublishConfirmationQuestion'), {
         // TODO: This argument isn't used anywhere.
         confirmationText: translate('dataManagement.buckets.assets.dialog.unpublishConfirmationText'),
         buttonLabels: 'confirm',
@@ -94,13 +144,14 @@ export class AssetsComponent implements OnInit {
         if (!userConfirmed) return;
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in unpublishAsset().');
-        this.bucketService.unpublishAsset(bucket, element.name).subscribe({
-          next: response => this.handleUnpublishSuccess(response),
+        this.bucketService.unpublishAsset(bucket, asset.name).subscribe({
+          next: () => this.handleUnpublishSuccess(),
           error: err => this.handleUnpublishError(err),
         });
       });
   }
-  public handlePublishSuccess(response: HttpResponse<unknown>): void {
+
+  public handlePublishSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
   }
 
@@ -108,11 +159,19 @@ export class AssetsComponent implements OnInit {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status);
   }
 
-  public handleUnpublishSuccess(response: HttpResponse<unknown>): void {
+  public handleUnpublishSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.unpublishConfirmationText'));
   }
 
   public handleUnpublishError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.unpublishErrorText') + err.status);
+  }
+
+  public handleDeleteSuccess(): void {
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
+  }
+
+  public handleDeleteError(err: any): void {
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
   }
 }

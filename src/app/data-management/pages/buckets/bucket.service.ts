@@ -24,6 +24,10 @@ export class BucketService {
   }
 
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/assets/publish/${bucket}/${name}`, { observe: 'response' });
+    return this.http.delete(`${environment.backend.url}/assets/unpublish/${bucket}/${name}`, { observe: 'response' });
+  }
+  
+  public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
+    return this.http.delete(`${environment.backend.url}/assets/delete/${bucket}/${name}`, { observe: 'response' });
   }
 }
