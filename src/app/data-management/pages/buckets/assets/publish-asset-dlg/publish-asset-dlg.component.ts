@@ -24,8 +24,8 @@ export class PublishAssetDlgComponent implements OnInit {
   ) {
     this.formGroup = this.formBuilder.group({
       id: ['', Validators.required],
-      name: ['', [Validators.required, Validators.maxLength(63)]],
-      description: ['', [Validators.maxLength(300)]],
+      name: ['', Validators.required],
+      description: [''],
       assetType: [null],
     });
   }

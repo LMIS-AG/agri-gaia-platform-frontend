@@ -24,8 +24,9 @@
             <br />
             <mat-form-field appearance="fill" color="primary" class="bg">
               <mat-label>{{ t('fields.description') }}</mat-label>
-              <textarea matInput formControlName="description"></textarea>
+              <textarea #descriptionInput matInput maxLength="300" formControlName="description"></textarea>
               <mat-hint>{{ t('fields.infoDescription') }}</mat-hint>
+              <mat-hint align="end"> {{ descriptionInput?.value?.length ?? 0 }} / 300 </mat-hint>
             </mat-form-field>
             <br />
             <mat-form-field appearance="fill" color="primary" class="bg">
