@@ -7,12 +7,43 @@
       <!-- PAGE 1 -->
       <mat-step>
         <mat-dialog-content class="dialog-content">
-          <!--TODO content-->
-          <br />
-          <br />
-          Dummy PAGE 1
-          <br />
-          <br />
+          <div fxLayout="column" [formGroup]="formGroup">
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.id') }}</mat-label>
+              <input matInput formControlName="id" required />
+              <mat-error *ngIf="formGroup.controls['id'].hasError('required')">{{ tCommon('required') }}</mat-error>
+              <mat-hint>{{ t('fields.infoId') }}</mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.name') }}</mat-label>
+              <input matInput formControlName="name" required />
+              <mat-error *ngIf="formGroup.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
+              <mat-hint>{{ t('fields.infoName') }}</mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.description') }}</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+              <mat-hint>{{ t('fields.infoDescription') }}</mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.assetType.label') }}</mat-label>
+              <mat-select formControlName="assetType">
+                <mat-option>
+                  {{ t('fields.assetType.' + null) }}
+                </mat-option>
+                <mat-option *ngFor="let assetType of assetTypes" [value]="assetType">
+                  {{ t('fields.assetType.' + assetType) }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formGroup.controls['assetType'].hasError('required')">{{
+                tCommon('required')
+              }}</mat-error>
+              <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
+            </mat-form-field>
+          </div>
         </mat-dialog-content>
 
         <mat-dialog-actions class="dialog-actions">

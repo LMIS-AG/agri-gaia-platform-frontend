@@ -18,3 +18,13 @@ h2 {
 .dialog-actions {
   justify-content: flex-end;
 }
+
+textarea {
+  height: 75px;
+}
+
+::ng-deep {
+  .mat-form-field.bg .mat-form-field-flex {
+    background-color: rgba(136, 159, 154, 0.2);
+  }
+}

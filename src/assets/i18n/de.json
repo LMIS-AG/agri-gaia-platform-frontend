@@ -84,6 +84,21 @@
         "publishAssetDialog": {
           "headline": "Asset veröffentlichen",
           "description": "Hier können Sie Ihr Asset veröffentlichen und es damit auf dem Marktplatz zum Kauf anbieten.",
+          "fields": {
+            "id": "ID",
+            "infoId": "Geben Sie hier die ID für Ihr Asset ein",
+            "name": "Name",
+            "infoName": "Geben Sie hier eine kurze Bezeichnung für Ihr Asset ein",
+            "description": "Beschreibung",
+            "infoDescription": "Geben Sie hier eine längere Beschreibung Ihres Assets an",
+            "assetType": {
+              "label": "Asset-Typ",
+              "AIMODEL": "KI-Modell",
+              "DATASET": "Datensatz",
+              "null": "- keine Auswahl -",
+              "info": "Wählen Sie hier den Typ Ihres Assets aus."
+            }
+          },
           "publishAsset": "Asset veröffentlichen"
         },
         "dialog": {
