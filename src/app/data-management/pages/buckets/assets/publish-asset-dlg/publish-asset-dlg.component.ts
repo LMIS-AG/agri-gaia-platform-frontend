@@ -41,6 +41,10 @@ export class PublishAssetDlgComponent implements OnInit {
   }
 
   public publishAsset(): void {
+    if (!this.canAndShouldSave()) {
+      return;
+    }
+
     // TODO implement
 
     this.dialogRef.close();
