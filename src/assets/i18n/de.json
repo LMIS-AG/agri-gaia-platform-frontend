@@ -83,6 +83,7 @@
         },
         "publishAssetDialog": {
           "headline": "Asset veröffentlichen",
+          "description": "Hier können Sie Ihr Asset veröffentlichen und es damit auf dem Marktplatz zum Kauf anbieten.",
           "publishAsset": "Asset veröffentlichen"
         },
         "dialog": {
