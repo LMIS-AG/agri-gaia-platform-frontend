@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
 import { AssetType } from 'src/app/shared/model/asset-type';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
+import { UIService } from 'src/app/shared/services/ui.service';
 import { $enum } from 'ts-enum-util';
 
 @Component({
@@ -17,6 +19,7 @@ export class PublishAssetDlgComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset,
     protected dialogRef: MatDialogRef<any>,
+    protected uiService: UIService,
     private formBuilder: FormBuilder
   ) {
     this.formGroup = this.formBuilder.group({
@@ -30,9 +33,17 @@ export class PublishAssetDlgComponent implements OnInit {
   public ngOnInit(): void {}
 
   public cancel(): void {
-    // TODO maybe add canClose later
+    this.canClose().subscribe((canClose: boolean) => {
+      if (canClose) {
+        this.dialogRef.close();
+      }
+    });
+  }
 
-    this.dialogRef.close();
+  private canClose(): Observable<boolean> {
+    if (!this.formGroup.dirty) return of(true);
+
+    return this.uiService.confirmDiscardingUnsavedChanges();
   }
 
   public publishAsset(): void {
