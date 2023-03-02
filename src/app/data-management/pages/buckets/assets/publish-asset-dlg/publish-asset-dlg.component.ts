@@ -12,7 +12,7 @@ import { $enum } from 'ts-enum-util';
   templateUrl: './publish-asset-dlg.component.html',
   styleUrls: ['./publish-asset-dlg.component.scss'],
 })
-export class PublishAssetDlgComponent implements OnInit {
+export class PublishAssetDlgComponent {
   public formGroup!: FormGroup;
   public assetTypes: AssetType[] = $enum(AssetType).getValues();
 
@@ -22,15 +22,29 @@ export class PublishAssetDlgComponent implements OnInit {
     protected uiService: UIService,
     private formBuilder: FormBuilder
   ) {
-    this.formGroup = this.formBuilder.group({
+    const firstPage = this.formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
       description: [''],
       assetType: [null],
     });
+
+    const secondPage = this.formBuilder.group({
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required],
+      location: [''],
+    });
+
+    this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
   }
 
-  public ngOnInit(): void {}
+  public get firstPage(): FormGroup {
+    return this.formGroup.controls.firstPage as FormGroup;
+  }
+
+  public get secondPage(): FormGroup {
+    return this.formGroup.controls.secondPage as FormGroup;
+  }
 
   public cancel(): void {
     this.canClose().subscribe((canClose: boolean) => {
@@ -52,6 +66,9 @@ export class PublishAssetDlgComponent implements OnInit {
 
   public canAndShouldSave(): boolean {
     return !this.formGroup.invalid && this.formGroup.dirty;
+  }
+  public canGoToSecondPage(): boolean {
+    return !this.firstPage.invalid && this.firstPage.dirty;
   }
 
   private canClose(): Observable<boolean> {

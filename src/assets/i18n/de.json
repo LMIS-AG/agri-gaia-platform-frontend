@@ -97,7 +97,11 @@
               "DATASET": "Datensatz",
               "null": "- keine Auswahl -",
               "info": "Wählen Sie hier den Typ Ihres Assets aus."
-            }
+            },
+            "dateSpan": "Zeitraum der Datenerfassung",
+            "dates": "Startdatum -Enddatum",
+            "datePlaceholder": "mm/tt/jjjj",
+            "location": "Ort der Datenerfassung"
           },
           "publishAsset": "Asset veröffentlichen"
         },

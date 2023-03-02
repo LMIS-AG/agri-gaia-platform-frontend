@@ -7,18 +7,18 @@
       <!-- PAGE 1 -->
       <mat-step>
         <mat-dialog-content class="dialog-content">
-          <div fxLayout="column" [formGroup]="formGroup">
+          <div fxLayout="column" [formGroup]="firstPage">
             <mat-form-field appearance="fill" color="primary" class="bg">
               <mat-label>{{ t('fields.id') }}</mat-label>
               <input matInput formControlName="id" required />
-              <mat-error *ngIf="formGroup.controls['id'].hasError('required')">{{ tCommon('required') }}</mat-error>
+              <mat-error *ngIf="firstPage.controls['id'].hasError('required')">{{ tCommon('required') }}</mat-error>
               <mat-hint>{{ t('fields.infoId') }}</mat-hint>
             </mat-form-field>
             <br />
             <mat-form-field appearance="fill" color="primary" class="bg">
               <mat-label>{{ t('fields.name') }}</mat-label>
               <input matInput formControlName="name" required />
-              <mat-error *ngIf="formGroup.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
+              <mat-error *ngIf="firstPage.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
               <mat-hint>{{ t('fields.infoName') }}</mat-hint>
             </mat-form-field>
             <br />
@@ -39,7 +39,7 @@
                   {{ t('fields.assetType.' + assetType) }}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="formGroup.controls['assetType'].hasError('required')">{{
+              <mat-error *ngIf="firstPage.controls['assetType'].hasError('required')">{{
                 tCommon('required')
               }}</mat-error>
               <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
@@ -51,7 +51,7 @@
           <button mat-flat-button (click)="cancel()">
             {{ tCommon('cancel') }}
           </button>
-          <button mat-flat-button matStepperNext [disabled]="!canAndShouldSave()" color="primary">
+          <button mat-flat-button matStepperNext [disabled]="!canGoToSecondPage()" color="primary">
             {{ tCommon('next') }}
           </button>
         </mat-dialog-actions>
@@ -60,12 +60,24 @@
       <!-- PAGE 2 -->
       <mat-step>
         <mat-dialog-content class="dialog-content">
-          <!--TODO content-->
-          <br />
-          <br />
-          Dummy PAGE 2
-          <br />
-          <br />
+          <h3>{{ t('fields.dateSpan') }}</h3>
+          <mat-form-field [formGroup]="secondPage" class="bg">
+            <mat-label>{{ t('fields.dates') }}</mat-label>
+            <mat-date-range-input [rangePicker]="picker" required>
+              <input matStartDate formControlName="startDate" placeholder="{{ t('fields.datePlaceholder') }}" />
+              <input matEndDate formControlName="endDate" placeholder="{{ t('fields.datePlaceholder') }}" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error
+              *ngIf="
+                secondPage.controls['startDate'].hasError('required') ||
+                secondPage.controls['endDate'].hasError('required')
+              "
+            >
+              {{ tCommon('required') }}
+            </mat-error>
+          </mat-form-field>
         </mat-dialog-content>
 
         <mat-dialog-actions class="dialog-actions">

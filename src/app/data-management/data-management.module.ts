@@ -23,6 +23,8 @@ import { AssetsComponent } from './pages/buckets/assets/assets.component';
 import { AddMembersAfterwardsDlgComponent } from './pages/coop-spaces/coop-space-details/add-members-afterwards-dlg/add-members-afterwards-dlg.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PublishAssetDlgComponent } from './pages/buckets/assets/publish-asset-dlg/publish-asset-dlg.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const routes: Routes = [
   {
@@ -84,6 +86,8 @@ const routes: Routes = [
     SharedModule,
     MatFormFieldModule,
     FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatInputModule,
     MatMenuModule,
     MatDialogModule,
