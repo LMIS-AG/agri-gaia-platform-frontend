@@ -52,12 +52,6 @@ export class AssetsComponent implements OnInit {
     });
   }
 
-  private handleUploadSuccess(): void {
-    this.isLoading = false;
-
-    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
-  }
-
   public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
       .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
@@ -134,6 +128,12 @@ export class AssetsComponent implements OnInit {
 
   public handleUnpublishError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.unpublishErrorText') + err.status);
+  }
+
+  private handleUploadSuccess(): void {
+    this.isLoading = false;
+
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
   }
 
   public handleDeleteSuccess(): void {

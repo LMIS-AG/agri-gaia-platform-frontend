@@ -156,7 +156,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public addFile(event: any): void {
+  public onFileSelected(event: any): void {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in addFile().');
 
@@ -168,10 +168,28 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
-  private handleUploadSuccess(): void {
-    this.isLoading = false;
+  public deleteAsset(asset: GeneralPurposeAsset): void {
+    this.uiService
+      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+        // TODO: This argument isn't used anywhere.
+        confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'warn',
+      })
+      .subscribe((userConfirmed: boolean) => {
+        if (!userConfirmed) return;
+        let bucket = this.bucket;
+        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+        this.bucketService.deleteAsset(bucket, asset.name).subscribe({
+          next: () => this.handleDeleteSuccess(),
+          complete: () => this.updateAssets(asset),
+          error: err => this.handleDeleteError(err),
+        });
+      });
+  }
 
-    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
+  private updateAssets(asset: GeneralPurposeAsset): void {
+    this.datasetDatasource = this.datasetDatasource.filter(e => e.name !== asset.name);
   }
 
   public addMember(membersSelected: Member[]): void {
@@ -219,6 +237,16 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
+  public getUserRole(): CoopSpaceRole | undefined {
+    let member = this.coopSpace?.members.find(m => m.username === this.userName);
+    if (member === undefined) return undefined;
+    return member.role;
+  }
+
+  public isAdmin(): boolean {
+    return this.getUserRole() === CoopSpaceRole.Admin;
+  }
+
   public handleDeleteMemberSuccess(): void {
     this.uiService.showSuccessMessage(
       translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
@@ -229,13 +257,19 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'));
   }
 
-  public getUserRole(): CoopSpaceRole | undefined {
-    let member = this.coopSpace?.members.find(m => m.username === this.userName);
-    if (member === undefined) return undefined;
-    return member.role;
+  private handleUploadSuccess(): void {
+    this.isLoading = false;
+
+    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
   }
 
-  public isAdmin(): boolean {
-    return this.getUserRole() === CoopSpaceRole.Admin;
+
+  public handleDeleteSuccess(): void {
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
   }
+
+  public handleDeleteError(err: any): void {
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
+  }
+
 }
