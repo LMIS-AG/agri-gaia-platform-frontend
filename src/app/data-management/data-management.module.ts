@@ -22,6 +22,7 @@ import { BucketsComponent } from './pages/buckets/buckets.component';
 import { AssetsComponent } from './pages/buckets/assets/assets.component';
 import { AddMembersAfterwardsDlgComponent } from './pages/coop-spaces/coop-space-details/add-members-afterwards-dlg/add-members-afterwards-dlg.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PublishAssetDlgComponent } from './pages/buckets/assets/publish-asset-dlg/publish-asset-dlg.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,7 @@ const routes: Routes = [
     BucketsComponent,
     AssetsComponent,
     AddMembersAfterwardsDlgComponent,
+    PublishAssetDlgComponent,
   ],
   imports: [
     MatTableModule,

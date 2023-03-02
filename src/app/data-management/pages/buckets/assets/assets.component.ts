@@ -7,6 +7,8 @@ import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
+import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-assets',
@@ -20,7 +22,12 @@ export class AssetsComponent implements OnInit {
   public fileToUpload: File | null = null;
   public isLoading = false;
 
-  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private bucketService: BucketService,
+    private uiService: UIService,
+    private dialog: MatDialog
+  ) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -79,6 +86,26 @@ export class AssetsComponent implements OnInit {
   }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
+    if (!asset) throw Error('asset was null in publishAsset().');
+
+    this.openPublishAssetDialog(asset)
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          // TODO maybe do something after publishing asset
+        }
+      });
+  }
+
+  private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
+    return this.dialog.open(PublishAssetDlgComponent, {
+      minWidth: '60em',
+      panelClass: 'resizable',
+      data: asset,
+    });
+  }
+
+  public publishAsset_obsolete(asset: GeneralPurposeAsset): void {
     this.uiService
       .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.publishConfirmationQuestion'), {
         // TODO: This argument isn't used anywhere.
