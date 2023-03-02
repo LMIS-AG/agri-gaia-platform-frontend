@@ -265,11 +265,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
 
   public handleDeleteSuccess(): void {
-    this.uiService.showSuccessMessage(translate('dataManagement.buckets.coopSpaces.details.dialog.deleteConfirmationText'));
+    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
   }
 
   public handleDeleteError(err: any): void {
-    this.uiService.showErrorMessage(translate('dataManagement.buckets.coopSpaces.details.dialog.deleteErrorText') + err.status);
+    this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
   }
 
 }
