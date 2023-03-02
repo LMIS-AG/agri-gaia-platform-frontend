@@ -10,5 +10,9 @@ import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 export class PublishAssetDlgComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset) {}
 
-  ngOnInit(): void {}
+  public ngOnInit(): void {}
+
+  public cancel(): void {}
+
+  public publishAsset(): void {}
 }

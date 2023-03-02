@@ -1,0 +1,48 @@
+<ng-container *transloco="let tCommon; read: 'common'">
+  <h2 mat-dialog-title>Asset auf dem Marktplatz veröffentlichen (t)</h2>
+
+  <mat-stepper>
+    <!-- PAGE 1 -->
+    <mat-step>
+      <mat-dialog-content class="dialog-content">
+        <!--TODO content-->
+        <br />
+        <br />
+        Dummy PAGE 1
+        <br />
+        <br />
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-flat-button (click)="cancel()">
+          {{ tCommon('cancel') }}
+        </button>
+        <button mat-flat-button matStepperNext [disabled]="false" color="primary">
+          {{ tCommon('next') }}
+        </button>
+      </mat-dialog-actions>
+    </mat-step>
+
+    <!-- PAGE 2 -->
+    <mat-step>
+      <mat-dialog-content class="dialog-content">
+        <!--TODO content-->
+        <br />
+        <br />
+        Dummy PAGE 2
+        <br />
+        <br />
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-flat-button (click)="cancel()">
+          {{ tCommon('cancel') }}
+        </button>
+        <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
+        <button class="save" mat-flat-button [disabled]="false" color="primary" (click)="publishAsset()">
+          Asset veröffentlichen (t)
+        </button>
+      </mat-dialog-actions>
+    </mat-step>
+  </mat-stepper>
+</ng-container>

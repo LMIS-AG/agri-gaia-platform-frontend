@@ -1,0 +1,20 @@
+@import '../../../../../../styles/common/variables';
+@import '../../../../../../styles/common/mixins';
+
+h2 {
+  @include calluna-font();
+  color: $primary;
+  font-weight: bold;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none;
+}
+
+.dialog-content {
+  flex-grow: 1;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+}
