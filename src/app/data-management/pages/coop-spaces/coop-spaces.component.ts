@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
-import {ActivatedRoute, Router} from '@angular/router';
-import {removeElementFromArray} from 'src/app/shared/array-utils';
-import {CoopSpace, CoopSpaceRole} from 'src/app/shared/model/coop-spaces';
-import {Member} from 'src/app/shared/model/member';
-import {CoopSpacesService} from './coop-spaces.service';
-import {CreateCoopSpaceComponent} from './create-coop-space/create-coop-space.component';
-import {AuthenticationService} from 'src/app/core/authentication/authentication.service';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
+import { removeElementFromArray } from 'src/app/shared/array-utils';
+import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
+import { Member } from 'src/app/shared/model/member';
+import { CoopSpacesService } from './coop-spaces.service';
+import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -26,12 +26,11 @@ export class CoopSpacesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService
-  ) {
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.authenticationService.userProfile$.subscribe(userProfile => {
-      if (userProfile === null) throw Error("userProfile was null.")
+      if (userProfile === null) throw Error('userProfile was null.');
       this.userName = userProfile.username;
     });
     this.coopSpacesService.getAll().subscribe((coopSpaces: CoopSpace[]) => {
@@ -41,18 +40,18 @@ export class CoopSpacesComponent implements OnInit {
 
   public getUserRole(coopSpaceId: number): CoopSpaceRole | null {
     let coopSpace: CoopSpace | undefined = this.dataSource.data.find(c => c.id === coopSpaceId);
-    if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`)
-    let member = coopSpace.members.find(m => m.username === this.userName)
+    if (coopSpace === undefined) throw Error(`Could not find coopSpace with id ${coopSpaceId}.`);
+    let member = coopSpace.members.find(m => m.username === this.userName);
     if (member === undefined) return null;
     return member.role;
   }
 
   public isAdmin(id: number): boolean {
-    return this.getUserRole(id) === "ADMIN";
+    return this.getUserRole(id) === 'ADMIN';
   }
 
   public addCoopSpace(): void {
-    this.openCreateCoopSpaceDialog(null)
+    this.openCreateCoopSpaceDialog()
       .afterClosed()
       .subscribe(result => {
         if (result) {
@@ -63,16 +62,15 @@ export class CoopSpacesComponent implements OnInit {
       });
   }
 
-  private openCreateCoopSpaceDialog(coopSpace: CoopSpace | null): MatDialogRef<CreateCoopSpaceComponent, boolean> {
+  private openCreateCoopSpaceDialog(): MatDialogRef<CreateCoopSpaceComponent, boolean> {
     return this.dialog.open(CreateCoopSpaceComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: coopSpace,
     });
   }
 
   public openDetails(row: CoopSpace): void {
-    this.router.navigate([`${row.id}`], {relativeTo: this.route});
+    this.router.navigate([`${row.id}`], { relativeTo: this.route });
   }
 
   public onDelete(selectedCoopSpace: CoopSpace): void {
@@ -84,9 +82,8 @@ export class CoopSpacesComponent implements OnInit {
 
   public adminsToString(members: Member[]): string {
     return members
-        .filter(m => m.role === CoopSpaceRole.Admin)
-        .map(m => m.name!)
-        .join(', ');
+      .filter(m => m.role === CoopSpaceRole.Admin)
+      .map(m => m.name!)
+      .join(', ');
   }
-
 }
