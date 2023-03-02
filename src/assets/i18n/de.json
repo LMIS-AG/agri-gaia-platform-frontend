@@ -81,6 +81,10 @@
           "delete": "Löschen",
           "size": "Größe"
         },
+        "publishAssetDialog": {
+          "headline": "Asset veröffentlichen",
+          "publishAsset": "Asset veröffentlichen"
+        },
         "dialog": {
           "headline": "Assets veröffentlichen",
           "publishConfirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
