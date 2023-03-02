@@ -170,9 +170,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
-      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+      .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationQuestion'), {
         // TODO: This argument isn't used anywhere.
-        confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+        confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'),
         buttonLabels: 'confirm',
         confirmButtonColor: 'warn',
       })
@@ -265,11 +265,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
 
   public handleDeleteSuccess(): void {
-    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.coopSpaces.details.dialog.deleteConfirmationText'));
   }
 
   public handleDeleteError(err: any): void {
-    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.coopSpaces.details.dialog.deleteErrorText') + err.status);
   }
 
 }
