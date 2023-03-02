@@ -50,7 +50,7 @@
           <button mat-flat-button (click)="cancel()">
             {{ tCommon('cancel') }}
           </button>
-          <button mat-flat-button matStepperNext [disabled]="false" color="primary">
+          <button mat-flat-button matStepperNext [disabled]="!canAndShouldSave()" color="primary">
             {{ tCommon('next') }}
           </button>
         </mat-dialog-actions>

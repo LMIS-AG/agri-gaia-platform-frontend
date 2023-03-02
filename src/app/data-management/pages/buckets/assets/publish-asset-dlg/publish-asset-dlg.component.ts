@@ -40,15 +40,19 @@ export class PublishAssetDlgComponent implements OnInit {
     });
   }
 
-  private canClose(): Observable<boolean> {
-    if (!this.formGroup.dirty) return of(true);
-
-    return this.uiService.confirmDiscardingUnsavedChanges();
-  }
-
   public publishAsset(): void {
     // TODO implement
 
     this.dialogRef.close();
+  }
+
+  public canAndShouldSave(): boolean {
+    return !this.formGroup.invalid && this.formGroup.dirty;
+  }
+
+  private canClose(): Observable<boolean> {
+    if (!this.formGroup.dirty) return of(true);
+
+    return this.uiService.confirmDiscardingUnsavedChanges();
   }
 }
