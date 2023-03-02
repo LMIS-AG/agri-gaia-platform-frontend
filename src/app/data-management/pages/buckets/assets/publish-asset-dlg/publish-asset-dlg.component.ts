@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
 
 @Component({
@@ -8,11 +8,19 @@ import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
   styleUrls: ['./publish-asset-dlg.component.scss'],
 })
 export class PublishAssetDlgComponent implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset) {}
+  constructor(@Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset, protected dialogRef: MatDialogRef<any>) {}
 
   public ngOnInit(): void {}
 
-  public cancel(): void {}
+  public cancel(): void {
+    // TODO maybe add canClose later
 
-  public publishAsset(): void {}
+    this.dialogRef.close();
+  }
+
+  public publishAsset(): void {
+    // TODO implement
+
+    this.dialogRef.close();
+  }
 }
