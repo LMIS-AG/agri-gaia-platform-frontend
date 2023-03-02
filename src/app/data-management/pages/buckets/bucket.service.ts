@@ -28,7 +28,7 @@ export class BucketService {
   }
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/assets/delete/${bucket}/${name}`, { observe: 'response' });
+    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`, { observe: 'response' });
   }
 
   public buildFormDataAndUploadAssets(event: any, bucket: string): Observable<HttpEvent<Object>> {

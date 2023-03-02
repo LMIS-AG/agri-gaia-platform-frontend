@@ -142,6 +142,11 @@ table {
   cursor: pointer;
 }
 
+
+.more_vert_class:hover {
+  cursor: pointer;
+}
+
 ::ng-deep.mat-menu-panel {
   min-height: 0px !important;
 }
