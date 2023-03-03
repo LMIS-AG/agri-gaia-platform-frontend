@@ -7,6 +7,18 @@ h2 {
   font-weight: bold;
 }
 
+h3 {
+  @include calluna-font();
+  color: $primary;
+  font-weight: bold;
+}
+
+::ng-deep {
+  .mat-typography h3 {
+    margin: 0 !important;
+  }
+}
+
 :host ::ng-deep .mat-horizontal-stepper-header-container {
   display: none;
 }

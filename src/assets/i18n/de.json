@@ -99,9 +99,10 @@
               "info": "Wählen Sie hier den Typ Ihres Assets aus."
             },
             "dateSpan": "Zeitraum der Datenerfassung",
-            "dates": "Startdatum -Enddatum",
+            "dates": "Startdatum - Enddatum",
             "datePlaceholder": "mm/tt/jjjj",
-            "location": "Ort der Datenerfassung"
+            "location": "Ort der Datenerfassung",
+            "locationLabel": "Ort"
           },
           "publishAsset": "Asset veröffentlichen"
         },
