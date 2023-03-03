@@ -31,6 +31,7 @@ export class PublishAssetDlgComponent {
 
     const secondPage = this.formBuilder.group({
       assetType: [null],
+      agrovoc: [''],
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       location: [''],

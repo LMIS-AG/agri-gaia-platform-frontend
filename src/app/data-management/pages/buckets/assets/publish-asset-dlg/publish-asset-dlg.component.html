@@ -68,6 +68,13 @@
               <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
             </mat-form-field>
             <br />
+            <!-- TODO https://material.angular.io/components/chips/examples chips with input -->
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.agrovoc') }}</mat-label>
+              <input matInput formControlName="agrovoc" />
+              <mat-hint>{{ t('fields.infoAgrovoc') }}</mat-hint>
+            </mat-form-field>
+            <br />
             <h3>{{ t('fields.dateSpan') }}</h3>
             <mat-form-field class="bg" appearance="fill">
               <mat-label>{{ t('fields.dates') }}</mat-label>
