@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { finalize, Observable, Subscription } from 'rxjs';
+import { finalize, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
 import { environment } from 'src/environments/environment';
 import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
@@ -48,7 +48,8 @@ export class BucketService {
     return this.http.post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
       reportProgress: true,
       observe: 'events',
-    });
+    }).pipe(timeout(21600000))
+    ;
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
