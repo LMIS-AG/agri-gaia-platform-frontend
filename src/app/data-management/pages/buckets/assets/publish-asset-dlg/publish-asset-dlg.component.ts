@@ -26,10 +26,11 @@ export class PublishAssetDlgComponent {
       id: ['', Validators.required],
       name: ['', Validators.required],
       description: [''],
-      assetType: [null],
+      version: [''],
     });
 
     const secondPage = this.formBuilder.group({
+      assetType: [null],
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       location: [''],

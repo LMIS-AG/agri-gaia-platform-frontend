@@ -30,20 +30,11 @@
             </mat-form-field>
             <br />
             <mat-form-field appearance="fill" color="primary" class="bg">
-              <mat-label>{{ t('fields.assetType.label') }}</mat-label>
-              <mat-select formControlName="assetType">
-                <mat-option>
-                  {{ t('fields.assetType.' + null) }}
-                </mat-option>
-                <mat-option *ngFor="let assetType of assetTypes" [value]="assetType">
-                  {{ t('fields.assetType.' + assetType) }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="firstPage.controls['assetType'].hasError('required')">{{
-                tCommon('required')
-              }}</mat-error>
-              <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
+              <mat-label>{{ t('fields.version') }}</mat-label>
+              <input matInput formControlName="version" />
+              <mat-hint>{{ t('fields.infoVersion') }}</mat-hint>
             </mat-form-field>
+            <br />
           </div>
         </mat-dialog-content>
 
@@ -61,6 +52,22 @@
       <mat-step>
         <mat-dialog-content class="dialog-content">
           <div fxLayout="column" [formGroup]="secondPage">
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.assetType.label') }}</mat-label>
+              <mat-select formControlName="assetType">
+                <mat-option>
+                  {{ t('fields.assetType.' + null) }}
+                </mat-option>
+                <mat-option *ngFor="let assetType of assetTypes" [value]="assetType">
+                  {{ t('fields.assetType.' + assetType) }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="secondPage.controls['assetType'].hasError('required')">{{
+                tCommon('required')
+              }}</mat-error>
+              <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
+            </mat-form-field>
+            <br />
             <h3>{{ t('fields.dateSpan') }}</h3>
             <mat-form-field class="bg" appearance="fill">
               <mat-label>{{ t('fields.dates') }}</mat-label>

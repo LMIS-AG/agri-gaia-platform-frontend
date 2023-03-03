@@ -91,6 +91,8 @@
             "infoName": "Geben Sie hier eine kurze Bezeichnung für Ihr Asset ein",
             "description": "Beschreibung",
             "infoDescription": "Geben Sie hier eine längere Beschreibung Ihres Assets an",
+            "version": "Version",
+            "infoVersion": "Geben Sie hier die Version Ihres Assets an",
             "assetType": {
               "label": "Asset-Typ",
               "AIMODEL": "KI-Modell",
