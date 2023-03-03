@@ -115,8 +115,7 @@
           "deleteCoopSpaceConfirmationText": "Die Anfrage zur Löschung des Kooperationsbereichs wurde erfolgreich gestellt.",
           "deleteCoopSpaceErrorText": "Die Anfrage zur Löschung des Kooperationsbereichs ist fehlgeschlagen.",
           "CoopSpaceContainsAssetsText": "Der Kooperationsbereich ist nicht leer!",
-          "deleteCoopSpaceWithAssetsQuestion": "Möchten Sie diesen wirklich mitsamt aller darin enthaltenen Assets löschen? Diese Aktion kann nicht rückgängig gemacht werden!",
-          "deleteCoopSpaceWithAssetsConfirmationText": "Die Anfrage zur Löschung des Kooperationsbereich und aller darin enthaltenen Assets wurde erfolgreich gestellt."
+          "deleteCoopSpaceWithAssetsQuestion": "Möchten Sie diesen wirklich mitsamt aller darin enthaltenen Assets löschen? Diese Aktion kann nicht rückgängig gemacht werden!"
         }
       },
       "createCoopSpaces": {

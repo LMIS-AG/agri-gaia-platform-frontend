@@ -97,24 +97,11 @@ export class CoopSpacesComponent implements OnInit {
             .getCoopSpaceById(selectedCoopSpace.id!)
             .pipe(
               concatMap(coopSpace =>
-                this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({assets })))
+                this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ assets })))
               )
             ).subscribe(result => {
               if (result.assets.length == 0) {
-                this.coopSpacesService.delete(selectedCoopSpace).subscribe({
-                  next: () => {
-                    this.uiService.showSuccessMessage(
-                      translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceConfirmationText')
-                    );
-                    removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
-                    this.dataSource.data = this.dataSource.data;
-                  },
-                  error: () => {
-                    this.uiService.showErrorMessage(
-                      translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceErrorText')
-                    );
-                  }
-                });
+                this.handleDeletionOfCoopSpace(selectedCoopSpace);
               } else {
                 this.uiService.confirm(
                   translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.CoopSpaceContainsAssetsText'),
@@ -129,20 +116,7 @@ export class CoopSpacesComponent implements OnInit {
                     const deleteAssetObservables = result.assets.map(assetToBeDeleted => this.bucketService.deleteAsset(bucket, assetToBeDeleted.name));
                     forkJoin(deleteAssetObservables).subscribe(() => {
                       // All assets have been deleted, we can now delete the CoopSpace
-                      this.coopSpacesService.delete(selectedCoopSpace).subscribe({
-                        next: () => {
-                          this.uiService.showSuccessMessage(
-                            translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceConfirmationText')
-                          );
-                          removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
-                          this.dataSource.data = this.dataSource.data;
-                        },
-                        error: () => {
-                          this.uiService.showErrorMessage(
-                            translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceErrorText')
-                          );
-                        }
-                      });
+                      this.handleDeletionOfCoopSpace(selectedCoopSpace);
                     });
                   }
                 });
@@ -150,6 +124,23 @@ export class CoopSpacesComponent implements OnInit {
             });
         }
       })
+  }
+
+  private handleDeletionOfCoopSpace(selectedCoopSpace: CoopSpace): void {
+    this.coopSpacesService.delete(selectedCoopSpace).subscribe({
+      next: () => {
+        this.uiService.showSuccessMessage(
+          translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceConfirmationText')
+        );
+        removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
+        this.dataSource.data = this.dataSource.data;
+      },
+      error: () => {
+        this.uiService.showErrorMessage(
+          translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceErrorText')
+        );
+      }
+    });
   }
 
   public adminsToString(members: Member[]): string {
