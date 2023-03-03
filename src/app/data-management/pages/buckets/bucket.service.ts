@@ -48,7 +48,7 @@ export class BucketService {
     return this.http.post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
       reportProgress: true,
       observe: 'events',
-    }).pipe(timeout(1800000))
+    }).pipe(timeout(21600000))
     ;
   }
 
