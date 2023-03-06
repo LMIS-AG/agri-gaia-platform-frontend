@@ -7,6 +7,7 @@ import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
+import { GenerateKeysComponent } from 'src/app/shared/components/generate-keys/generate-keys.component';
 
 @Component({
   selector: 'app-assets',
@@ -20,7 +21,7 @@ export class AssetsComponent implements OnInit {
   public fileToUpload: File | null = null;
   public isLoading = false;
 
-  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService) {}
+  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private generateKeys: GenerateKeysComponent) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -112,6 +113,11 @@ export class AssetsComponent implements OnInit {
           error: err => this.handleUnpublishError(err),
         });
       });
+  }
+
+  public generateAccessKeySecretKey() {
+    const accessKey = this.generateKeys.accessKey
+    const secretKey = this.generateKeys.secretKey
   }
 
   public handlePublishSuccess(): void {
