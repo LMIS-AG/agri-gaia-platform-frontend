@@ -63,6 +63,23 @@ export class PublishAssetDlgComponent {
     protected uiService: UIService,
     private formBuilder: FormBuilder
   ) {
+    this.initFormGroup();
+
+    this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
+      startWith(null),
+      map((keyword: string | null) => (keyword ? this._filter(keyword) : this.allKeywords.slice()))
+    );
+  }
+
+  public get firstPage(): FormGroup {
+    return this.formGroup.controls.firstPage as FormGroup;
+  }
+
+  public get secondPage(): FormGroup {
+    return this.formGroup.controls.secondPage as FormGroup;
+  }
+
+  private initFormGroup(): void {
     const firstPage = this.formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
@@ -78,20 +95,37 @@ export class PublishAssetDlgComponent {
     });
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
-
-    // chips
-    this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
-      startWith(null),
-      map((keyword: string | null) => (keyword ? this._filter(keyword) : this.allKeywords.slice()))
-    );
   }
 
-  public get firstPage(): FormGroup {
-    return this.formGroup.controls.firstPage as FormGroup;
+  public cancel(): void {
+    this.canClose().subscribe((canClose: boolean) => {
+      if (canClose) {
+        this.dialogRef.close();
+      }
+    });
   }
 
-  public get secondPage(): FormGroup {
-    return this.formGroup.controls.secondPage as FormGroup;
+  public publishAsset(): void {
+    if (!this.canAndShouldSave()) {
+      return;
+    }
+
+    // TODO implement
+
+    this.dialogRef.close();
+  }
+
+  public canAndShouldSave(): boolean {
+    return !this.formGroup.invalid && this.formGroup.dirty;
+  }
+  public canGoToSecondPage(): boolean {
+    return !this.firstPage.invalid && this.firstPage.dirty;
+  }
+
+  private canClose(): Observable<boolean> {
+    if (!this.formGroup.dirty) return of(true);
+
+    return this.uiService.confirmDiscardingUnsavedChanges();
   }
 
   /* CHIPS */
@@ -134,35 +168,4 @@ export class PublishAssetDlgComponent {
     return this.allKeywords.filter(keyword => keyword.toLowerCase().includes(filterValue));
   }
   /* CHIPS END */
-
-  public cancel(): void {
-    this.canClose().subscribe((canClose: boolean) => {
-      if (canClose) {
-        this.dialogRef.close();
-      }
-    });
-  }
-
-  public publishAsset(): void {
-    if (!this.canAndShouldSave()) {
-      return;
-    }
-
-    // TODO implement
-
-    this.dialogRef.close();
-  }
-
-  public canAndShouldSave(): boolean {
-    return !this.formGroup.invalid && this.formGroup.dirty;
-  }
-  public canGoToSecondPage(): boolean {
-    return !this.firstPage.invalid && this.firstPage.dirty;
-  }
-
-  private canClose(): Observable<boolean> {
-    if (!this.formGroup.dirty) return of(true);
-
-    return this.uiService.confirmDiscardingUnsavedChanges();
-  }
 }
