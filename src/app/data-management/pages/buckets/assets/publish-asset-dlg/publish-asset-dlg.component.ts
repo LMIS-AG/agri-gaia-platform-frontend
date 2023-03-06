@@ -21,7 +21,7 @@ export class PublishAssetDlgComponent {
 
   // chips
   public separatorKeysCodes: number[] = [ENTER]; // TODO what happens if enter is removed? kann man dann nur noch aus den Vorschlägen selecten? wäre gut.
-  public fruitCtrl = new FormControl(''); // TODO add this to formGroup.secondPage !?
+  public keywordInputCtrl = new FormControl(''); // TODO add this to formGroup.secondPage !?
   public filteredFruits!: Observable<string[]>;
   public selectedKeywords: string[] = [];
   public allKeywords: string[] = [
@@ -80,7 +80,7 @@ export class PublishAssetDlgComponent {
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
 
     // chips
-    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+    this.filteredFruits = this.keywordInputCtrl.valueChanges.pipe(
       startWith(null),
       map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allKeywords.slice()))
     );
@@ -98,10 +98,9 @@ export class PublishAssetDlgComponent {
   public addKeyword(event: MatChipInputEvent): void {
     const value: string = (event.value || '').trim();
 
-    // TODO maybe check if keyword is in list? And if key was already selected?
+    // TODO check if key was already selected?
     // TODO alternative maybe do not allow the user to enter words, only enter into input in order to search / filter list of keywords
 
-    // Add our fruit
     if (value && this.allKeywords.find(keyword => keyword === value)) {
       this.selectedKeywords.push(value);
     } else {
@@ -114,7 +113,7 @@ export class PublishAssetDlgComponent {
     // Clear the input value
     event.chipInput!.clear();
 
-    this.fruitCtrl.setValue(null);
+    this.keywordInputCtrl.setValue(null);
   }
 
   public remove(fruit: string): void {
@@ -128,7 +127,7 @@ export class PublishAssetDlgComponent {
   public selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedKeywords.push(event.option.viewValue);
     this.input.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+    this.keywordInputCtrl.setValue(null);
   }
 
   private _filter(value: string): string[] {
