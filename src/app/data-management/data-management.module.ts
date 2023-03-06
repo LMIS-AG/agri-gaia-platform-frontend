@@ -25,6 +25,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PublishAssetDlgComponent } from './pages/buckets/assets/publish-asset-dlg/publish-asset-dlg.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const routes: Routes = [
   {
@@ -86,6 +88,8 @@ const routes: Routes = [
     SharedModule,
     MatFormFieldModule,
     FormsModule,
+    MatAutocompleteModule,
+    MatChipsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
