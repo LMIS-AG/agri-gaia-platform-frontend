@@ -89,8 +89,8 @@
               </mat-chip-list>
               <mat-hint>{{ t('fields.infoAgrovoc') }}</mat-hint>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-                  {{ fruit }}
+                <mat-option *ngFor="let keyword of filteredKeywords | async" [value]="keyword">
+                  {{ keyword }}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>

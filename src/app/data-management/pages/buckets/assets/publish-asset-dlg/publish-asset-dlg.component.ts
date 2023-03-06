@@ -22,7 +22,7 @@ export class PublishAssetDlgComponent {
   // chips
   public separatorKeysCodes: number[] = [ENTER]; // TODO what happens if enter is removed? kann man dann nur noch aus den Vorschlägen selecten? wäre gut.
   public keywordInputCtrl = new FormControl(''); // TODO add this to formGroup.secondPage !?
-  public filteredFruits!: Observable<string[]>;
+  public filteredKeywords!: Observable<string[]>;
   public selectedKeywords: string[] = [];
   public allKeywords: string[] = [
     'Aal',
@@ -80,9 +80,9 @@ export class PublishAssetDlgComponent {
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
 
     // chips
-    this.filteredFruits = this.keywordInputCtrl.valueChanges.pipe(
+    this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allKeywords.slice()))
+      map((keyword: string | null) => (keyword ? this._filter(keyword) : this.allKeywords.slice()))
     );
   }
 
@@ -116,8 +116,8 @@ export class PublishAssetDlgComponent {
     this.keywordInputCtrl.setValue(null);
   }
 
-  public remove(fruit: string): void {
-    const index = this.selectedKeywords.indexOf(fruit);
+  public remove(keyword: string): void {
+    const index = this.selectedKeywords.indexOf(keyword);
 
     if (index >= 0) {
       this.selectedKeywords.splice(index, 1);
@@ -125,7 +125,10 @@ export class PublishAssetDlgComponent {
   }
 
   public selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedKeywords.push(event.option.viewValue);
+    const selectedKeyword = event.option.viewValue;
+    if (selectedKeyword && !this.selectedKeywords.find(keyword => keyword === selectedKeyword)) {
+      this.selectedKeywords.push(selectedKeyword);
+    }
     this.input.nativeElement.value = '';
     this.keywordInputCtrl.setValue(null);
   }
@@ -133,7 +136,7 @@ export class PublishAssetDlgComponent {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allKeywords.filter(fruit => fruit.toLowerCase().includes(filterValue));
+    return this.allKeywords.filter(keyword => keyword.toLowerCase().includes(filterValue));
   }
   /* CHIPS END */
 
