@@ -8,6 +8,10 @@ import { Member } from 'src/app/shared/model/member';
 import { CoopSpacesService } from './coop-spaces.service';
 import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { forkJoin } from 'rxjs';
+import { UIService } from 'src/app/shared/services/ui.service';
+import { translate } from '@ngneat/transloco';
+import { BucketService } from '../buckets/bucket.service';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -25,7 +29,9 @@ export class CoopSpacesComponent implements OnInit {
     private coopSpacesService: CoopSpacesService,
     private router: Router,
     private route: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private uiService: UIService,
+    private authenticationService: AuthenticationService,
+    private bucketService: BucketService
   ) {}
 
   public ngOnInit(): void {
@@ -74,9 +80,64 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public onDelete(selectedCoopSpace: CoopSpace): void {
-    this.coopSpacesService.delete(selectedCoopSpace).subscribe(() => {
-      removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
-      this.dataSource.data = this.dataSource.data;
+    this.coopSpacesService.getAssets(selectedCoopSpace.id!).subscribe(assets => {
+      if (assets.length === 0) {
+        // No assets found, show confirmation message
+        this.uiService
+          .confirm(
+            `${selectedCoopSpace.name}`,
+            translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceConfirmationQuestion'),
+            {
+              buttonLabels: 'confirm',
+              confirmButtonColor: 'primary',
+            }
+          )
+          .subscribe(confirmResult => {
+            if (confirmResult) {
+              this.handleDeletionOfCoopSpace(selectedCoopSpace);
+            }
+          });
+      } else {
+        // CoopSpace contains assets, show warning message
+        this.uiService
+          .confirm(
+            translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.CoopSpaceContainsAssetsText'),
+            translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceWithAssetsQuestion'),
+            {
+              buttonLabels: 'confirm',
+              confirmButtonColor: 'warn',
+            }
+          )
+          .subscribe(confirmResult => {
+            if (confirmResult) {
+              const bucket = `prj-${selectedCoopSpace.company.toLocaleLowerCase()}-${selectedCoopSpace.name}`;
+              const deleteAssetObservables = assets.map(assetToBeDeleted =>
+                this.bucketService.deleteAsset(bucket, assetToBeDeleted.name)
+              );
+              forkJoin(deleteAssetObservables).subscribe(() => {
+                // All assets have been deleted, we can now delete the CoopSpace
+                this.handleDeletionOfCoopSpace(selectedCoopSpace);
+              });
+            }
+          });
+      }
+    });
+  }
+
+  private handleDeletionOfCoopSpace(selectedCoopSpace: CoopSpace): void {
+    this.coopSpacesService.delete(selectedCoopSpace).subscribe({
+      next: () => {
+        this.uiService.showSuccessMessage(
+          translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceConfirmationText')
+        );
+        removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
+        this.dataSource.data = this.dataSource.data;
+      },
+      error: () => {
+        this.uiService.showErrorMessage(
+          translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceErrorText')
+        );
+      },
     });
   }
 
