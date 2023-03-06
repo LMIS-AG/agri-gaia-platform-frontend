@@ -68,12 +68,6 @@
               <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
             </mat-form-field>
             <br />
-            <!-- 
-            <mat-form-field appearance="fill" color="primary" class="bg">
-              <mat-label>{{ t('fields.agrovoc') }}</mat-label>
-              <input matInput formControlName="agrovoc" />
-              <mat-hint>{{ t('fields.infoAgrovoc') }}</mat-hint>
-            </mat-form-field> -->
             <mat-form-field class="example-chip-list" color="primary" class="bg" appearance="fill">
               <mat-label>{{ t('fields.agrovoc') }}</mat-label>
               <mat-chip-list #chipList aria-label="Keyword selection">
@@ -85,7 +79,7 @@
                 </mat-chip>
                 <input
                   placeholder="New keyword..."
-                  #fruitInput
+                  #input
                   [formControl]="fruitCtrl"
                   [matAutocomplete]="auto"
                   [matChipInputFor]="chipList"
@@ -93,6 +87,7 @@
                   (matChipInputTokenEnd)="addKeyword($event)"
                 />
               </mat-chip-list>
+              <mat-hint>{{ t('fields.infoAgrovoc') }}</mat-hint>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
                   {{ fruit }}

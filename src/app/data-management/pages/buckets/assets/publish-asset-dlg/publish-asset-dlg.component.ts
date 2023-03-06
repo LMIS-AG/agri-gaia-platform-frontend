@@ -54,8 +54,8 @@ export class PublishAssetDlgComponent {
     'Abfall',
     'Abfallbehandlung',
   ]; // TODO liste; read list from file; create service
-  @ViewChild('fruitInput')
-  fruitInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('input')
+  input!: ElementRef<HTMLInputElement>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset,
@@ -72,7 +72,6 @@ export class PublishAssetDlgComponent {
 
     const secondPage = this.formBuilder.group({
       assetType: [null],
-      agrovoc: [''],
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       location: [''],
@@ -96,10 +95,10 @@ export class PublishAssetDlgComponent {
   }
 
   /* CHIPS */
-  addKeyword(event: MatChipInputEvent): void {
+  public addKeyword(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // TODO maybe check if keyword is in list?
+    // TODO maybe check if keyword is in list? And if key was already selected?
     // TODO alternative maybe do not allow the user to enter words, only enter into input in order to saerch / filter list of keywords
 
     // Add our fruit
@@ -107,13 +106,16 @@ export class PublishAssetDlgComponent {
       this.selectedKeywords.push(value);
     }
 
+    // TODO remove
+    console.log(this.selectedKeywords);
+
     // Clear the input value
     event.chipInput!.clear();
 
     this.fruitCtrl.setValue(null);
   }
 
-  remove(fruit: string): void {
+  public remove(fruit: string): void {
     const index = this.selectedKeywords.indexOf(fruit);
 
     if (index >= 0) {
@@ -121,9 +123,9 @@ export class PublishAssetDlgComponent {
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  public selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedKeywords.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
+    this.input.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
   }
 
