@@ -107,12 +107,7 @@ export class PublishAssetDlgComponent {
       return;
     }
 
-    // TODO remove
-    console.log(this.selectedKeywords);
-
-    // Clear the input value
     event.chipInput!.clear();
-
     this.keywordInputCtrl.setValue(null);
   }
 
@@ -162,8 +157,6 @@ export class PublishAssetDlgComponent {
     return !this.formGroup.invalid && this.formGroup.dirty;
   }
   public canGoToSecondPage(): boolean {
-    // TODO remove this later; only there for faster devolopment purposes!
-    return true;
     return !this.firstPage.invalid && this.firstPage.dirty;
   }
 
