@@ -96,14 +96,16 @@ export class PublishAssetDlgComponent {
 
   /* CHIPS */
   public addKeyword(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+    const value: string = (event.value || '').trim();
 
     // TODO maybe check if keyword is in list? And if key was already selected?
-    // TODO alternative maybe do not allow the user to enter words, only enter into input in order to saerch / filter list of keywords
+    // TODO alternative maybe do not allow the user to enter words, only enter into input in order to search / filter list of keywords
 
     // Add our fruit
-    if (value) {
+    if (value && this.allKeywords.find(keyword => keyword === value)) {
       this.selectedKeywords.push(value);
+    } else {
+      return;
     }
 
     // TODO remove
