@@ -41,9 +41,7 @@ export class PublishAssetDlgComponent {
 
     this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
       startWith(null),
-      map((keyword: string | null) =>
-        keyword && keyword.length > 2 ? this._filter(keyword) : this.allKeywords.slice()
-      )
+      map((keyword: string | null) => (keyword && keyword.length > 2 ? this._filter(keyword) : []))
     );
   }
 
