@@ -74,6 +74,7 @@
         "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
+        "generateKeys": "JupyterHub-Zugänge",
         "table": {
           "name": "Assets",
           "date": "Datum",
