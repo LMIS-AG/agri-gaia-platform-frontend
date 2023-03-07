@@ -1,42 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  public getAgrovocKeywords(): string[] {
-    // TODO implement real logic; read from file; replace dummy string array
-    return [
-      'Aal',
-      'Aaptosyax grypus',
-      'Aasfresser',
-      'Ab-Hof-Preis',
-      'Ab-Hof-Verkauf',
-      'ABA',
-      'ABAG',
-      'Abaka',
-      'Abalistes stellaris',
-      'Abalone',
-      'Abamectin',
-      'Abbau',
-      'Abbau (Bergbau)',
-      'Abbaubarkeit im Pansen',
-      'Abbottina rivularis',
-      'Abbrennen der Stoppeln',
-      'Abdeckereiprodukt',
-      'Abdeckindustrie',
-      'Abdomen',
-      'Abdrift',
-      'Abelmoschus',
-      'Abelmoschus esculentus',
-      'Abelmoschus moschatus',
-      'Aberia',
-      'Abessinien',
-      'Abessinischer Senf',
-      'Abfall',
-      'Abfallbehandlung',
-    ];
+  public getAgrovocKeywordsFromFile(): Observable<string> {
+    const filePath = 'assets/agrovoc/agrovoc_keywords_de.txt';
+
+    return this.http.get(filePath, { responseType: 'text' });
   }
 }

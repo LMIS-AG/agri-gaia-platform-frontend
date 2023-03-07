@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, of, startWith } from 'rxjs';
@@ -41,7 +41,9 @@ export class PublishAssetDlgComponent {
 
     this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
       startWith(null),
-      map((keyword: string | null) => (keyword ? this._filter(keyword) : this.allKeywords.slice()))
+      map((keyword: string | null) =>
+        keyword && keyword.length > 2 ? this._filter(keyword) : this.allKeywords.slice()
+      )
     );
   }
 
@@ -72,7 +74,10 @@ export class PublishAssetDlgComponent {
   }
 
   private initAllKeywords(): void {
-    this.allKeywords = this.fileService.getAgrovocKeywords();
+    this.fileService.getAgrovocKeywordsFromFile().subscribe(data => {
+      const words = data.split(/\r?\n/);
+      this.allKeywords = words;
+    });
   }
 
   public cancel(): void {
@@ -110,9 +115,6 @@ export class PublishAssetDlgComponent {
   public addKeyword(event: MatChipInputEvent): void {
     const value: string = (event.value || '').trim();
 
-    // TODO check if key was already selected?
-    // TODO alternative maybe do not allow the user to enter words, only enter into input in order to search / filter list of keywords
-
     if (value && this.allKeywords.find(keyword => keyword === value)) {
       this.selectedKeywords.push(value);
     } else {
@@ -141,6 +143,8 @@ export class PublishAssetDlgComponent {
   }
 
   private _filter(value: string): string[] {
+    console.log(value); // TODO remove
+
     const filterValue = value.toLowerCase();
 
     return this.allKeywords.filter(keyword => keyword.toLowerCase().includes(filterValue));
