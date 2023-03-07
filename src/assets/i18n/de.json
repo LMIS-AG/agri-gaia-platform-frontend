@@ -83,7 +83,7 @@
         },
         "publishAssetDialog": {
           "headline": "Asset veröffentlichen",
-          "description": "Hier können Sie Ihr Asset veröffentlichen und es damit auf dem Marktplatz zum Kauf anbieten.",
+          "description": "Hier können Sie Ihr Asset veröffentlichen.",
           "fields": {
             "id": "ID",
             "infoId": "Geben Sie hier die ID für Ihr Asset ein",
