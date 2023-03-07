@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
 
 @Component({
   selector: 'app-coop-space-details-focus',

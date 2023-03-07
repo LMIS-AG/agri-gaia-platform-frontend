@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, of, startWith } from 'rxjs';
 import { AssetType } from 'src/app/shared/model/asset-type';
-import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { $enum } from 'ts-enum-util';
 import { ENTER } from '@angular/cdk/keycodes';

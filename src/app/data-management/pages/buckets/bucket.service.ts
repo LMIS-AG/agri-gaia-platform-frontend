@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { finalize, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
 import { environment } from 'src/environments/environment';
-import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../shared/model/general-purpose-asset';
 
 @Injectable({
   providedIn: 'root',
@@ -45,11 +45,12 @@ export class BucketService {
   }
 
   private uploadAssets(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
-    return this.http.post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
-      reportProgress: true,
-      observe: 'events',
-    }).pipe(timeout(21600000))
-    ;
+    return this.http
+      .post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(timeout(21600000));
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload

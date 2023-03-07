@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
-import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../../shared/model/general-purpose-asset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';

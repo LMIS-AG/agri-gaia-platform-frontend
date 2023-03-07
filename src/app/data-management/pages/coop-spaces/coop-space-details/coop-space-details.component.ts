@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, filter, map, Subscription, switchMap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
-import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
@@ -263,7 +263,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
   }
 
-
   public handleDeleteSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
   }
@@ -271,5 +270,4 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
   }
-
 }
