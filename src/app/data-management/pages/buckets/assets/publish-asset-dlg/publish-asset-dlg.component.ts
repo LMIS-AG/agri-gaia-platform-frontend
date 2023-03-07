@@ -9,6 +9,7 @@ import { $enum } from 'ts-enum-util';
 import { ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FileService } from 'src/app/shared/services/file.service';
 
 @Component({
   selector: 'app-publish-asset-dlg',
@@ -24,36 +25,7 @@ export class PublishAssetDlgComponent {
   public keywordInputCtrl = new FormControl(''); // TODO add this to formGroup.secondPage !?
   public filteredKeywords!: Observable<string[]>;
   public selectedKeywords: string[] = [];
-  public allKeywords: string[] = [
-    'Aal',
-    'Aaptosyax grypus',
-    'Aasfresser',
-    'Ab-Hof-Preis',
-    'Ab-Hof-Verkauf',
-    'ABA',
-    'ABAG',
-    'Abaka',
-    'Abalistes stellaris',
-    'Abalone',
-    'Abamectin',
-    'Abbau',
-    'Abbau (Bergbau)',
-    'Abbaubarkeit im Pansen',
-    'Abbottina rivularis',
-    'Abbrennen der Stoppeln',
-    'Abdeckereiprodukt',
-    'Abdeckindustrie',
-    'Abdomen',
-    'Abdrift',
-    'Abelmoschus',
-    'Abelmoschus esculentus',
-    'Abelmoschus moschatus',
-    'Aberia',
-    'Abessinien',
-    'Abessinischer Senf',
-    'Abfall',
-    'Abfallbehandlung',
-  ]; // TODO liste; read list from file; create service
+  public allKeywords: string[] = []; // TODO liste; read list from file; create service
   @ViewChild('input')
   input!: ElementRef<HTMLInputElement>;
 
@@ -61,8 +33,10 @@ export class PublishAssetDlgComponent {
     @Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset,
     protected dialogRef: MatDialogRef<any>,
     protected uiService: UIService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private fileService: FileService
   ) {
+    this.initAllKeywords();
     this.initFormGroup();
 
     this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
@@ -95,6 +69,10 @@ export class PublishAssetDlgComponent {
     });
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
+  }
+
+  private initAllKeywords(): void {
+    this.allKeywords = this.fileService.getAgrovocKeywords();
   }
 
   public cancel(): void {

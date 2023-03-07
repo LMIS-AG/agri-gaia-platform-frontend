@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FileService } from './services/file.service';
 
 @NgModule({
   declarations: [ConfirmDialogComponent, CreateEditDialogComponent, AddMembersComponent],
@@ -41,6 +42,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TranslocoModule,
     CreateEditDialogComponent,
     AddMembersComponent,
+    FileService,
   ],
 })
 export class SharedModule {}
