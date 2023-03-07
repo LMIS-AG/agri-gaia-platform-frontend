@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, of, startWith } from 'rxjs';
@@ -16,7 +16,7 @@ import { FileService } from 'src/app/shared/services/file.service';
   templateUrl: './publish-asset-dlg.component.html',
   styleUrls: ['./publish-asset-dlg.component.scss'],
 })
-export class PublishAssetDlgComponent {
+export class PublishAssetDlgComponent implements OnInit {
   public assetType = AssetType;
   public formGroup!: FormGroup;
   public assetTypes: AssetType[] = $enum(AssetType).getValues();
@@ -58,6 +58,21 @@ export class PublishAssetDlgComponent {
     return this.secondPage.controls.assetType.value;
   }
 
+  public ngOnInit(): void {
+    this.secondPage.controls.assetType.valueChanges.subscribe(value => {
+      if (value === AssetType.AiModel) {
+        this.secondPage.controls.startDate.clearValidators();
+        this.secondPage.controls.endDate.clearValidators();
+      } else {
+        this.secondPage.controls.startDate.setValidators(Validators.required);
+        this.secondPage.controls.endDate.setValidators(Validators.required);
+      }
+
+      this.secondPage.controls.startDate.updateValueAndValidity();
+      this.secondPage.controls.endDate.updateValueAndValidity();
+    });
+  }
+
   private initFormGroup(): void {
     const firstPage = this.formBuilder.group({
       id: ['', Validators.required],
@@ -68,7 +83,7 @@ export class PublishAssetDlgComponent {
 
     const secondPage = this.formBuilder.group({
       assetType: [AssetType.DataSet],
-      startDate: [null, Validators.required], // TODO should these be required
+      startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       location: [''],
     });
@@ -92,8 +107,6 @@ export class PublishAssetDlgComponent {
   }
 
   public publishAsset(): void {
-    console.log(this.secondPage.controls.assetType);
-
     if (!this.canAndShouldSave()) {
       return;
     }
@@ -148,8 +161,6 @@ export class PublishAssetDlgComponent {
   }
 
   private _filter(value: string): string[] {
-    console.log(value); // TODO remove
-
     const filterValue = value.toLowerCase();
 
     return this.allKeywords.filter(keyword => keyword.toLowerCase().includes(filterValue));

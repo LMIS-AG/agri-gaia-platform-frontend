@@ -54,7 +54,7 @@
           <div fxLayout="column" [formGroup]="secondPage">
             <mat-form-field appearance="fill" color="primary" class="bg">
               <mat-label>{{ t('fields.assetType.label') }}</mat-label>
-              <mat-select formControlName="assetType">
+              <mat-select formControlName="assetType" required>
                 <mat-option *ngFor="let assetType of assetTypes" [value]="assetType">
                   {{ t('fields.assetType.' + assetType) }}
                 </mat-option>
@@ -97,7 +97,7 @@
               <h3>{{ t('fields.dateSpan') }}</h3>
               <mat-form-field class="bg" appearance="fill">
                 <mat-label>{{ t('fields.dates') }}</mat-label>
-                <mat-date-range-input [rangePicker]="picker" required>
+                <mat-date-range-input [rangePicker]="picker">
                   <input matStartDate formControlName="startDate" placeholder="{{ t('fields.datePlaceholder') }}" />
                   <input matEndDate formControlName="endDate" placeholder="{{ t('fields.datePlaceholder') }}" />
                 </mat-date-range-input>
@@ -115,10 +115,7 @@
               <h3>{{ t('fields.location') }}</h3>
               <mat-form-field appearance="fill" color="primary" class="bg">
                 <mat-label>{{ t('fields.locationLabel') }}</mat-label>
-                <input matInput formControlName="location" required />
-                <mat-error *ngIf="secondPage.controls['location'].hasError('required')">{{
-                  tCommon('required')
-                }}</mat-error>
+                <input matInput formControlName="location" />
               </mat-form-field>
             </ng-container>
           </div>
@@ -129,7 +126,13 @@
             {{ tCommon('cancel') }}
           </button>
           <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
-          <button class="save" mat-flat-button [disabled]="false" color="primary" (click)="publishAsset()">
+          <button
+            class="save"
+            mat-flat-button
+            [disabled]="!canAndShouldSave()"
+            color="primary"
+            (click)="publishAsset()"
+          >
             {{ t('publishAsset') }}
           </button>
         </mat-dialog-actions>
