@@ -17,6 +17,7 @@ import { FileService } from 'src/app/shared/services/file.service';
   styleUrls: ['./publish-asset-dlg.component.scss'],
 })
 export class PublishAssetDlgComponent {
+  public assetType = AssetType;
   public formGroup!: FormGroup;
   public assetTypes: AssetType[] = $enum(AssetType).getValues();
 
@@ -53,6 +54,10 @@ export class PublishAssetDlgComponent {
     return this.formGroup.controls.secondPage as FormGroup;
   }
 
+  public get currentAssetType(): AssetType {
+    return this.secondPage.controls.assetType.value;
+  }
+
   private initFormGroup(): void {
     const firstPage = this.formBuilder.group({
       id: ['', Validators.required],
@@ -63,7 +68,7 @@ export class PublishAssetDlgComponent {
 
     const secondPage = this.formBuilder.group({
       assetType: [AssetType.DataSet],
-      startDate: [null, Validators.required],
+      startDate: [null, Validators.required], // TODO should these be required
       endDate: [null, Validators.required],
       location: [''],
     });
@@ -87,6 +92,8 @@ export class PublishAssetDlgComponent {
   }
 
   public publishAsset(): void {
+    console.log(this.secondPage.controls.assetType);
+
     if (!this.canAndShouldSave()) {
       return;
     }

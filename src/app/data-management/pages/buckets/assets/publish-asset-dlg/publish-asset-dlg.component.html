@@ -91,34 +91,36 @@
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-
             <br />
-            <h3>{{ t('fields.dateSpan') }}</h3>
-            <mat-form-field class="bg" appearance="fill">
-              <mat-label>{{ t('fields.dates') }}</mat-label>
-              <mat-date-range-input [rangePicker]="picker" required>
-                <input matStartDate formControlName="startDate" placeholder="{{ t('fields.datePlaceholder') }}" />
-                <input matEndDate formControlName="endDate" placeholder="{{ t('fields.datePlaceholder') }}" />
-              </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-              <mat-error
-                *ngIf="
-                  secondPage.controls['startDate'].hasError('required') ||
-                  secondPage.controls['endDate'].hasError('required')
-                "
-              >
-                {{ tCommon('required') }}
-              </mat-error>
-            </mat-form-field>
-            <h3>{{ t('fields.location') }}</h3>
-            <mat-form-field appearance="fill" color="primary" class="bg">
-              <mat-label>{{ t('fields.locationLabel') }}</mat-label>
-              <input matInput formControlName="location" required />
-              <mat-error *ngIf="secondPage.controls['location'].hasError('required')">{{
-                tCommon('required')
-              }}</mat-error>
-            </mat-form-field>
+
+            <ng-container *ngIf="currentAssetType === assetType.DataSet">
+              <h3>{{ t('fields.dateSpan') }}</h3>
+              <mat-form-field class="bg" appearance="fill">
+                <mat-label>{{ t('fields.dates') }}</mat-label>
+                <mat-date-range-input [rangePicker]="picker" required>
+                  <input matStartDate formControlName="startDate" placeholder="{{ t('fields.datePlaceholder') }}" />
+                  <input matEndDate formControlName="endDate" placeholder="{{ t('fields.datePlaceholder') }}" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error
+                  *ngIf="
+                    secondPage.controls['startDate'].hasError('required') ||
+                    secondPage.controls['endDate'].hasError('required')
+                  "
+                >
+                  {{ tCommon('required') }}
+                </mat-error>
+              </mat-form-field>
+              <h3>{{ t('fields.location') }}</h3>
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('fields.locationLabel') }}</mat-label>
+                <input matInput formControlName="location" required />
+                <mat-error *ngIf="secondPage.controls['location'].hasError('required')">{{
+                  tCommon('required')
+                }}</mat-error>
+              </mat-form-field>
+            </ng-container>
           </div>
         </mat-dialog-content>
 
