@@ -104,7 +104,7 @@
             },
             "dateSpan": "Zeitraum der Datenerfassung",
             "dates": "Startdatum - Enddatum",
-            "datePlaceholder": "mm/tt/jjjj",
+            "datePlaceholder": "tt/mm/jjjj",
             "location": "Ort der Datenerfassung",
             "locationLabel": "Ort"
           },

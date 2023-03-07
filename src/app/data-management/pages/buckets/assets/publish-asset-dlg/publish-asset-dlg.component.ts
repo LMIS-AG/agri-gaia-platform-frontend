@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, of, startWith } from 'rxjs';
@@ -10,6 +10,7 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FileService } from 'src/app/shared/services/file.service';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-publish-asset-dlg',
@@ -35,7 +36,8 @@ export class PublishAssetDlgComponent {
     protected dialogRef: MatDialogRef<any>,
     protected uiService: UIService,
     private formBuilder: FormBuilder,
-    private fileService: FileService
+    private fileService: FileService,
+    private _adapter: DateAdapter<any>
   ) {
     this.initAllKeywords();
     this.initFormGroup();
@@ -44,6 +46,8 @@ export class PublishAssetDlgComponent {
       startWith(null),
       map((keyword: string | null) => (keyword && keyword.length > 2 ? this._filter(keyword) : []))
     );
+
+    this._adapter.setLocale('de-DE');
   }
 
   public get firstPage(): FormGroup {
