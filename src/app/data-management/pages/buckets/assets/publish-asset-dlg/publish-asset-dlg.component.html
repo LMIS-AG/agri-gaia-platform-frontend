@@ -103,14 +103,6 @@
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-                <mat-error
-                  *ngIf="
-                    secondPage.controls['startDate'].hasError('required') ||
-                    secondPage.controls['endDate'].hasError('required')
-                  "
-                >
-                  {{ tCommon('required') }}
-                </mat-error>
               </mat-form-field>
               <h3>{{ t('fields.location') }}</h3>
               <mat-form-field appearance="fill" color="primary" class="bg">

@@ -16,7 +16,7 @@ import { FileService } from 'src/app/shared/services/file.service';
   templateUrl: './publish-asset-dlg.component.html',
   styleUrls: ['./publish-asset-dlg.component.scss'],
 })
-export class PublishAssetDlgComponent implements OnInit {
+export class PublishAssetDlgComponent {
   public assetType = AssetType;
   public formGroup!: FormGroup;
   public assetTypes: AssetType[] = $enum(AssetType).getValues();
@@ -58,21 +58,6 @@ export class PublishAssetDlgComponent implements OnInit {
     return this.secondPage.controls.assetType.value;
   }
 
-  public ngOnInit(): void {
-    this.secondPage.controls.assetType.valueChanges.subscribe(value => {
-      if (value === AssetType.AiModel) {
-        this.secondPage.controls.startDate.clearValidators();
-        this.secondPage.controls.endDate.clearValidators();
-      } else {
-        this.secondPage.controls.startDate.setValidators(Validators.required);
-        this.secondPage.controls.endDate.setValidators(Validators.required);
-      }
-
-      this.secondPage.controls.startDate.updateValueAndValidity();
-      this.secondPage.controls.endDate.updateValueAndValidity();
-    });
-  }
-
   private initFormGroup(): void {
     const firstPage = this.formBuilder.group({
       id: ['', Validators.required],
@@ -83,8 +68,8 @@ export class PublishAssetDlgComponent implements OnInit {
 
     const secondPage = this.formBuilder.group({
       assetType: [AssetType.DataSet],
-      startDate: [null, Validators.required],
-      endDate: [null, Validators.required],
+      startDate: [null],
+      endDate: [null],
       location: [''],
     });
 
