@@ -7,7 +7,8 @@ import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
-import { GenerateKeysComponent } from 'src/app/shared/components/generate-keys/generate-keys.component';
+import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-assets',
@@ -21,7 +22,7 @@ export class AssetsComponent implements OnInit {
   public fileToUpload: File | null = null;
   public isLoading = false;
 
-  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private generateKeys: GenerateKeysComponent) {}
+  constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private dialog: MatDialog) {}
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -115,9 +116,18 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public generateAccessKeySecretKey() {
-    const accessKey = this.generateKeys.accessKey
-    const secretKey = this.generateKeys.secretKey
+  openGenerateKeysDialog(): void {
+    // Retrieve the array of keys using the KeysService
+    this.bucketService.getKeysandToken().subscribe(result => {
+      // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
+      const dialogRef = this.dialog.open(GenerateKeysDialogComponent, {
+        data: {
+          accessKey: result.accessKey,
+          secretKey: result.secretKey,
+          sessionToken: result.sessionToken
+        }
+      });
+    })
   }
 
   public handlePublishSuccess(): void {

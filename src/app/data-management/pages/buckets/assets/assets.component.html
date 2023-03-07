@@ -15,16 +15,17 @@
       </button>
       <mat-menu #menuForUpload="matMenu">
         <!-- actual input for file upload is hidden because it is hard to style -->
-        <div>
+        <div fxLayout="column" fxLayoutAlign="center center">
           <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
-        </div>
-        <div>
           <button class="upload-button" (click)="fileUpload.click()">
             <mat-icon>upload</mat-icon>
             <p>{{ t('uploadFile') }}</p>
           </button>
+          <button class="generate-button" (click)="openGenerateKeysDialog()">
+            <mat-icon class="generate-button-icon">vpn_key</mat-icon>
+            <p>{{ t('generateKeys') }}</p>
+          </button>
         </div>
-        <button mat-menu-item (click)="generateAccessKeySecretKey()">Access Key und Secret Key</button>
       </mat-menu>
     </div>
 
