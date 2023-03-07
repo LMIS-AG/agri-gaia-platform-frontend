@@ -62,7 +62,7 @@ export class PublishAssetDlgComponent {
     });
 
     const secondPage = this.formBuilder.group({
-      assetType: [null],
+      assetType: [AssetType.DataSet],
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       location: [''],

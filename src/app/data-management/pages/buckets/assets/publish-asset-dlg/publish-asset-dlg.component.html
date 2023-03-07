@@ -55,9 +55,6 @@
             <mat-form-field appearance="fill" color="primary" class="bg">
               <mat-label>{{ t('fields.assetType.label') }}</mat-label>
               <mat-select formControlName="assetType">
-                <mat-option>
-                  {{ t('fields.assetType.' + null) }}
-                </mat-option>
                 <mat-option *ngFor="let assetType of assetTypes" [value]="assetType">
                   {{ t('fields.assetType.' + assetType) }}
                 </mat-option>
