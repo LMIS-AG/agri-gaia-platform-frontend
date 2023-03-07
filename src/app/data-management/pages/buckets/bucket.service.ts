@@ -33,7 +33,7 @@ export class BucketService {
   }
 
  public getKeysandToken(): Observable<STSRequest> {
-    return this.http.get<STSRequest>(`${environment.backend.url}/buckets/stsrequest`);
+    return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 
   public buildFormDataAndUploadAssets(event: any, bucket: string): Observable<HttpEvent<Object>> {

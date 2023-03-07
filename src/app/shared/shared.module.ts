@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { GenerateKeysDialogComponent } from './components/generate-keys-dialog/generate-keys-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [ConfirmDialogComponent, CreateEditDialogComponent, AddMembersComponent, GenerateKeysDialogComponent],
@@ -33,6 +34,7 @@ import { GenerateKeysDialogComponent } from './components/generate-keys-dialog/g
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatSnackBarModule
   ],
   exports: [
     CommonModule,
