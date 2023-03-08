@@ -11,6 +11,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FileService } from 'src/app/shared/services/file.service';
 import { DateAdapter } from '@angular/material/core';
+import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
+import { BucketService } from '../../bucket.service';
 
 @Component({
   selector: 'app-publish-asset-dlg',
@@ -18,6 +20,7 @@ import { DateAdapter } from '@angular/material/core';
   styleUrls: ['./publish-asset-dlg.component.scss'],
 })
 export class PublishAssetDlgComponent {
+  public asset!: GeneralPurposeAsset;
   public assetType = AssetType;
   public formGroup!: FormGroup;
   public assetTypes: AssetType[] = $enum(AssetType).getValues();
@@ -32,15 +35,22 @@ export class PublishAssetDlgComponent {
   input!: ElementRef<HTMLInputElement>;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) data: GeneralPurposeAsset,
+    @Inject(MAT_DIALOG_DATA) asset: GeneralPurposeAsset,
     protected dialogRef: MatDialogRef<any>,
     protected uiService: UIService,
     private formBuilder: FormBuilder,
     private fileService: FileService,
+    private bucketService: BucketService,
     private _adapter: DateAdapter<any>
   ) {
     this.initAllKeywords();
     this.initFormGroup();
+
+    if (asset) {
+      this.asset = asset;
+    } else {
+      throw new Error('MAT_DIALOG_DATA (asset) is not present');
+    }
 
     this.filteredKeywords = this.keywordInputCtrl.valueChanges.pipe(
       startWith(null),
@@ -100,9 +110,56 @@ export class PublishAssetDlgComponent {
       return;
     }
 
-    // TODO implement
+    const firstPageCtrl = this.firstPage.controls;
+    const secondPageCtrl = this.secondPage.controls;
+
+    const assetToPublish: PublishableAsset = {
+      // information from dialog page 1
+      assetPropId: firstPageCtrl.id.value,
+      assetPropName: firstPageCtrl.name.value,
+      assetPropDescription: firstPageCtrl.description.value,
+      assetPropVersion: firstPageCtrl.version.value,
+
+      // information from dialog page 2
+      assetPropContentType: secondPageCtrl.assetType.value,
+      agrovocKeywords: this.selectedKeywords,
+      dateRange: this.getDateRangeIfPresent(),
+      geonamesUri: secondPageCtrl.location.value,
+
+      // information from asset
+      dataAddressAssetName: this.asset.name,
+      dataAddressBucketName: this.asset.coopSpace,
+      assetPropByteSize: this.transformSizeStringToNumber(),
+      dataAddressKeyName: 'assets/' + this.asset.name,
+
+      // constant values
+      dataAddressType: 'AmazonS3',
+      dataAddressRegion: 'us-east-1',
+    };
+
+    this.bucketService
+      .publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish)
+      .subscribe(x => console.log(x)); // TODO remove log
 
     this.dialogRef.close();
+  }
+
+  private transformSizeStringToNumber(): number {
+    // TODO adjuste regarding metrics (B, KiB, ...)
+    return Number(this.asset.size.split(' ')[0]);
+  }
+
+  // TODO maybe change type of daterange or split daterange type into to localDateTimes (startDate, endDate)
+  private getDateRangeIfPresent(): string | undefined {
+    const secondPageCtrl = this.secondPage.controls;
+    if (secondPageCtrl.assetType.value === AssetType.DataSet) {
+      if (secondPageCtrl.startDate.value && secondPageCtrl.endDate.value) {
+        return secondPageCtrl.startDate.value + ' - ' + secondPageCtrl.endDate.value;
+      }
+      return undefined;
+    } else {
+      return undefined;
+    }
   }
 
   public canAndShouldSave(): boolean {

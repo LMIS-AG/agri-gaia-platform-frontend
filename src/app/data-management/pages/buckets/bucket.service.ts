@@ -2,6 +2,7 @@ import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
+import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
 import { environment } from 'src/environments/environment';
 import { GeneralPurposeAsset } from '../../../shared/model/general-purpose-asset';
 
@@ -19,8 +20,10 @@ export class BucketService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
   }
 
-  public publishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/assets/publish/${bucket}/${name}`, {}, { observe: 'response' });
+  public publishAsset(bucket: string, name: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
+    return this.http.post(`${environment.backend.url}/assets/publish/${bucket}/${name}`, asset, {
+      observe: 'response',
+    });
   }
 
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
