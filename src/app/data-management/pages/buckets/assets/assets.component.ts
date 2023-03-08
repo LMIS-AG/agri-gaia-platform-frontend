@@ -99,25 +99,6 @@ export class AssetsComponent implements OnInit {
     });
   }
 
-  public publishAsset_obsolete(asset: GeneralPurposeAsset): void {
-    this.uiService
-      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.publishConfirmationQuestion'), {
-        // TODO: This argument isn't used anywhere.
-        confirmationText: translate('dataManagement.buckets.assets.dialog.publishConfirmationText'),
-        buttonLabels: 'confirm',
-        confirmButtonColor: 'primary',
-      })
-      .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
-        let bucket = this.bucket;
-        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-        this.bucketService.publishAsset(bucket, asset.name).subscribe({
-          next: () => this.handlePublishSuccess(),
-          error: err => this.handlePublishError(err),
-        });
-      });
-  }
-
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.dataSource.data = this.dataSource.data.filter(e => e.name !== asset.name);
   }
