@@ -122,14 +122,6 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public handlePublishSuccess(): void {
-    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
-  }
-
-  public handlePublishError(err: any): void {
-    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status);
-  }
-
   public handleUnpublishSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.unpublishConfirmationText'));
   }

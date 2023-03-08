@@ -140,9 +140,16 @@ export class PublishAssetDlgComponent {
       dataAddressRegion: 'us-east-1',
     };
 
-    this.bucketService
-      .publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish)
-      .subscribe(x => console.log(x)); // TODO remove log
+    this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish).subscribe({
+      next: () => {
+        this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
+      },
+      error: err => {
+        this.uiService.showErrorMessage(
+          translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status
+        );
+      },
+    });
 
     this.dialogRef.close();
   }
