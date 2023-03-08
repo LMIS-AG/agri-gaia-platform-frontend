@@ -21,6 +21,7 @@ export class AssetsComponent implements OnInit {
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public isLoading = false;
+  public isLoadingKeys = false;
 
   constructor(private route: ActivatedRoute, private bucketService: BucketService, private uiService: UIService, private dialog: MatDialog) {}
 
@@ -117,8 +118,10 @@ export class AssetsComponent implements OnInit {
   }
 
   openGenerateKeysDialog(): void {
+    this.isLoading = true;
     // Retrieve the array of keys using the KeysService
     this.bucketService.getKeysandToken().subscribe(result => {
+      this.isLoading = false;
       // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
       const dialogRef = this.dialog.open(GenerateKeysDialogComponent, {
         data: {

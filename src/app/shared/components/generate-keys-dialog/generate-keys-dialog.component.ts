@@ -20,15 +20,15 @@ export class GenerateKeysDialogComponent {
     const sessionToken = this.data.sessionToken;
     const code = 
       `from minio import Minio
-  
-  client = Minio("minio-test-api.platform.agri-gaia.com",
+    
+client = Minio("minio-test-api.platform.agri-gaia.com",
     access_key="${accessKey}",
     secret_key="${secretKey}",
     session_token="${sessionToken}")
-  
-  # Test connection and list accessible buckets
-  client.list_buckets()`;
     
+# Test connection and list accessible buckets
+client.list_buckets()`
+  
     // Copy the code to the clipboard
     navigator.clipboard.writeText(code).then(() => {
       const config = new MatSnackBarConfig();
@@ -37,7 +37,8 @@ export class GenerateKeysDialogComponent {
       config.duration = 3000; // Set the duration for the message to be displayed
       // Open the snackbar with the given config
       this.snackBar.open('Der Code wurde erfolgreich in die Zwischenablage kopiert!', '', config);
-  })};
+    });
+  }
 
   closeDialog(): void {
     this.dialogRef.close();

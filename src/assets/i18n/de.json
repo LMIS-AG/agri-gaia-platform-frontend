@@ -72,9 +72,10 @@
         "uploadFileError": "Der Upload ist fehlgeschlagen.",
         "ongoingUpload1": "Datei wird hochgeladen...",
         "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
+        "ongoingGeneration": "Ihre Zugänge werden generiert.",
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
-        "jupyterhubAccess": "JupyterHub-Zugänge",
+        "bucketAccess": "Zugangsdaten für Buckets",
         "table": {
           "name": "Assets",
           "date": "Datum",
