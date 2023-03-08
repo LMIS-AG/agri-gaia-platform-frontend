@@ -82,13 +82,7 @@ export class AssetsComponent implements OnInit {
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
 
-    this.openPublishAssetDialog(asset)
-      .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          // TODO maybe do something after publishing asset
-        }
-      });
+    this.openPublishAssetDialog(asset).afterClosed().subscribe();
   }
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
