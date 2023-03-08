@@ -123,7 +123,7 @@ export class PublishAssetDlgComponent {
 
       // information from dialog page 2
       assetPropContentType: translate(
-        'dataManagement.buckets.assets.publishAssetDialog.assetType.' + secondPageCtrl.assetType.value
+        'dataManagement.buckets.assets.publishAssetDialog.fields.assetType.' + secondPageCtrl.assetType.value
       ),
       agrovocKeywords: this.selectedKeywords,
       dateRange: this.getDateRangeIfPresent(),
