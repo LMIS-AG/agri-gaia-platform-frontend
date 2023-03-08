@@ -13,6 +13,7 @@ import { FileService } from 'src/app/shared/services/file.service';
 import { DateAdapter } from '@angular/material/core';
 import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
 import { BucketService } from '../../bucket.service';
+import { translate } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-publish-asset-dlg',
@@ -121,7 +122,9 @@ export class PublishAssetDlgComponent {
       assetPropVersion: firstPageCtrl.version.value,
 
       // information from dialog page 2
-      assetPropContentType: secondPageCtrl.assetType.value,
+      assetPropContentType: translate(
+        'dataManagement.buckets.assets.publishAssetDialog.assetType.' + secondPageCtrl.assetType.value
+      ),
       agrovocKeywords: this.selectedKeywords,
       dateRange: this.getDateRangeIfPresent(),
       geonamesUri: secondPageCtrl.location.value,
