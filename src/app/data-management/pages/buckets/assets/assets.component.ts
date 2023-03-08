@@ -119,7 +119,7 @@ export class AssetsComponent implements OnInit {
 
   openGenerateKeysDialog(): void {
     this.isLoading = true;
-    // Retrieve the array of keys using the KeysService
+    // Retrieve the keys and the session token using the BucketService
     this.bucketService.getKeysandToken().subscribe(result => {
       this.isLoading = false;
       // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
