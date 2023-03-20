@@ -230,13 +230,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public openInFull(): void {
-    this.router.navigate(['focus'], {
-      relativeTo: this.route,
-      state: { datasetDatasource: this.datasetDatasource },
-    });
-  }
-
   public getUserRole(): CoopSpaceRole | undefined {
     let member = this.coopSpace?.members.find(m => m.username === this.userName);
     if (member === undefined) return undefined;
@@ -263,7 +256,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
   }
 
-
   public handleDeleteSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
   }
@@ -271,5 +263,4 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
   }
-
 }
