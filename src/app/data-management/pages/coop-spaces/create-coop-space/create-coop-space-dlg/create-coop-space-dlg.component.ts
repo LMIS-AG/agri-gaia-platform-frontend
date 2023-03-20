@@ -29,9 +29,6 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
   @Input()
   public alwaysEnableSaveButton: boolean = false;
 
-  //@Output() // TODO remove
-  //private saveEventParent: EventEmitter<Member[]> = new EventEmitter();
-
   @Output()
   private cancelEvent: EventEmitter<void> = new EventEmitter();
 
@@ -126,8 +123,6 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
   }
 
   public handleSelectedMembers(membersSelected: Member[]): void {
-    //this.saveEventParent.emit(membersSelected); // TODO remove
-
     this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => {
       const newCoopSpace: CoopSpace = {
         company: this.formGroup.get('company')?.value,
