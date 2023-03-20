@@ -9,6 +9,7 @@
           <!--TODO eventuell Überschrift wie auf der nächsten Seite ("Teilnehmer hinzufügen") hinzufügen <h3></h3> -->
           <ng-container *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
             <div [formGroup]="formGroup" fxLayout="column" *transloco="let tCommon; read: 'common'">
+              <!-- COMPANY -->
               <mat-form-field appearance="fill" color="primary" class="bg">
                 <mat-label>{{ t('company') }}</mat-label>
                 <mat-select formControlName="company" required>
@@ -54,6 +55,7 @@
             <br />
 
             <ul>
+              <!-- COOP SPACE NAME RULES -->
               <li [innerHTML]="tDialog('nameRules.lengthHtml')"></li>
               <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
               <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
