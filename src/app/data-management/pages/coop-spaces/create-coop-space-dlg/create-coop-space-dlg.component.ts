@@ -9,7 +9,7 @@ import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesService } from '../coop-spaces.service';
-import { CoopSpaceValidator } from '../create-coop-space/coop-space-validator';
+import { CoopSpaceValidator } from './coop-space-validator';
 import { uniqueNameAsyncValidator } from '../create-coop-space/unique-name-async-validator';
 
 @Component({
