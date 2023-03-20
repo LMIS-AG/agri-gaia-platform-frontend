@@ -75,8 +75,26 @@ table {
   }
 }
 
+.generate-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+
+  p {
+    margin: 0 0 0 8px;
+  }
+}
+
+.generate-button:hover,
 .upload-button:hover {
   cursor: pointer;
+  background-color: #f1f1f1;
+}
+
+.generate-button:hover p,
+.upload-button:hover p {
+  color: black;
 }
 
 ::ng-deep.mat-menu-panel {
