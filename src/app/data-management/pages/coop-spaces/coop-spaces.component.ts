@@ -6,7 +6,6 @@ import { removeElementFromArray } from 'src/app/shared/array-utils';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { CoopSpacesService } from './coop-spaces.service';
-import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { forkJoin } from 'rxjs';
 import { UIService } from 'src/app/shared/services/ui.service';
