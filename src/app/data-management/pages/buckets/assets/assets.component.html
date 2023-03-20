@@ -16,20 +16,19 @@
       </button>
       <mat-menu #menuForUpload="matMenu">
         <!-- actual input for file upload is hidden because it is hard to style -->
-        <div fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="column">
           <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
           <button class="upload-button" (click)="fileUpload.click()">
             <mat-icon>upload</mat-icon>
             <p>{{ t('uploadFile') }}</p>
           </button>
-          <button class="generate-button" (click)="openGenerateKeysDialog(); isLoadingKeys=true;">
+          <button class="generate-button" (click)="openGenerateKeysDialog(); isLoadingKeys = true">
             <mat-icon class="generate-button-icon">vpn_key</mat-icon>
             <p>{{ t('bucketAccess') }}</p>
           </button>
         </div>
       </mat-menu>
     </div>
-
 
     <!-- Dataset -->
     <div class="card" fxLayout="column">
