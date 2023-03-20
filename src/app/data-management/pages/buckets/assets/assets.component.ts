@@ -122,7 +122,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  openGenerateKeysDialog(): void {
+  public openGenerateKeysDialog(): void {
     this.isLoadingKeys = true;
     // Retrieve the keys and the session token using the BucketService
     this.bucketService.getKeysandToken().subscribe(result => {

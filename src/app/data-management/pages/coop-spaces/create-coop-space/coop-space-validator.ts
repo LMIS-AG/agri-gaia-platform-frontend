@@ -1,6 +1,6 @@
 import { FormControl, ValidationErrors } from '@angular/forms';
 export class CoopSpaceValidator {
-  static validCharacters(control: FormControl): ValidationErrors | null {
+  public static validCharacters(control: FormControl): ValidationErrors | null {
     const validCharactersPattern = new RegExp('^[a-z|0-9|-]{1,}$');
     return validCharactersPattern.test(control.value)
       ? null
@@ -9,7 +9,7 @@ export class CoopSpaceValidator {
         };
   }
 
-  static validStartCharacter(control: FormControl): ValidationErrors | null {
+  public static validStartCharacter(control: FormControl): ValidationErrors | null {
     const validStartCharacterPattern = new RegExp('^[a-z|0-9]');
     return validStartCharacterPattern.test(control.value)
       ? null
@@ -18,7 +18,7 @@ export class CoopSpaceValidator {
         };
   }
 
-  static validEndCharacter(control: FormControl): ValidationErrors | null {
+  public static validEndCharacter(control: FormControl): ValidationErrors | null {
     const validEndCharacterPattern = new RegExp('[a-z|0-9]$');
     return validEndCharacterPattern.test(control.value)
       ? null
@@ -27,7 +27,7 @@ export class CoopSpaceValidator {
         };
   }
 
-  static validPrefix(control: FormControl): ValidationErrors | null {
+  public static validPrefix(control: FormControl): ValidationErrors | null {
     const invalidPrefixPattern = new RegExp('^xn--');
     return invalidPrefixPattern.test(control.value)
       ? {

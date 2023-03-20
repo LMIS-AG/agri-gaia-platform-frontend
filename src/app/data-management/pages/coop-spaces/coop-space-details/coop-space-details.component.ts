@@ -117,7 +117,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   // change the role of a user and thereby its respective rights
-  public onRoleChange(originalRole: string, member: Member) {
+  public onRoleChange(originalRole: string, member: Member): void {
     this.uiService
       .confirm(
         `${member.name}`,

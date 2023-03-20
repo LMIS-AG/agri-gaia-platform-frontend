@@ -4,9 +4,8 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-generate-keys-dialog',
-  templateUrl: './generate-keys-dialog.component.html'
+  templateUrl: './generate-keys-dialog.component.html',
 })
-
 export class GenerateKeysDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<GenerateKeysDialogComponent>,
@@ -14,12 +13,11 @@ export class GenerateKeysDialogComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  copyCode(): void {
+  public copyCode(): void {
     const accessKey = this.data.accessKey;
     const secretKey = this.data.secretKey;
     const sessionToken = this.data.sessionToken;
-    const code = 
-      `from minio import Minio
+    const code = `from minio import Minio
     
 client = Minio("minio-test-api.platform.agri-gaia.com",
     access_key="${accessKey}",
@@ -27,8 +25,8 @@ client = Minio("minio-test-api.platform.agri-gaia.com",
     session_token="${sessionToken}")
     
 # Test connection and list accessible buckets
-client.list_buckets()`
-  
+client.list_buckets()`;
+
     // Copy the code to the clipboard
     navigator.clipboard.writeText(code).then(() => {
       const config = new MatSnackBarConfig();
@@ -40,8 +38,7 @@ client.list_buckets()`
     });
   }
 
-  closeDialog(): void {
+  public closeDialog(): void {
     this.dialogRef.close();
   }
-
 }
