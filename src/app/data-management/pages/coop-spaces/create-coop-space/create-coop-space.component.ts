@@ -18,8 +18,8 @@ import { uniqueNameAsyncValidator } from './unique-name-async-validator';
   styleUrls: ['./create-coop-space.component.scss'],
 })
 export class CreateCoopSpaceComponent implements OnInit {
-  public formGroup: FormGroup;
-  public companies: string[] = [];
+  //public formGroup: FormGroup;
+  //public companies: string[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<CoopSpacesComponent>,
@@ -28,7 +28,7 @@ export class CreateCoopSpaceComponent implements OnInit {
     private uiService: UIService,
     private authenticationService: AuthenticationService
   ) {
-    this.formGroup = this.formBuilder.group({
+    /*this.formGroup = this.formBuilder.group({
       company: ['', Validators.required],
       name: [
         { value: '', disabled: true },
@@ -43,18 +43,18 @@ export class CreateCoopSpaceComponent implements OnInit {
         ],
         [uniqueNameAsyncValidator(this.coopSpacesService)],
       ],
-    });
+    });*/
   }
 
   public ngOnInit(): void {
-    this.coopSpacesService.getValidCompanyNames().subscribe(validCompanyNames => {
+    /*this.coopSpacesService.getValidCompanyNames().subscribe(validCompanyNames => {
       this.companies = validCompanyNames;
     });
 
-    this.formGroup.get('company')?.valueChanges.subscribe(() => this.formGroup.get('name')?.enable());
+    this.formGroup.get('company')?.valueChanges.subscribe(() => this.formGroup.get('name')?.enable());*/
   }
 
-  public onSave(membersSelected: Member[]): void {
+  /*public onSave(membersSelected: Member[]): void {
     this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => {
       const newCoopSpace: CoopSpace = {
         company: this.formGroup.get('company')?.value,
@@ -71,5 +71,5 @@ export class CreateCoopSpaceComponent implements OnInit {
         this.dialogRef.close(true);
       });
     });
-  }
+  }*/
 }

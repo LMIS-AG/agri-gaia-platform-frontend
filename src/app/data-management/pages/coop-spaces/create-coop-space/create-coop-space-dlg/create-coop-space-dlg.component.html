@@ -1,47 +1,105 @@
 <ng-container *transloco="let tCommon; read: 'common'">
-  <h2 mat-dialog-title>{{ title }}</h2>
+  <ng-container *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'">
+    <h2 mat-dialog-title>{{ title }}</h2>
 
-  <mat-stepper #stepper>
-    <mat-step>
-      <!--[stepControl]="firstFormGroup"-->
+    <mat-stepper #stepper>
+      <!-- PAGE 1 -->
+      <mat-step>
+        <!--[stepControl]="firstFormGroup"-->
 
-      <mat-dialog-content class="dialog-content">
-        <!--TODO eventuell Überschrift wie auf der nächsten Seite ("Teilnehmer hinzufügen") hinzufügen <h3></h3> -->
-        <ng-content select="[fields]"></ng-content>
-      </mat-dialog-content>
+        <mat-dialog-content class="dialog-content">
+          <!--TODO eventuell Überschrift wie auf der nächsten Seite ("Teilnehmer hinzufügen") hinzufügen <h3></h3> -->
+          <ng-container *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
+            <div [formGroup]="formGroup" fxLayout="column" *transloco="let tCommon; read: 'common'">
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('company') }}</mat-label>
+                <mat-select formControlName="company" required>
+                  <mat-option *ngFor="let company of companies" [value]="company">
+                    {{ company }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['company'].hasError('required')">{{
+                  tCommon('required')
+                }}</mat-error>
+              </mat-form-field>
 
-      <mat-dialog-actions class="dialog-actions">
-        <button mat-flat-button (click)="cancelEdit()">
-          {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
-        </button>
-        <button mat-flat-button matStepperNext [disabled]="!canAndShouldSave()" color="primary">
-          {{ tCommon('next') }}
-        </button>
-      </mat-dialog-actions>
-    </mat-step>
-    <mat-step>
-      <mat-dialog-content class="dialog-content">
-        <ng-container *ngIf="selectableMembers?.length">
-          <app-add-members
-            (handledSelectionEvent)="handleSelectedMembers($event)"
-            [saveEvent]="saveEventChild"
-            [members]="selectableMembers"
-          >
-          </app-add-members>
-        </ng-container>
-      </mat-dialog-content>
+              <!-- NAME -->
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('coopSpaceName') }}</mat-label>
+                <input matInput formControlName="name" required />
+                <mat-error *ngIf="formGroup.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
+                <mat-error *ngIf="formGroup.controls['name'].hasError('minlength')">{{
+                  tDialog('nameRules.length')
+                }}</mat-error>
+                <mat-error *ngIf="formGroup.controls['name'].hasError('maxlength')">{{
+                  tDialog('nameRules.length')
+                }}</mat-error>
+                <mat-error *ngIf="formGroup.controls['name'].hasError('invalidCharacter')">{{
+                  tDialog('nameRules.generalCharacters')
+                }}</mat-error>
+                <mat-error
+                  *ngIf="
+                    formGroup.controls['name'].hasError('invalidStartCharacter') ||
+                    formGroup.controls['name'].hasError('invalidEndCharacter')
+                  "
+                  >{{ tDialog('nameRules.startingAndEndingCharacters') }}</mat-error
+                >
+                <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
+                  tDialog('nameRules.invalidPrefix')
+                }}</mat-error>
+                <mat-error *ngIf="formGroup.controls['name'].hasError('coopSpaceNameAlreadyExists')">{{
+                  tDialog('nameRules.uniqueness')
+                }}</mat-error>
+              </mat-form-field>
+            </div>
 
-      <br />
-      <br />
-      <mat-dialog-actions class="dialog-actions">
-        <button mat-flat-button (click)="cancelEdit()">
-          {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
-        </button>
-        <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
-        <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
-          {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
-        </button>
-      </mat-dialog-actions>
-    </mat-step>
-  </mat-stepper>
+            <br />
+
+            <ul>
+              <li [innerHTML]="tDialog('nameRules.lengthHtml')"></li>
+              <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
+              <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
+              <li [innerHTML]="tDialog('nameRules.invalidPrefixHtml')"></li>
+              <li [innerHTML]="tDialog('nameRules.uniquenessHtml')"></li>
+            </ul>
+          </ng-container>
+        </mat-dialog-content>
+
+        <mat-dialog-actions class="dialog-actions">
+          <button mat-flat-button (click)="cancelEdit()">
+            {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+          </button>
+          <button mat-flat-button matStepperNext [disabled]="!canAndShouldSave()" color="primary">
+            {{ tCommon('next') }}
+          </button>
+        </mat-dialog-actions>
+      </mat-step>
+
+      <!-- PAGE 2 -->
+      <mat-step>
+        <mat-dialog-content class="dialog-content">
+          <ng-container *ngIf="selectableMembers?.length">
+            <app-add-members
+              (handledSelectionEvent)="handleSelectedMembers($event)"
+              [saveEvent]="saveEventChild"
+              [members]="selectableMembers"
+            >
+            </app-add-members>
+          </ng-container>
+        </mat-dialog-content>
+
+        <br />
+        <br />
+        <mat-dialog-actions class="dialog-actions">
+          <button mat-flat-button (click)="cancelEdit()">
+            {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+          </button>
+          <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
+          <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
+            {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
+          </button>
+        </mat-dialog-actions>
+      </mat-step>
+    </mat-stepper>
+  </ng-container>
 </ng-container>
