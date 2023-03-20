@@ -12,7 +12,7 @@ import { forkJoin } from 'rxjs';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { BucketService } from '../buckets/bucket.service';
-import { CreateCoopSpaceDlgComponent } from './create-coop-space/create-coop-space-dlg/create-coop-space-dlg.component';
+import { CreateCoopSpaceDlgComponent } from './create-coop-space-dlg/create-coop-space-dlg.component';
 
 @Component({
   selector: 'app-coop-spaces',
