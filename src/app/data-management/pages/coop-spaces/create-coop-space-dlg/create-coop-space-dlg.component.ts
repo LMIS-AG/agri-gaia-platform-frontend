@@ -10,7 +10,7 @@ import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { CoopSpaceValidator } from './coop-space-validator';
-import { uniqueNameAsyncValidator } from '../create-coop-space/unique-name-async-validator';
+import { uniqueNameAsyncValidator } from './unique-name-async-validator';
 
 @Component({
   selector: 'app-create-coop-space-dlg',
