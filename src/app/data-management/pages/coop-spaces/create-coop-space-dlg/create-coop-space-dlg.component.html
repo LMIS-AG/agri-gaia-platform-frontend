@@ -65,7 +65,7 @@
 
         <mat-dialog-actions class="dialog-actions">
           <button mat-flat-button (click)="cancelEdit()">
-            {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+            {{ tCommon('cancel') }}
           </button>
           <button mat-flat-button matStepperNext [disabled]="!canAndShouldSave()" color="primary">
             {{ tCommon('next') }}
@@ -90,11 +90,11 @@
         <br />
         <mat-dialog-actions class="dialog-actions">
           <button mat-flat-button (click)="cancelEdit()">
-            {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+            {{ tCommon('cancel') }}
           </button>
           <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
           <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
-            {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
+            {{ tCommon('save') }}
           </button>
         </mat-dialog-actions>
       </mat-step>

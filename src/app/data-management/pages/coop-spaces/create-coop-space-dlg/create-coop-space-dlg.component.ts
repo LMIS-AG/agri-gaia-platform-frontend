@@ -21,14 +21,6 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
   public title: string = translate('dataManagement.coopSpaces.createCoopSpaces.new'); // TODO adjust properly
   public formGroup!: FormGroup;
 
-  // TODO can i remove these because they a part of the former generalization pattern!?
-  @Input()
-  public saveButtonLabel: string = '';
-  @Input()
-  public cancelButtonLabel: string = '';
-  @Input()
-  public alwaysEnableSaveButton: boolean = false;
-
   @Output()
   private cancelEvent: EventEmitter<void> = new EventEmitter();
 
@@ -116,9 +108,6 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
   }
 
   public canAndShouldSave(): boolean {
-    if (this.alwaysEnableSaveButton) {
-      return true;
-    }
     return !this.formGroup.invalid && this.formGroup.dirty;
   }
 
