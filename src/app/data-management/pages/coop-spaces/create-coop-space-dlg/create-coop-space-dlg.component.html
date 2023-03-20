@@ -7,8 +7,8 @@
       <mat-step>
         <mat-dialog-content class="dialog-content">
           <!--TODO eventuell Überschrift wie auf der nächsten Seite ("Teilnehmer hinzufügen") hinzufügen <h3></h3> -->
-          <ng-container *transloco="let tDialog; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
-            <div [formGroup]="formGroup" fxLayout="column" *transloco="let tCommon; read: 'common'">
+          <ng-container>
+            <div [formGroup]="formGroup" fxLayout="column">
               <!-- COMPANY -->
               <mat-form-field appearance="fill" color="primary" class="bg">
                 <mat-label>{{ t('company') }}</mat-label>
@@ -28,26 +28,26 @@
                 <input matInput formControlName="name" required />
                 <mat-error *ngIf="formGroup.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
                 <mat-error *ngIf="formGroup.controls['name'].hasError('minlength')">{{
-                  tDialog('nameRules.length')
+                  t('nameRules.length')
                 }}</mat-error>
                 <mat-error *ngIf="formGroup.controls['name'].hasError('maxlength')">{{
-                  tDialog('nameRules.length')
+                  t('nameRules.length')
                 }}</mat-error>
                 <mat-error *ngIf="formGroup.controls['name'].hasError('invalidCharacter')">{{
-                  tDialog('nameRules.generalCharacters')
+                  t('nameRules.generalCharacters')
                 }}</mat-error>
                 <mat-error
                   *ngIf="
                     formGroup.controls['name'].hasError('invalidStartCharacter') ||
                     formGroup.controls['name'].hasError('invalidEndCharacter')
                   "
-                  >{{ tDialog('nameRules.startingAndEndingCharacters') }}</mat-error
+                  >{{ t('nameRules.startingAndEndingCharacters') }}</mat-error
                 >
                 <mat-error *ngIf="formGroup.controls['name'].hasError('invalidPrefix')">{{
-                  tDialog('nameRules.invalidPrefix')
+                  t('nameRules.invalidPrefix')
                 }}</mat-error>
                 <mat-error *ngIf="formGroup.controls['name'].hasError('coopSpaceNameAlreadyExists')">{{
-                  tDialog('nameRules.uniqueness')
+                  t('nameRules.uniqueness')
                 }}</mat-error>
               </mat-form-field>
             </div>
@@ -56,11 +56,11 @@
 
             <ul>
               <!-- COOP SPACE NAME RULES -->
-              <li [innerHTML]="tDialog('nameRules.lengthHtml')"></li>
-              <li [innerHTML]="tDialog('nameRules.generalCharactersHtml')"></li>
-              <li [innerHTML]="tDialog('nameRules.startingAndEndingCharactersHtml')"></li>
-              <li [innerHTML]="tDialog('nameRules.invalidPrefixHtml')"></li>
-              <li [innerHTML]="tDialog('nameRules.uniquenessHtml')"></li>
+              <li [innerHTML]="t('nameRules.lengthHtml')"></li>
+              <li [innerHTML]="t('nameRules.generalCharactersHtml')"></li>
+              <li [innerHTML]="t('nameRules.startingAndEndingCharactersHtml')"></li>
+              <li [innerHTML]="t('nameRules.invalidPrefixHtml')"></li>
+              <li [innerHTML]="t('nameRules.uniquenessHtml')"></li>
             </ul>
           </ng-container>
         </mat-dialog-content>
