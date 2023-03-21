@@ -117,7 +117,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   // change the role of a user and thereby its respective rights
-  public onRoleChange(originalRole: string, member: Member) {
+  public onRoleChange(originalRole: string, member: Member): void {
     this.uiService
       .confirm(
         `${member.name}`,
@@ -228,13 +228,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public onTogglePlay(): void {
     throw Error('Not yet implemented');
-  }
-
-  public openInFull(): void {
-    this.router.navigate(['focus'], {
-      relativeTo: this.route,
-      state: { datasetDatasource: this.datasetDatasource },
-    });
   }
 
   public getUserRole(): CoopSpaceRole | undefined {

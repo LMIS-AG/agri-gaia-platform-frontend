@@ -39,9 +39,6 @@
                 </button>
               </div>
             </mat-menu>
-            <button mat-mini-fab class="mat-elevation-z0 button24" color="primary" (click)="openInFull()">
-              <mat-icon class="icon24-arrow">open_in_full</mat-icon>
-            </button>
           </div>
         </div>
 
@@ -77,21 +74,21 @@
               <td mat-cell *matCellDef="let element">{{ element.labeling }}</td>
             </ng-container>
 
-          <!-- More Column -->
-          <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-              <button [matMenuTriggerFor]="menu" class = "more_vert_class">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
-                  <mat-icon>delete</mat-icon>
-                  {{ tCommon('delete') }}
+            <!-- More Column -->
+            <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+                <button [matMenuTriggerFor]="menu" class="more_vert_class">
+                  <mat-icon>more_vert</mat-icon>
                 </button>
-              </mat-menu>
-            </td>
-          </ng-container>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
+                    <mat-icon>delete</mat-icon>
+                    {{ tCommon('delete') }}
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>

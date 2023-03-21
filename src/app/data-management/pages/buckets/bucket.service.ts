@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { finalize, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
 import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
+import { STSRequest } from 'src/app/shared/model/stsRequest';
 import { environment } from 'src/environments/environment';
 import { GeneralPurposeAsset } from '../../../shared/model/general-purpose-asset';
 
@@ -32,6 +33,10 @@ export class BucketService {
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`, { observe: 'response' });
+  }
+
+  public getKeysandToken(): Observable<STSRequest> {
+    return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 
   public buildFormDataAndUploadAssets(event: any, bucket: string): Observable<HttpEvent<Object>> {

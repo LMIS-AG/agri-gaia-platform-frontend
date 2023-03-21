@@ -15,9 +15,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { GenerateKeysDialogComponent } from './components/generate-keys-dialog/generate-keys-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, CreateEditDialogComponent, AddMembersComponent],
+  declarations: [ConfirmDialogComponent, CreateEditDialogComponent, AddMembersComponent, GenerateKeysDialogComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
@@ -32,6 +34,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatSnackBarModule
   ],
   exports: [
     CommonModule,
@@ -41,6 +44,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TranslocoModule,
     CreateEditDialogComponent,
     AddMembersComponent,
+    GenerateKeysDialogComponent,
   ],
 })
 export class SharedModule {}

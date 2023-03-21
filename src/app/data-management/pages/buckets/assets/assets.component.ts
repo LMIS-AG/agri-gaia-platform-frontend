@@ -9,6 +9,7 @@ import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
 import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
 
 @Component({
   selector: 'app-assets',
@@ -20,7 +21,8 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
-  public isLoading = false;
+  public isUploading = false;
+  public isLoadingKeys = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,10 +54,10 @@ export class AssetsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
-    this.isLoading = true;
+    this.isUploading = true;
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
-      error: () => this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError')),
+      error: () => this.handleUploadError(),
     });
   }
 
@@ -116,6 +118,30 @@ export class AssetsComponent implements OnInit {
       });
   }
 
+  public openGenerateKeysDialog(): void {
+    this.isLoadingKeys = true;
+    // Retrieve the keys and the session token using the BucketService
+    this.bucketService.getKeysandToken().subscribe(result => {
+      this.isLoadingKeys = false;
+      // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
+      const dialogRef = this.dialog.open(GenerateKeysDialogComponent, {
+        data: {
+          accessKey: result.accessKey,
+          secretKey: result.secretKey,
+          sessionToken: result.sessionToken,
+        },
+      });
+    });
+  }
+
+  public handlePublishSuccess(): void {
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
+  }
+
+  public handlePublishError(err: any): void {
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status);
+  }
+
   public handleUnpublishSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.unpublishConfirmationText'));
   }
@@ -125,9 +151,15 @@ export class AssetsComponent implements OnInit {
   }
 
   private handleUploadSuccess(): void {
-    this.isLoading = false;
+    this.isUploading = false;
 
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
+  }
+
+  private handleUploadError(): void {
+    this.isUploading = false;
+
+    this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError'));
   }
 
   public handleDeleteSuccess(): void {

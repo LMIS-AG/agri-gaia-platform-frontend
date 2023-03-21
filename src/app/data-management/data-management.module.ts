@@ -6,7 +6,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { CoopSpaceDetailsFocusComponent } from './pages/coop-spaces/coop-space-details-focus/coop-space-details-focus.component';
 import { CoopSpaceDetailsComponent } from './pages/coop-spaces/coop-space-details/coop-space-details.component';
 import { CoopSpacesComponent } from './pages/coop-spaces/coop-spaces.component';
 import { CreateCoopSpaceComponent } from './pages/coop-spaces/create-coop-space/create-coop-space.component';
@@ -36,10 +35,6 @@ const routes: Routes = [
   {
     path: 'asset-management',
     component: BucketsComponent,
-  },
-  {
-    path: 'coop-spaces/:id/focus',
-    component: CoopSpaceDetailsFocusComponent,
   },
   {
     path: 'coop-spaces/:id',
@@ -73,7 +68,6 @@ const routes: Routes = [
     CoopSpacesComponent,
     CreateCoopSpaceComponent,
     CoopSpaceDetailsComponent,
-    CoopSpaceDetailsFocusComponent,
     CreateCoopSpaceDlgComponent,
     PoliciesComponent,
     CreatePolicyComponent,
