@@ -32,7 +32,7 @@ export class BucketService {
     return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`, { observe: 'response' });
   }
 
- public getKeysandToken(): Observable<STSRequest> {
+  public getKeysAndToken(): Observable<STSRequest> {
     return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 
@@ -50,11 +50,12 @@ export class BucketService {
   }
 
   private uploadAssets(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
-    return this.http.post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
-      reportProgress: true,
-      observe: 'events',
-    }).pipe(timeout(21600000))
-    ;
+    return this.http
+      .post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(timeout(21600000));
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload
