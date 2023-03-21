@@ -1,0 +1,42 @@
+@import '../../../../../../styles/common/variables';
+@import '../../../../../../styles/common/mixins';
+
+h2 {
+  @include calluna-font();
+  color: $primary;
+  font-weight: bold;
+}
+
+h3 {
+  @include calluna-font();
+  color: $primary;
+  font-weight: bold;
+}
+
+::ng-deep {
+  .mat-typography h3 {
+    margin: 0 !important;
+  }
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none;
+}
+
+.dialog-content {
+  flex-grow: 1;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+}
+
+textarea {
+  height: 75px;
+}
+
+::ng-deep {
+  .mat-form-field.bg .mat-form-field-flex {
+    background-color: rgba(136, 159, 154, 0.2);
+  }
+}

@@ -1,12 +1,8 @@
 @import '../../../../../../styles/common/variables';
 @import '../../../../../../styles/common/mixins';
 
-.dialog-content {
-  flex-grow: 1;
-}
-
-.dialog-actions {
-  justify-content: flex-end;
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none;
 }
 
 h2 {
@@ -15,14 +11,18 @@ h2 {
   font-weight: bold;
 }
 
+.dialog-content {
+  flex-grow: 1;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+}
+
 .mat-stepper-horizontal {
   margin-top: 8px;
 }
 
 .mat-form-field {
   margin-top: 16px;
-}
-
-:host ::ng-deep .mat-horizontal-stepper-header-container {
-  display: none;
 }

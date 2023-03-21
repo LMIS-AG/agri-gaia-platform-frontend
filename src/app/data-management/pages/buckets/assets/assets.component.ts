@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map, Subscription, switchMap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
-import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../../shared/model/general-purpose-asset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
+import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-assets',
@@ -81,22 +82,17 @@ export class AssetsComponent implements OnInit {
   }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
-    this.uiService
-      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.publishConfirmationQuestion'), {
-        // TODO: This argument isn't used anywhere.
-        confirmationText: translate('dataManagement.buckets.assets.dialog.publishConfirmationText'),
-        buttonLabels: 'confirm',
-        confirmButtonColor: 'primary',
-      })
-      .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
-        let bucket = this.bucket;
-        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-        this.bucketService.publishAsset(bucket, asset.name).subscribe({
-          next: () => this.handlePublishSuccess(),
-          error: err => this.handlePublishError(err),
-        });
-      });
+    if (!asset) throw Error('asset was null in publishAsset().');
+
+    this.openPublishAssetDialog(asset).afterClosed().subscribe();
+  }
+
+  private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
+    return this.dialog.open(PublishAssetDlgComponent, {
+      minWidth: '60em',
+      panelClass: 'resizable',
+      data: asset,
+    });
   }
 
   private updateAssets(asset: GeneralPurposeAsset): void {

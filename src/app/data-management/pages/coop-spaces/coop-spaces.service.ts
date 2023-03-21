@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { environment } from 'src/environments/environment';
-import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../shared/model/general-purpose-asset';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +43,7 @@ export class CoopSpacesService {
   public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, { coopSpaceId, member });
   }
-  
+
   public deleteMember(coopSpaceName: String, member: Member): Observable<void> {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, { coopSpaceName, member });
   }
@@ -55,9 +55,8 @@ export class CoopSpacesService {
       member,
     });
   }
-  
+
   public checkIfCoopSpaceAlreadyExistsByName(name: string): Observable<boolean> {
     return this.http.get<boolean>(`${environment.backend.url}/coopspaces/existsbyname/${name}`);
   }
-
 }

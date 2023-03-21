@@ -83,6 +83,35 @@
           "delete": "Löschen",
           "size": "Größe"
         },
+        "publishAssetDialog": {
+          "headline": "Asset veröffentlichen",
+          "description": "Hier können Sie Ihr Asset veröffentlichen.",
+          "fields": {
+            "id": "ID",
+            "infoId": "Geben Sie hier die ID für Ihr Asset ein",
+            "name": "Name",
+            "infoName": "Geben Sie hier eine kurze Bezeichnung für Ihr Asset ein",
+            "description": "Beschreibung",
+            "infoDescription": "Geben Sie hier eine längere Beschreibung Ihres Assets an",
+            "version": "Version",
+            "infoVersion": "Geben Sie hier die Version Ihres Assets an",
+            "agrovoc": "Agrovoc-Keywords",
+            "infoAgrovoc": "Geben Sie hier Agrovoc-Keywords für Ihr Asset an",
+            "assetType": {
+              "label": "Asset-Typ",
+              "AIMODEL": "KI-Modell",
+              "DATASET": "Datensatz",
+              "null": "- keine Auswahl -",
+              "info": "Wählen Sie hier den Typ Ihres Assets aus."
+            },
+            "dateSpan": "Zeitraum der Datenerfassung",
+            "dates": "Startdatum - Enddatum",
+            "datePlaceholder": "tt/mm/jjjj",
+            "location": "Ort der Datenerfassung",
+            "locationLabel": "Ort"
+          },
+          "publishAsset": "Asset veröffentlichen"
+        },
         "dialog": {
           "headline": "Assets veröffentlichen",
           "publishConfirmationQuestion": "Möchten Sie dieses Asset veröffentlichen?",
