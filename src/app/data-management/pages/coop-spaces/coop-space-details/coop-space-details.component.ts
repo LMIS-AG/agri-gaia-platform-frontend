@@ -194,23 +194,25 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public addMember(membersSelected: Member[]): void {
     this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
-      next: () => {
+      complete: () => {
+        this.reloadMembersListAndUpdateMembersDataSource();
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
         );
-      },
-      complete: () => {
-        const currentCoopSpaceId = this.coopSpace?.id!;
-        if (currentCoopSpaceId) {
-          this.coopSpacesService
-            .getMembersOfCoopSpace(currentCoopSpaceId)
-            .subscribe(members => (this.memberDatasource = members));
-        }
       },
       error: () => {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
       },
     });
+  }
+
+  private reloadMembersListAndUpdateMembersDataSource() {
+    const currentCoopSpaceId = this.coopSpace?.id!;
+    if (currentCoopSpaceId) {
+      this.coopSpacesService
+        .getMembersOfCoopSpace(currentCoopSpaceId)
+        .subscribe(members => (this.memberDatasource = members));
+    }
   }
 
   public openAddMembersAfterwardsDialog(): void {
