@@ -57,7 +57,7 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public addCoopSpace(): void {
-    this.openCreateCoopSpaceDialog(null)
+    this.openCreateCoopSpaceDialog()
       .afterClosed()
       .subscribe(result => {
         if (result) {
@@ -68,11 +68,10 @@ export class CoopSpacesComponent implements OnInit {
       });
   }
 
-  private openCreateCoopSpaceDialog(coopSpace: CoopSpace | null): MatDialogRef<CreateCoopSpaceComponent, boolean> {
+  private openCreateCoopSpaceDialog(): MatDialogRef<CreateCoopSpaceComponent, boolean> {
     return this.dialog.open(CreateCoopSpaceComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: coopSpace,
     });
   }
 
