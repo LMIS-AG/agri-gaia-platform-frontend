@@ -1,18 +1,22 @@
 @import '../../../../../styles/common/variables';
 @import '../../../../../styles/common/mixins';
 
-.dialog-content {
-  flex-grow: 1;
-}
-
-.dialog-actions {
-  justify-content: flex-end;
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none;
 }
 
 h2 {
   @include calluna-font();
   color: $primary;
   font-weight: bold;
+}
+
+.dialog-content {
+  flex-grow: 1;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
 }
 
 .mat-stepper-horizontal {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, filter, map, Subscription, switchMap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
-import { GeneralPurposeAsset } from 'src/app/shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
 import { CoopSpacesService } from '../coop-spaces.service';
 import { Member } from 'src/app/shared/model/member';
 import { UIService } from 'src/app/shared/services/ui.service';
@@ -117,7 +117,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   // change the role of a user and thereby its respective rights
-  public onRoleChange(originalRole: string, member: Member) {
+  public onRoleChange(originalRole: string, member: Member): void {
     this.uiService
       .confirm(
         `${member.name}`,

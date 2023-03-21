@@ -2,8 +2,10 @@ import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
+import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
+import { STSRequest } from 'src/app/shared/model/stsRequest';
 import { environment } from 'src/environments/environment';
-import { GeneralPurposeAsset } from '../../../shared/model/coopSpaceAsset';
+import { GeneralPurposeAsset } from '../../../shared/model/general-purpose-asset';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +21,10 @@ export class BucketService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
   }
 
-  public publishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/assets/publish/${bucket}/${name}`, {}, { observe: 'response' });
+  public publishAsset(bucket: string, name: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
+    return this.http.post(`${environment.backend.url}/assets/publish/${bucket}/${name}`, asset, {
+      observe: 'response',
+    });
   }
 
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
@@ -29,6 +33,10 @@ export class BucketService {
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`, { observe: 'response' });
+  }
+
+  public getKeysandToken(): Observable<STSRequest> {
+    return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 
   public buildFormDataAndUploadAssets(event: any, bucket: string): Observable<HttpEvent<Object>> {
@@ -45,11 +53,12 @@ export class BucketService {
   }
 
   private uploadAssets(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
-    return this.http.post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
-      reportProgress: true,
-      observe: 'events',
-    }).pipe(timeout(21600000))
-    ;
+    return this.http
+      .post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(timeout(21600000));
   }
 
   // TODO use this later when adding progress bar in order to make it possibel to cancel the upload

@@ -6,7 +6,7 @@ import { FormArray, FormGroup } from '@angular/forms';
   templateUrl: './constraints.component.html',
   styleUrls: ['./constraints.component.scss'],
 })
-export class ConstraintsComponent implements OnInit {
+export class ConstraintsComponent {
   public propertyOptions: string[] = ['Foward', 'Certification'];
   public operatorOptions: string[] = ['Equal to =', 'Less than equal <='];
   public attributeOptions: string[] = ['EU Country ', 'Not Allowed', 'Attribute'];
@@ -25,9 +25,7 @@ export class ConstraintsComponent implements OnInit {
 
   constructor() {}
 
-  public ngOnInit(): void {}
-
-  get formArray(): FormArray {
+  public get formArray(): FormArray {
     return this.formGroup.get(this.formArrayName) as FormArray;
   }
 

@@ -42,8 +42,12 @@ export class AddMembersComponent implements OnInit {
       .pipe(debounceTime(300), distinctUntilChanged(), untilDestroyed(this))
       .subscribe(value => {
         if (value !== '') {
+          value = value.toLowerCase();
           const filteredMembers = this.membersInitial.filter(
-            member => member.name?.includes(value) || member.email?.includes(value) || member.company?.includes(value)
+            member =>
+              member.name?.toLowerCase().includes(value) ||
+              member.email?.toLowerCase().includes(value) ||
+              member.company?.toLowerCase().includes(value)
           );
           this.members = filteredMembers;
         } else {

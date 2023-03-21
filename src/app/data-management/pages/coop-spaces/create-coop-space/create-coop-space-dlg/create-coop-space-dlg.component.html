@@ -1,0 +1,47 @@
+<ng-container *transloco="let tCommon; read: 'common'">
+  <h2 mat-dialog-title>{{ title }}</h2>
+
+  <mat-stepper>
+    <mat-step>
+      <!--[stepControl]="firstFormGroup"-->
+
+      <mat-dialog-content class="dialog-content">
+        <!--TODO eventuell Überschrift wie auf der nächsten Seite ("Teilnehmer hinzufügen") hinzufügen <h3></h3> -->
+        <ng-content select="[fields]"></ng-content>
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-flat-button (click)="cancelEdit()">
+          {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+        </button>
+        <button mat-flat-button matStepperNext [disabled]="!canAndShouldSave()" color="primary">
+          {{ tCommon('next') }}
+        </button>
+      </mat-dialog-actions>
+    </mat-step>
+    <mat-step>
+      <mat-dialog-content class="dialog-content">
+        <ng-container *ngIf="selectableMembers?.length">
+          <app-add-members
+            (handledSelectionEvent)="handleSelectedMembers($event)"
+            [saveEvent]="saveEventChild"
+            [members]="selectableMembers"
+          >
+          </app-add-members>
+        </ng-container>
+      </mat-dialog-content>
+
+      <br />
+      <br />
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-flat-button (click)="cancelEdit()">
+          {{ cancelButtonLabel === '' ? tCommon('cancel') : cancelButtonLabel }}
+        </button>
+        <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
+        <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
+          {{ saveButtonLabel === '' ? tCommon('save') : saveButtonLabel }}
+        </button>
+      </mat-dialog-actions>
+    </mat-step>
+  </mat-stepper>
+</ng-container>
