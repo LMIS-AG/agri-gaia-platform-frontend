@@ -117,7 +117,7 @@
         <div class="table-container">
           <table
             mat-table
-            [dataSource]="this.coopSpace?.members ?? []"
+            [dataSource]="memberDatasource"
             class="mat-elevation-z0"
             *transloco="let tTable; read: 'dataManagement.coopSpaces.details.table'"
           >

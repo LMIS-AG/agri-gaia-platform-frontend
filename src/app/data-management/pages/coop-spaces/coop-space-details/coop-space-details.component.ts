@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, map, Subscription, switchMap } from 'rxjs';
+import { concatMap, filter, map, switchMap, tap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
 import { CoopSpacesService } from '../coop-spaces.service';
@@ -25,6 +25,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public datasetDatasource: GeneralPurposeAsset[] = [];
+  public memberDatasource: Member[] = [];
 
   public userName: string | undefined;
   public fullName: string | undefined;
@@ -51,13 +52,12 @@ export class CoopSpaceDetailsComponent implements OnInit {
         filter(paramMap => paramMap.has('id')),
         map(paramMap => parseInt(paramMap.get('id')!, 10)),
         switchMap(id =>
-          this.coopSpacesService
-            .getCoopSpaceById(id)
-            .pipe(
-              concatMap(coopSpace =>
-                this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
-              )
+          this.coopSpacesService.getCoopSpaceById(id).pipe(
+            tap(coopSpace => (this.memberDatasource = coopSpace.members)),
+            concatMap(coopSpace =>
+              this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
             )
+          )
         )
       )
       .subscribe({
@@ -198,6 +198,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
         );
+      },
+      complete: () => {
+        const currentCoopSpaceId = this.coopSpace?.id!;
+        if (currentCoopSpaceId) {
+          this.coopSpacesService
+            .getMembersOfCoopSpace(currentCoopSpaceId)
+            .subscribe(members => (this.memberDatasource = members));
+        }
       },
       error: () => {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));

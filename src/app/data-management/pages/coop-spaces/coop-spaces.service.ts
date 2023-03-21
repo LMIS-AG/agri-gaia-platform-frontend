@@ -28,6 +28,10 @@ export class CoopSpacesService {
     return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/members`);
   }
 
+  public getMembersOfCoopSpace(id: number): Observable<Member[]> {
+    return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/${id}/members`);
+  }
+
   public getValidCompanyNames(): Observable<string[]> {
     return this.http.get<string[]>(`${environment.backend.url}/coopspaces/companies`);
   }
