@@ -1,5 +1,5 @@
-@import '../../../../../../styles/common/variables';
-@import '../../../../../../styles/common/mixins';
+@import '../../../../../styles/common/variables';
+@import '../../../../../styles/common/mixins';
 
 :host ::ng-deep .mat-horizontal-stepper-header-container {
   display: none;
@@ -25,4 +25,14 @@ h2 {
 
 .mat-form-field {
   margin-top: 16px;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none;
+}
+
+::ng-deep {
+  .mat-form-field.bg .mat-form-field-flex {
+    background-color: rgba(136, 159, 154, 0.2);
+  }
 }

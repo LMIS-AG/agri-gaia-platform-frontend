@@ -8,8 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { CoopSpaceDetailsComponent } from './pages/coop-spaces/coop-space-details/coop-space-details.component';
 import { CoopSpacesComponent } from './pages/coop-spaces/coop-spaces.component';
-import { CreateCoopSpaceComponent } from './pages/coop-spaces/create-coop-space/create-coop-space.component';
-import { CreateCoopSpaceDlgComponent } from './pages/coop-spaces/create-coop-space/create-coop-space-dlg/create-coop-space-dlg.component';
+import { CreateCoopSpaceDlgComponent } from './pages/coop-spaces/create-coop-space-dlg/create-coop-space-dlg.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -66,7 +65,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CoopSpacesComponent,
-    CreateCoopSpaceComponent,
     CoopSpaceDetailsComponent,
     CreateCoopSpaceDlgComponent,
     PoliciesComponent,

@@ -1,4 +1,4 @@
-<div fxLayout="column" *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces.dialog'">
+<div fxLayout="column" *transloco="let t; read: 'dataManagement.coopSpaces.createCoopSpaces'">
   <h3>{{ t('addMembers') }}</h3>
   <p>
     {{ t('addMembersInfo') }}
@@ -45,8 +45,8 @@
           fxLayoutAlign="start center"
           fxLayoutGap="10px"
         >
-        <!-- TODO: maybe use company logos instead? -->
-<!--          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" /> -->
+          <!-- TODO: maybe use company logos instead? -->
+          <!--          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" /> -->
           <div fxLayout="column">
             <div fxLayout="row" fxLayoutGap="5px">
               <div class="name">{{ member.name }}</div>
