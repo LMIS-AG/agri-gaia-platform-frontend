@@ -6,12 +6,12 @@ import { removeElementFromArray } from 'src/app/shared/array-utils';
 import { CoopSpace, CoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { Member } from 'src/app/shared/model/member';
 import { CoopSpacesService } from './coop-spaces.service';
-import { CreateCoopSpaceComponent } from './create-coop-space/create-coop-space.component';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { forkJoin } from 'rxjs';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { BucketService } from '../buckets/bucket.service';
+import { CreateCoopSpaceDlgComponent } from './create-coop-space-dlg/create-coop-space-dlg.component';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -68,8 +68,8 @@ export class CoopSpacesComponent implements OnInit {
       });
   }
 
-  private openCreateCoopSpaceDialog(): MatDialogRef<CreateCoopSpaceComponent, boolean> {
-    return this.dialog.open(CreateCoopSpaceComponent, {
+  private openCreateCoopSpaceDialog(): MatDialogRef<CreateCoopSpaceDlgComponent, boolean> {
+    return this.dialog.open(CreateCoopSpaceDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
     });
