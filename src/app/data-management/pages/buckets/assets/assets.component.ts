@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map, Subscription, switchMap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
 import { GeneralPurposeAsset } from '../../../../shared/model/coopSpaceAsset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-assets',
   templateUrl: './assets.component.html',
@@ -132,8 +134,14 @@ export class AssetsComponent implements OnInit {
 
   private handleUploadSuccess(): void {
     this.isLoading = false;
-
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
+
+    if (this.bucket) {
+      this.bucketService
+        .getAssetsByBucketName(this.bucket!)
+        .pipe(untilDestroyed(this))
+        .subscribe(assets => (this.dataSource.data = assets));
+    }
   }
 
   public handleDeleteSuccess(): void {
