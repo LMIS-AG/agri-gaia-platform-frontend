@@ -7,7 +7,7 @@ import { Tag } from 'src/app/shared/model/tag';
   templateUrl: './create-policy.component.html',
   styleUrls: ['./create-policy.component.scss'],
 })
-export class CreatePolicyComponent implements OnInit {
+export class CreatePolicyComponent {
   public formGroup: FormGroup;
   public policytypes: string[] = ['Vertrag', 'Zugriff'];
   public addTagForm: FormGroup;
@@ -26,8 +26,6 @@ export class CreatePolicyComponent implements OnInit {
       tagName: ['', [Validators.minLength(1)]],
     });
   }
-
-  public ngOnInit(): void {}
 
   public removeTag(tag: Tag): void {
     const index = this.tags.indexOf(tag);
@@ -72,15 +70,15 @@ export class CreatePolicyComponent implements OnInit {
     this.prohibitions.removeAt(index);
   }
 
-  get duties(): FormArray {
+  public get duties(): FormArray {
     return this.formGroup.get('duties') as FormArray;
   }
 
-  get permissions(): FormArray {
+  public get permissions(): FormArray {
     return this.formGroup.get('permissions') as FormArray;
   }
 
-  get prohibitions(): FormArray {
+  public get prohibitions(): FormArray {
     return this.formGroup.get('prohibitions') as FormArray;
   }
 
