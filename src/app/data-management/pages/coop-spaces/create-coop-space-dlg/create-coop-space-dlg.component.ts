@@ -65,7 +65,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
       }
     });
 
-    this.coopSpaceService.getMembers().subscribe({
+    this.coopSpaceService.getSelectableMembers().subscribe({
       next: members => {
         this.selectableMembers = members;
       },

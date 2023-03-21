@@ -24,7 +24,7 @@ export class CoopSpacesService {
     return this.http.post<void>(environment.backend.url + '/coopspaces', coopSpace);
   }
 
-  public getMembers(): Observable<Member[]> {
+  public getSelectableMembers(): Observable<Member[]> {
     return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/members`);
   }
 

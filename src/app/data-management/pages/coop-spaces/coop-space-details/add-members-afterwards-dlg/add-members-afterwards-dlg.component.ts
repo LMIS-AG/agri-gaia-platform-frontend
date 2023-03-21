@@ -35,7 +35,7 @@ export class AddMembersAfterwardsDlgComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.coopSpaceService.getMembers().subscribe({
+    this.coopSpaceService.getSelectableMembers().subscribe({
       next: members => {
         this.selectableMembers = members.filter(member => {
           return !this.data.members.some(coopSpaceMember => coopSpaceMember.username === member.username);
