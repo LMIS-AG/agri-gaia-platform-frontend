@@ -13,8 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
 import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
 import { BucketService } from '../../buckets/bucket.service';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MatTableDataSource } from '@angular/material/table';
 
+@UntilDestroy()
 @Component({
   selector: 'app-coop-space-details',
   templateUrl: './coop-space-details.component.html',
@@ -25,7 +27,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
-  public datasetDatasource: GeneralPurposeAsset[] = [];
+  public datasetDatasource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public memberDatasource: Member[] = [];
 
   public userName: string | undefined;
@@ -72,7 +74,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
             // convert the displayed file size
             asset.size = prettyPrintFileSize(parseInt(asset.size));
           });
-          this.datasetDatasource = result.assets;
+          this.datasetDatasource.data = result.assets;
         },
         error: error => {
           console.error(error);
@@ -190,7 +192,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   private updateAssets(asset: GeneralPurposeAsset): void {
-    this.datasetDatasource = this.datasetDatasource.filter(e => e.name !== asset.name);
+    this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
   }
 
   public addMember(membersSelected: Member[]): void {
@@ -266,10 +268,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
     if (this.bucket) {
-      this.bucketService
-        .getAssetsByBucketName(this.bucket!)
+      this.coopSpacesService
+        .getAssets(this.coopSpace?.id!)
         .pipe(untilDestroyed(this))
-        .subscribe(assets => (this.datasetDatasource = assets));
+        .subscribe(assets => (this.datasetDatasource.data = assets));
     }
   }
 
