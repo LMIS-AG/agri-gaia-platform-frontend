@@ -85,7 +85,8 @@ export class PublishAssetDlgComponent {
       assetType: [AssetType.DataSet],
       startDate: [null],
       endDate: [null],
-      location: [''],
+      latitude: [''],
+      longitude: [''],
     });
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });

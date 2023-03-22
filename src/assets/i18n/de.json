@@ -108,7 +108,9 @@
             "dates": "Startdatum - Enddatum",
             "datePlaceholder": "tt/mm/jjjj",
             "location": "Ort der Datenerfassung",
-            "locationLabel": "Ort"
+            "locationLabel": "Ort",
+            "latitude": "Längengrad",
+            "longitude": "Breitengrad"
           },
           "publishAsset": "Asset veröffentlichen"
         },
