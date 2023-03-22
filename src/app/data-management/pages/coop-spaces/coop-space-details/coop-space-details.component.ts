@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
 import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
 import { BucketService } from '../../buckets/bucket.service';
+import { untilDestroyed } from '@ngneat/until-destroy';
 
 @Component({
   selector: 'app-coop-space-details',
@@ -264,6 +265,12 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.isLoading = false;
 
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
+    if (this.bucket) {
+      this.bucketService
+        .getAssetsByBucketName(this.bucket!)
+        .pipe(untilDestroyed(this))
+        .subscribe(assets => (this.datasetDatasource = assets));
+    }
   }
 
   public handleDeleteSuccess(): void {
