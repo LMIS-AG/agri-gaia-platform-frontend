@@ -70,11 +70,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
             this.bucket = `prj-${this.coopSpace.company.toLocaleLowerCase()}-${this.coopSpace.name}`;
             this.coopSpace.members.sort((a, b) => (a.name! < b.name! ? -1 : 1));
           }
-          result.assets.forEach(asset => {
-            // convert the displayed file size
-            asset.size = prettyPrintFileSize(parseInt(asset.size));
-          });
-          this.datasetDatasource.data = result.assets;
+          this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(result.assets);
         },
         error: error => {
           console.error(error);
@@ -271,8 +267,16 @@ export class CoopSpaceDetailsComponent implements OnInit {
       this.coopSpacesService
         .getAssets(this.coopSpace?.id!)
         .pipe(untilDestroyed(this))
-        .subscribe(assets => (this.datasetDatasource.data = assets));
+        .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
+  }
+
+  private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
+    assets.forEach(asset => {
+      // convert the displayed file size
+      asset.size = prettyPrintFileSize(parseInt(asset.size));
+    });
+    this.datasetDatasource.data = assets;
   }
 
   public handleDeleteSuccess(): void {
