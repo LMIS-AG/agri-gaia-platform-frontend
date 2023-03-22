@@ -127,7 +127,8 @@ export class PublishAssetDlgComponent {
       ),
       agrovocKeywords: this.selectedKeywords,
       dateRange: this.getDateRangeIfPresent(),
-      geonamesUri: secondPageCtrl.location.value,
+      latitude: secondPageCtrl.latitude.value,
+      longitude: secondPageCtrl.longitude.value,
 
       // information from asset
       dataAddressAssetName: this.asset.name,

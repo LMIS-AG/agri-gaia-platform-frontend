@@ -106,7 +106,11 @@
               </mat-form-field>
               <h3>{{ t('fields.location') }}</h3>
               <mat-form-field appearance="fill" color="primary" class="bg">
-                <mat-label>{{ t('fields.locationLabel') }}</mat-label>
+                <mat-label>Längengrad</mat-label>
+                <input matInput formControlName="location" />
+              </mat-form-field>
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>Breitengrad</mat-label>
                 <input matInput formControlName="location" />
               </mat-form-field>
             </ng-container>
