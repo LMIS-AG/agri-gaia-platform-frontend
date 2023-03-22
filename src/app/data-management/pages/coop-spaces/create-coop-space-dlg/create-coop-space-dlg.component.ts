@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { translate } from '@ngneat/transloco';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, of, take } from 'rxjs';
@@ -36,7 +37,8 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
     protected readonly keycloak: KeycloakService,
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private coopSpaceService: CoopSpacesService
+    private coopSpaceService: CoopSpacesService,
+    @Inject(MAT_DIALOG_DATA) public dataSource: MatTableDataSource<CoopSpace>
   ) {
     this.formGroup = this.formBuilder.group({
       company: ['', Validators.required],
@@ -65,7 +67,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
       }
     });
 
-    this.coopSpaceService.getMembers().subscribe({
+    this.coopSpaceService.getSelectableMembers().subscribe({
       next: members => {
         this.selectableMembers = members;
       },
@@ -111,7 +113,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
     return !this.formGroup.invalid && this.formGroup.dirty;
   }
 
-  public handleSelectedMembers(membersSelected: Member[]): void {
+  public handleSelectedMembersAndCreateCoopSpace(membersSelected: Member[]): void {
     this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => {
       const newCoopSpace: CoopSpace = {
         company: this.formGroup.get('company')?.value,
@@ -121,11 +123,15 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
         role: CoopSpaceRole.Admin,
       };
 
-      this.coopSpacesService.create(newCoopSpace).subscribe(() => {
+      this.coopSpacesService.create(newCoopSpace).subscribe(res => {
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.createCoopSpaces.successfullyRequested')
         );
-        this.dialogRef.close(true);
+        if (res) {
+          this.dataSource.data.push(res);
+          this.dataSource.data = this.dataSource.data; // this statement is needed to update the data source
+        }
+        this.dialogRef.close();
       });
     });
   }

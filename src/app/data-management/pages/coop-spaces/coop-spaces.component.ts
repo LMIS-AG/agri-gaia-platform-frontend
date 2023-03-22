@@ -57,22 +57,14 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public addCoopSpace(): void {
-    this.openCreateCoopSpaceDialog()
+    this.dialog
+      .open(CreateCoopSpaceDlgComponent, {
+        minWidth: '60em',
+        panelClass: 'resizable',
+        data: this.dataSource,
+      })
       .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          this.coopSpacesService.getAll().subscribe(coopSpaces => {
-            this.dataSource.data = coopSpaces;
-          });
-        }
-      });
-  }
-
-  private openCreateCoopSpaceDialog(): MatDialogRef<CreateCoopSpaceDlgComponent, boolean> {
-    return this.dialog.open(CreateCoopSpaceDlgComponent, {
-      minWidth: '60em',
-      panelClass: 'resizable',
-    });
+      .subscribe();
   }
 
   public openDetails(row: CoopSpace): void {
