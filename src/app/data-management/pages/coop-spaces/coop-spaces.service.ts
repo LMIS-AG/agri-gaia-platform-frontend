@@ -20,8 +20,8 @@ export class CoopSpacesService {
     return this.http.get<CoopSpace>(`${environment.backend.url}/coopspaces/${id}`);
   }
 
-  public create(coopSpace: CoopSpace): Observable<void> {
-    return this.http.post<void>(environment.backend.url + '/coopspaces', coopSpace);
+  public create(coopSpace: CoopSpace): Observable<CoopSpace> {
+    return this.http.post<CoopSpace>(environment.backend.url + '/coopspaces', coopSpace);
   }
 
   public getSelectableMembers(): Observable<Member[]> {
