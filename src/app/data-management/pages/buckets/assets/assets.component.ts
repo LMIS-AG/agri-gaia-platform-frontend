@@ -44,11 +44,7 @@ export class AssetsComponent implements OnInit {
       )
       .subscribe(result => {
         this.bucket = result.name!;
-        result.assets.forEach(asset => {
-          // convert the displayed file size
-          asset.size = prettyPrintFileSize(parseInt(asset.size));
-        });
-        this.dataSource.data = result.assets;
+        this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(result.assets);
       });
   }
 
@@ -136,6 +132,14 @@ export class AssetsComponent implements OnInit {
     });
   }
 
+  private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
+    assets.forEach(asset => {
+      // convert the displayed file size
+      asset.size = prettyPrintFileSize(parseInt(asset.size));
+    });
+    this.dataSource.data = assets;
+  }
+
   public handlePublishSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
   }
@@ -161,7 +165,7 @@ export class AssetsComponent implements OnInit {
       this.bucketService
         .getAssetsByBucketName(this.bucket!)
         .pipe(untilDestroyed(this))
-        .subscribe(assets => (this.dataSource.data = assets));
+        .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
   }
 

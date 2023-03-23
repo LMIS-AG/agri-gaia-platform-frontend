@@ -13,7 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { $enum } from 'ts-enum-util';
 import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
 import { BucketService } from '../../buckets/bucket.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MatTableDataSource } from '@angular/material/table';
 
+@UntilDestroy()
 @Component({
   selector: 'app-coop-space-details',
   templateUrl: './coop-space-details.component.html',
@@ -24,8 +27,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
-  public datasetDatasource: GeneralPurposeAsset[] = [];
-  public memberDatasource: Member[] = [];
+  public datasetDatasource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
+  public memberDatasource: MatTableDataSource<Member> = new MatTableDataSource();
 
   public userName: string | undefined;
   public fullName: string | undefined;
@@ -53,7 +56,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         map(paramMap => parseInt(paramMap.get('id')!, 10)),
         switchMap(id =>
           this.coopSpacesService.getCoopSpaceById(id).pipe(
-            tap(coopSpace => (this.memberDatasource = coopSpace.members)),
+            tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
               this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
             )
@@ -67,11 +70,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
             this.bucket = `prj-${this.coopSpace.company.toLocaleLowerCase()}-${this.coopSpace.name}`;
             this.coopSpace.members.sort((a, b) => (a.name! < b.name! ? -1 : 1));
           }
-          result.assets.forEach(asset => {
-            // convert the displayed file size
-            asset.size = prettyPrintFileSize(parseInt(asset.size));
-          });
-          this.datasetDatasource = result.assets;
+          this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(result.assets);
         },
         error: error => {
           console.error(error);
@@ -101,7 +100,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
           // send the necessary data and remove the user from the member table
           this.coopSpacesService.deleteMember(this.coopSpace!.name, member).subscribe({
             next: () => {
-              this.memberDatasource = this.memberDatasource.filter(m => m.id !== member.id);
+              this.memberDatasource.data = this.memberDatasource.data.filter(m => m.id !== member.id);
               this.uiService.showSuccessMessage(
                 translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
               );
@@ -189,7 +188,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   private updateAssets(asset: GeneralPurposeAsset): void {
-    this.datasetDatasource = this.datasetDatasource.filter(e => e.name !== asset.name);
+    this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
   }
 
   public addMember(membersSelected: Member[]): void {
@@ -211,7 +210,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (currentCoopSpaceId) {
       this.coopSpacesService
         .getMembersOfCoopSpace(currentCoopSpaceId)
-        .subscribe(members => (this.memberDatasource = members));
+        .subscribe(members => (this.memberDatasource.data = members));
     }
   }
 
@@ -264,6 +263,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.isLoading = false;
 
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
+    if (this.bucket) {
+      this.coopSpacesService
+        .getAssets(this.coopSpace?.id!)
+        .pipe(untilDestroyed(this))
+        .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
+    }
+  }
+
+  private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
+    assets.forEach(asset => {
+      // convert the displayed file size
+      asset.size = prettyPrintFileSize(parseInt(asset.size));
+    });
+    this.datasetDatasource.data = assets;
   }
 
   public handleDeleteSuccess(): void {
