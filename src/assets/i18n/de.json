@@ -73,6 +73,7 @@
         "ongoingUpload1": "Datei wird hochgeladen...",
         "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
         "ongoingGeneration": "Ihre Zugänge werden generiert.",
+        "ongoingDeletion": "Asset wird gelöscht...",
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
         "bucketAccess": "Zugangsdaten für Buckets",
