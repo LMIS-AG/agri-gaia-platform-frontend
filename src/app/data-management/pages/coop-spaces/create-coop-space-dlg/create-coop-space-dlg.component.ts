@@ -29,6 +29,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
 
   public selectableMembers: Member[] = [];
   public companies: string[] = [];
+  public isLoading: boolean = false;
 
   constructor(
     protected dialogRef: MatDialogRef<any>,
@@ -123,6 +124,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
         role: CoopSpaceRole.Admin,
       };
 
+      this.isLoading = true;
       this.coopSpacesService.create(newCoopSpace).subscribe(res => {
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.createCoopSpaces.successfullyRequested')
@@ -131,6 +133,7 @@ export class CreateCoopSpaceDlgComponent implements OnInit {
           this.dataSource.data.push(res);
           this.dataSource.data = this.dataSource.data; // this statement is needed to update the data source
         }
+        this.isLoading = false;
         this.dialogRef.close();
       });
     });
