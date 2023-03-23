@@ -23,6 +23,7 @@ export class CoopSpacesComponent implements OnInit {
   public dataSource: MatTableDataSource<CoopSpace> = new MatTableDataSource<CoopSpace>();
 
   public userName: string | undefined;
+  public isPerformingDeletion: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -117,6 +118,7 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   private handleDeletionOfCoopSpace(selectedCoopSpace: CoopSpace): void {
+    this.isPerformingDeletion = true;
     this.coopSpacesService.delete(selectedCoopSpace).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(
@@ -124,11 +126,13 @@ export class CoopSpacesComponent implements OnInit {
         );
         removeElementFromArray(this.dataSource.data, cs => cs.name === selectedCoopSpace.name);
         this.dataSource.data = this.dataSource.data;
+        this.isPerformingDeletion = false;
       },
       error: () => {
         this.uiService.showErrorMessage(
           translate('dataManagement.coopSpaces.overviewCoopSpaces.dialog.deleteCoopSpaceErrorText')
         );
+        this.isPerformingDeletion = false;
       },
     });
   }
