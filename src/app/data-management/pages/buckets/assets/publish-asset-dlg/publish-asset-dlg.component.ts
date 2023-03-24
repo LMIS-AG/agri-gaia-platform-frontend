@@ -156,6 +156,7 @@ export class PublishAssetDlgComponent {
     });
   }
 
+  
   private transformSizeStringToNumber(): number {
     // TODO adjuste regarding metrics (B, KiB, ...)
     return Number(this.asset.size.split(' ')[0]);

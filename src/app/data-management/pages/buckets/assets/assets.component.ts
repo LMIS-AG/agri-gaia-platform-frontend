@@ -92,6 +92,7 @@ export class AssetsComponent implements OnInit {
       }
     });
   }
+  
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
     return this.dialog.open(PublishAssetDlgComponent, {
