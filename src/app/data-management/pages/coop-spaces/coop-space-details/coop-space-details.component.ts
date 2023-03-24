@@ -28,7 +28,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public datasetDatasource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
-  public memberDatasource: Member[] = [];
+  public memberDatasource: MatTableDataSource<Member> = new MatTableDataSource();
 
   public userName: string | undefined;
   public fullName: string | undefined;
@@ -56,7 +56,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         map(paramMap => parseInt(paramMap.get('id')!, 10)),
         switchMap(id =>
           this.coopSpacesService.getCoopSpaceById(id).pipe(
-            tap(coopSpace => (this.memberDatasource = coopSpace.members)),
+            tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
               this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
             )
@@ -100,7 +100,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
           // send the necessary data and remove the user from the member table
           this.coopSpacesService.deleteMember(this.coopSpace!.name, member).subscribe({
             next: () => {
-              this.memberDatasource = this.memberDatasource.filter(m => m.id !== member.id);
+              this.memberDatasource.data = this.memberDatasource.data.filter(m => m.id !== member.id);
               this.uiService.showSuccessMessage(
                 translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
               );
@@ -210,7 +210,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (currentCoopSpaceId) {
       this.coopSpacesService
         .getMembersOfCoopSpace(currentCoopSpaceId)
-        .subscribe(members => (this.memberDatasource = members));
+        .subscribe(members => (this.memberDatasource.data = members));
     }
   }
 
