@@ -20,7 +20,7 @@ import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-
 })
 export class AssetsComponent implements OnInit {
   public bucket?: string;
-  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'isPublished', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public isUploading = false;

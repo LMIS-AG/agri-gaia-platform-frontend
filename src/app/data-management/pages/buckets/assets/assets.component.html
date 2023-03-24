@@ -60,6 +60,12 @@
             <td mat-cell *matCellDef="let element">{{ element.size }}</td>
           </ng-container>
 
+          <!-- isPublished Column -->
+          <ng-container matColumnDef="isPublished">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('isPublished') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.isPublished ? 'Ja' : 'Nein' }}</td>
+          </ng-container>
+
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
