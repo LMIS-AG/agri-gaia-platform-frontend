@@ -38,6 +38,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public bucket?: string;
   public isLoading = false;
+  public isDeletingAsset: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -179,6 +180,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         if (!userConfirmed) return;
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+        this.isDeletingAsset = true;
         this.bucketService.deleteAsset(bucket, asset.name).subscribe({
           next: () => this.handleDeleteSuccess(),
           complete: () => this.updateAssets(asset),
@@ -189,6 +191,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
+    this.isDeletingAsset = false;
   }
 
   public addMember(membersSelected: Member[]): void {
@@ -285,5 +288,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
+    this.isDeletingAsset = false;
   }
 }

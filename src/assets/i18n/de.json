@@ -180,6 +180,7 @@
         "uploadFile": "Datei hochladen",
         "ongoingUpload1": "Datei wird hochgeladen...",
         "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
+        "ongoingDeletion": "Asset wird gelöscht...",
         "role": {
           "GUEST": "Gast",
           "USER": "User",
