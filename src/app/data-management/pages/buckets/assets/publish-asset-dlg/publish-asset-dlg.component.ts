@@ -143,15 +143,17 @@ export class PublishAssetDlgComponent {
     this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
+        // Emit a boolean result indicating success
+        this.dialogRef.close(true);
       },
       error: err => {
         this.uiService.showErrorMessage(
           translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status
         );
+        // Emit a boolean result indicating failure
+        this.dialogRef.close(false);
       },
     });
-
-    this.dialogRef.close();
   }
 
   private transformSizeStringToNumber(): number {

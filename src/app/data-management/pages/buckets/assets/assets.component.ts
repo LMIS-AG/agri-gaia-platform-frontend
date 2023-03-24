@@ -83,7 +83,14 @@ export class AssetsComponent implements OnInit {
     if (!asset) throw Error('asset was null in publishAsset().');
     asset.coopSpace = this.bucket!
     
-    this.openPublishAssetDialog(asset).afterClosed().subscribe();
+    this.openPublishAssetDialog(asset).afterClosed().subscribe((result) => {
+      if (result) {
+        // The asset was successfully published, disable the publish button and enable the unpublish button
+        asset.isPublished = true;
+      } else {
+        // The asset was not published, do nothing
+      }
+    });
   }
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
