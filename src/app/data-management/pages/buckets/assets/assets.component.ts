@@ -81,6 +81,7 @@ export class AssetsComponent implements OnInit {
 
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
+    asset.coopSpace = this.bucket!
 
     this.openPublishAssetDialog(asset).afterClosed().subscribe();
   }
@@ -89,7 +90,7 @@ export class AssetsComponent implements OnInit {
     return this.dialog.open(PublishAssetDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: asset,
+      data: asset
     });
   }
 
