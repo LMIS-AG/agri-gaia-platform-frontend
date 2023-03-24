@@ -11,14 +11,14 @@
       <div class="card" fxLayout="column" fxFlex="50">
         <div fxLayout="row" fxLayoutAlign="space-between">
           <h3 class="headline">{{ t('assets') }}</h3>
-          <div *ngIf="isLoading || isDeletingAsset" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
+          <div *ngIf="isUploading || isDeletingAsset" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
             <mat-spinner [diameter]="35"></mat-spinner>
-            <div *ngIf="isLoading; else ongoingDeletion" fxLayout="column" fxLayoutAlign="center center">
+            <div *ngIf="isUploading; else ongoingDeletion" fxLayout="column" fxLayoutAlign="center center">
               <div>{{ t('ongoingUpload1') }}</div>
               <div>{{ t('ongoingUpload2') }}</div>
             </div>
             <ng-template #ongoingDeletion>
-              <div>{{ t('ongoingDeletion') }}</div>
+              <div>{{ t('ongoingAssetDeletion') }}</div>
             </ng-template>
           </div>
           <div fxLayout="row" fxLayoutGap="10px">
@@ -103,6 +103,20 @@
       <div class="card" fxLayout="column" fxFlex="50">
         <div fxLayout="row" fxLayoutAlign="space-between">
           <h3 class="headline">{{ t('member') }}</h3>
+          <div
+            *ngIf="isAddingMember || isDeletingMember"
+            fxLayout="row"
+            fxLayoutGap="15px"
+            fxLayoutAlign="center center"
+          >
+            <mat-spinner [diameter]="35"></mat-spinner>
+            <div *ngIf="isAddingMember; else ongoingMemberDeletion" fxLayout="column" fxLayoutAlign="center center">
+              <div>{{ t('ongoingAdditionOfMembers') }}</div>
+            </div>
+            <ng-template #ongoingMemberDeletion>
+              <div>{{ t('ongoingMemberDeletion') }}</div>
+            </ng-template>
+          </div>
           <div fxLayout="row" fxLayoutGap="10px">
             <button
               mat-mini-fab
