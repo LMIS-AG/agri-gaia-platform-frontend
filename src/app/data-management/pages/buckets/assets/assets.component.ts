@@ -82,7 +82,7 @@ export class AssetsComponent implements OnInit {
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
     asset.coopSpace = this.bucket!
-
+    
     this.openPublishAssetDialog(asset).afterClosed().subscribe();
   }
 
