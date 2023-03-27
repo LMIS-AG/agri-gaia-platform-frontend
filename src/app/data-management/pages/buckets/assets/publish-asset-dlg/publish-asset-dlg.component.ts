@@ -34,6 +34,7 @@ export class PublishAssetDlgComponent {
   public allKeywords: string[] = []; // TODO liste; read list from file; create service
   @ViewChild('input')
   input!: ElementRef<HTMLInputElement>;
+  public isLoading: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) asset: GeneralPurposeAsset,
@@ -112,6 +113,8 @@ export class PublishAssetDlgComponent {
       return;
     }
 
+    this.isLoading = true;
+
     const firstPageCtrl = this.firstPage.controls;
     const secondPageCtrl = this.secondPage.controls;
 
@@ -145,15 +148,17 @@ export class PublishAssetDlgComponent {
     this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
+        this.isLoading = false;
+        this.dialogRef.close();
       },
       error: err => {
         this.uiService.showErrorMessage(
           translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status
         );
+        this.isLoading = false;
+        this.dialogRef.close();
       },
     });
-
-    this.dialogRef.close();
   }
 
   private transformSizeStringToNumber(): number {
