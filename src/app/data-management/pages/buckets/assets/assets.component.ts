@@ -23,8 +23,8 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
-  public isUploading = false;
-  public isLoadingKeys = false;
+  public isLoading = false;
+  public currentLoadingType: LoadingType = LoadingType.NotLoading;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +52,7 @@ export class AssetsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
-    this.isUploading = true;
+    this.currentLoadingType = LoadingType.UploadingAsset;
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
@@ -69,6 +69,7 @@ export class AssetsComponent implements OnInit {
       })
       .subscribe((userConfirmed: boolean) => {
         if (!userConfirmed) return;
+        this.currentLoadingType = LoadingType.DeletingAsset;
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in deleteAsset().');
         this.bucketService.deleteAsset(bucket, asset.name).subscribe({
@@ -95,6 +96,7 @@ export class AssetsComponent implements OnInit {
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.dataSource.data = this.dataSource.data.filter(e => e.name !== asset.name);
+    this.currentLoadingType = LoadingType.NotLoading;
   }
 
   public unpublishAsset(asset: GeneralPurposeAsset): void {
@@ -117,12 +119,12 @@ export class AssetsComponent implements OnInit {
   }
 
   public openGenerateKeysDialog(): void {
-    this.isLoadingKeys = true;
+    this.currentLoadingType = LoadingType.GeneratingKeys;
     // Retrieve the keys and the session token using the BucketService
     this.bucketService.getKeysAndToken().subscribe(result => {
-      this.isLoadingKeys = false;
+      this.currentLoadingType = LoadingType.NotLoading;
       // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
-      const dialogRef = this.dialog.open(GenerateKeysDialogComponent, {
+      this.dialog.open(GenerateKeysDialogComponent, {
         data: {
           accessKey: result.accessKey,
           secretKey: result.secretKey,
@@ -157,7 +159,7 @@ export class AssetsComponent implements OnInit {
   }
 
   private handleUploadSuccess(): void {
-    this.isUploading = false;
+    this.currentLoadingType = LoadingType.NotLoading;
 
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
 
@@ -170,7 +172,7 @@ export class AssetsComponent implements OnInit {
   }
 
   private handleUploadError(): void {
-    this.isUploading = false;
+    this.currentLoadingType = LoadingType.NotLoading;
 
     this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError'));
   }
@@ -181,5 +183,13 @@ export class AssetsComponent implements OnInit {
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
+    this.currentLoadingType = LoadingType.NotLoading;
   }
+}
+
+export enum LoadingType {
+  NotLoading = 'NOT_LOADING',
+  UploadingAsset = 'UPLOADING_ASSET',
+  DeletingAsset = 'DELETING_ASSET',
+  GeneratingKeys = 'GENERATING_KEYS',
 }

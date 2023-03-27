@@ -37,7 +37,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
   public bucket?: string;
-  public isLoading = false;
+  public isUploading = false;
+  public isDeletingAsset: boolean = false;
+  public isDeletingMember: boolean = false;
+  public isAddingMember: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -98,17 +101,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           // send the necessary data and remove the user from the member table
+          this.isDeletingMember = true;
           this.coopSpacesService.deleteMember(this.coopSpace!.name, member).subscribe({
             next: () => {
               this.memberDatasource.data = this.memberDatasource.data.filter(m => m.id !== member.id);
               this.uiService.showSuccessMessage(
                 translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
               );
+              this.isDeletingMember = false;
             },
             error: () => {
               this.uiService.showErrorMessage(
                 translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText')
               );
+              this.isDeletingMember = false;
             },
           });
         }
@@ -159,7 +165,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in addFile().');
 
-    this.isLoading = true;
+    this.isUploading = true;
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () =>
@@ -179,6 +185,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         if (!userConfirmed) return;
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+        this.isDeletingAsset = true;
         this.bucketService.deleteAsset(bucket, asset.name).subscribe({
           next: () => this.handleDeleteSuccess(),
           complete: () => this.updateAssets(asset),
@@ -189,18 +196,22 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
+    this.isDeletingAsset = false;
   }
 
   public addMember(membersSelected: Member[]): void {
+    this.isAddingMember = true;
     this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
       complete: () => {
         this.reloadMembersListAndUpdateMembersDataSource();
         this.uiService.showSuccessMessage(
           translate('dataManagement.coopSpaces.details.dialog.addMemberConfirmationText')
         );
+        this.isAddingMember = false;
       },
       error: () => {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.addMemberErrorText'));
+        this.isAddingMember = false;
       },
     });
   }
@@ -260,7 +271,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   private handleUploadSuccess(): void {
-    this.isLoading = false;
+    this.isUploading = false;
 
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
     if (this.bucket) {
@@ -285,5 +296,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
+    this.isDeletingAsset = false;
   }
 }
