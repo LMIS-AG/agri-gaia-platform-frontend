@@ -166,37 +166,38 @@ export class CoopSpaceDetailsComponent implements OnInit {
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
     });
   }
+
+
   public downloadAsset(asset: GeneralPurposeAsset): void {
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+
+    this.isLoading = true;
+    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+      next: (data) => {
+        // create a blob object from the API response
+        let blob = new Blob([data], { type: 'application/octet-stream' });
     
-    this.bucketService.downloadAsset(bucket, asset.name, asset).subscribe((data) => {
-      // create a blob object from the API response
-      let blob = new Blob([data], { type: 'application/octet-stream' });
-      
-      // create a temporary URL for the blob object
-      let url = window.URL.createObjectURL(blob);
-      
-      // create an anchor tag element
-      const link = document.createElement('a');
-  
-      // set the href attribute to the temporary URL
-      link.setAttribute('href', url);
-  
-      // set the download attribute to the desired file name
-      link.setAttribute('download', asset.name);
-  
-      // set the 'target' attribute to '_blank' to open the file in a new tab
-      link.setAttribute('target', '_blank');
-  
-      // simulate a click event on the anchor tag to trigger the download
-      link.click();
-      
-      // revoke the temporary URL after the download is complete
-      window.URL.revokeObjectURL(url);
+        // create a temporary URL for the blob object
+        let url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', asset.name);
+        link.setAttribute('target', '_blank');
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    
+        // show success message
+        this.handleDownloadSuccess()
+      },
+      error: () => {
+        // show error message
+        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.downloadAssetErrorText'));
+      },
     });
   }
-  
 
   public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
@@ -300,6 +301,13 @@ export class CoopSpaceDetailsComponent implements OnInit {
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
+  }
+
+  private handleDownloadSuccess(): void {
+    this.isLoading = false
+
+    // show success message
+        this.uiService.showSuccessMessage('dataManagement.coopSpaces.details.dialog.downloadAssetConfirmationText');
   }
 
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {

@@ -31,9 +31,9 @@ export class BucketService {
     return this.http.delete(`${environment.backend.url}/assets/unpublish/${bucket}/${name}`, { observe: 'response' });
   }
 
-  public downloadAsset(bucket: string, name: string, asset: GeneralPurposeAsset): Observable<Blob> {
-    return this.http.post(`${environment.backend.url}/buckets/download/${bucket}/${name}`, asset, { observe: 'response', responseType: 'blob' }).pipe(
-      map((response: HttpResponse<Blob>) => (response.body as Blob) ?? null)
+  public downloadAsset(bucket: string, name: string): Observable<Blob> {
+    return this.http.post(`${environment.backend.url}/buckets/download/${bucket}/${name}`, {bucket, name}, { observe: 'response', responseType: 'blob' }).pipe(
+      map((response: HttpResponse<Blob>) => (response.body as Blob))
     );
   }
 
