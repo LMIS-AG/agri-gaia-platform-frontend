@@ -119,7 +119,7 @@ export class AssetsComponent implements OnInit {
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in unpublishAsset().');
         this.bucketService.unpublishAsset(bucket, asset.name).subscribe({
-          next: () => this.handleUnpublishSuccess(),
+          next: () => this.handleUnpublishSuccess(asset),
           error: err => this.handleUnpublishError(err),
         });
       });
@@ -157,8 +157,9 @@ export class AssetsComponent implements OnInit {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status);
   }
 
-  public handleUnpublishSuccess(): void {
+  public handleUnpublishSuccess(asset: GeneralPurposeAsset): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.unpublishConfirmationText'));
+    asset.isPublished = false;
   }
 
   public handleUnpublishError(err: any): void {
