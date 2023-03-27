@@ -80,7 +80,7 @@
         <mat-dialog-content class="dialog-content">
           <ng-container *ngIf="selectableMembers?.length">
             <app-add-members
-              (handledSelectionEvent)="handleSelectedMembers($event)"
+              (handledSelectionEvent)="handleSelectedMembersAndCreateCoopSpace($event)"
               [saveEvent]="saveEventChild"
               [members]="selectableMembers"
             >

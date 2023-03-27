@@ -7,10 +7,12 @@ import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-assets',
   templateUrl: './assets.component.html',
@@ -42,11 +44,7 @@ export class AssetsComponent implements OnInit {
       )
       .subscribe(result => {
         this.bucket = result.name!;
-        result.assets.forEach(asset => {
-          // convert the displayed file size
-          asset.size = prettyPrintFileSize(parseInt(asset.size));
-        });
-        this.dataSource.data = result.assets;
+        this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(result.assets);
       });
   }
 
@@ -121,7 +119,7 @@ export class AssetsComponent implements OnInit {
   public openGenerateKeysDialog(): void {
     this.isLoadingKeys = true;
     // Retrieve the keys and the session token using the BucketService
-    this.bucketService.getKeysandToken().subscribe(result => {
+    this.bucketService.getKeysAndToken().subscribe(result => {
       this.isLoadingKeys = false;
       // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
       const dialogRef = this.dialog.open(GenerateKeysDialogComponent, {
@@ -132,6 +130,14 @@ export class AssetsComponent implements OnInit {
         },
       });
     });
+  }
+
+  private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
+    assets.forEach(asset => {
+      // convert the displayed file size
+      asset.size = prettyPrintFileSize(parseInt(asset.size));
+    });
+    this.dataSource.data = assets;
   }
 
   public handlePublishSuccess(): void {
@@ -154,6 +160,13 @@ export class AssetsComponent implements OnInit {
     this.isUploading = false;
 
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
+
+    if (this.bucket) {
+      this.bucketService
+        .getAssetsByBucketName(this.bucket!)
+        .pipe(untilDestroyed(this))
+        .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
+    }
   }
 
   private handleUploadError(): void {
