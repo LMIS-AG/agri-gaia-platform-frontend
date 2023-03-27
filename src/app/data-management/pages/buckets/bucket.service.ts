@@ -31,8 +31,12 @@ export class BucketService {
     return this.http.delete(`${environment.backend.url}/assets/unpublish/${bucket}/${name}`, { observe: 'response' });
   }
 
+  public downloadAsset(bucket: string, name: string, asset: GeneralPurposeAsset): Observable<HttpResponse<Object>> {
+    return this.http.post(`${environment.backend.url}/buckets/download/${bucket}/${name}`, asset, { observe: 'response' });
+  }
+
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`, { observe: 'response' });
+    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`,  { observe: 'response' });
   }
 
   public getKeysAndToken(): Observable<STSRequest> {

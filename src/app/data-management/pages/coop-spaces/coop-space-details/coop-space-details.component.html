@@ -86,6 +86,9 @@
                     <mat-icon>delete</mat-icon>
                     {{ tCommon('delete') }}
                   </button>
+                  <button mat-menu-item  (click)="downloadAsset(element)">
+                    {{ 'Herunterladen' }}
+                  </button>
                 </mat-menu>
               </td>
             </ng-container>

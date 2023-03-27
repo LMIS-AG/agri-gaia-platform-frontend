@@ -167,6 +167,13 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
+  public downloadAsset(asset: GeneralPurposeAsset): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+    this.bucketService.downloadAsset(bucket, asset.name, asset).subscribe({
+    });
+  }
+
   public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
       .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationQuestion'), {
