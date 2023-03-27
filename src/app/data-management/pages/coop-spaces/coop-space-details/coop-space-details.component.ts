@@ -194,7 +194,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       },
       error: () => {
         // show error message
-        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.downloadAssetErrorText'));
+        this.handleDownloadError()
       },
     });
   }
@@ -307,7 +307,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.isLoading = false
 
     // show success message
-        this.uiService.showSuccessMessage('dataManagement.coopSpaces.details.dialog.downloadAssetConfirmationText');
+    this.uiService.showSuccessMessage('dataManagement.coopSpaces.details.dialog.downloadAssetConfirmationText');
+  }
+
+  private handleDownloadError(): void {
+    this.isLoading = false
+
+    // show error message
+    this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.downloadAssetErrorText'));
   }
 
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
