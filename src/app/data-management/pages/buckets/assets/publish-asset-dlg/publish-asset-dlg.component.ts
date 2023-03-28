@@ -94,9 +94,13 @@ export class PublishAssetDlgComponent {
   }
 
   private validLatitude(control: FormControl): ValidationErrors | null {
-    const validLat = new RegExp('(\\+|-)?[0-9]{1,2}(\\.\\d{5,})');
+    const value = control.value;
+    if (value === null || value === '') {
+      return null; // allow empty value
+    }
   
-    return validLat.test(control.value)
+    const validLat = /^(\+|-)?([0-9]{1,2})(\.\d{1,5})?$/;
+    return validLat.test(value)
       ? null
       : {
           invalidLatitude: { valid: false },
@@ -104,14 +108,19 @@ export class PublishAssetDlgComponent {
   }
   
   private validLongitude(control: FormControl): ValidationErrors | null {
-    const validLong = new RegExp('(\\+|-)?[0-9]{1,3}(\\.\\d{5,})');
+    const value = control.value;
+    if (value === null || value === '') {
+      return null; // allow empty value
+    }
   
-    return validLong.test(control.value)
+    const validLong = /^(\+|-)?([0-9]{1,3})(\.\d{1,5})?$/;
+    return validLong.test(value)
       ? null
       : {
           invalidLongitude: { valid: false },
         };
   }
+  
 
   private initAllKeywords(): void {
     this.fileService.getAgrovocKeywordsFromFile().subscribe(data => {
