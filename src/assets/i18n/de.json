@@ -68,6 +68,7 @@
       },
       "assets": {
         "uploadFile": "Datei hochladen",
+        "uploadFolder": "Ordner hochladen",
         "uploadedFile": "Der Upload war erfolgreich.",
         "uploadFileError": "Der Upload ist fehlgeschlagen.",
         "ongoingUpload1": "Datei wird hochgeladen...",

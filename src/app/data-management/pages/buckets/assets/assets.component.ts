@@ -59,6 +59,10 @@ export class AssetsComponent implements OnInit {
     });
   }
 
+  public onFolderSelected(event: any): void {
+    // TODO handle event; recursively upload files to MinIO
+  }
+
   public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
       .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {

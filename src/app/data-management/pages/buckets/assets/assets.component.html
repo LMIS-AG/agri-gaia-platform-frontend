@@ -24,12 +24,25 @@
         <mat-icon>add</mat-icon>
       </button>
       <mat-menu #menuForUpload="matMenu">
-        <!-- actual input for file upload is hidden because it is hard to style -->
+        <!-- actual inputs for file and folder upload are hidden because it is hard to style -->
         <div fxLayout="column">
           <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
+          <input
+            type="file"
+            multiple
+            class="file-input"
+            (change)="onFolderSelected($event)"
+            webkitdirectory
+            directory
+            #folderUpload
+          />
           <button class="upload-button" (click)="fileUpload.click()">
             <mat-icon>upload</mat-icon>
             <p>{{ t('uploadFile') }}</p>
+          </button>
+          <button class="upload-button" (click)="folderUpload.click()">
+            <mat-icon>drive_folder_upload</mat-icon>
+            <p>{{ t('uploadFolder') }}</p>
           </button>
           <button class="generate-button" (click)="openGenerateKeysDialog()">
             <mat-icon class="generate-button-icon">vpn_key</mat-icon>
