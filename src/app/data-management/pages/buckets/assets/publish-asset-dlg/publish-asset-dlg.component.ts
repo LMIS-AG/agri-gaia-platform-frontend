@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, of, startWith } from 'rxjs';
 import { AssetType } from 'src/app/shared/model/asset-type';
@@ -85,11 +85,31 @@ export class PublishAssetDlgComponent {
       assetType: [AssetType.DataSet],
       startDate: [null],
       endDate: [null],
-      latitude: [''],
-      longitude: [''],
+      latitude: ['', [Validators.required, this.validLatitude]],
+      longitude: ['', [Validators.required, this.validLongitude]],
     });
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
+  }
+
+  private validLatitude(control: FormControl): ValidationErrors | null {
+    const validLat = new RegExp('(\\+|-)?[0-9]{1,2}(\\.\\d{5,})');
+  
+    return validLat.test(control.value)
+      ? null
+      : {
+          invalidLatitude: { valid: false },
+        };
+  }
+  
+  private validLongitude(control: FormControl): ValidationErrors | null {
+    const validLong = new RegExp('(\\+|-)?[0-9]{1,3}(\\.\\d{5,})');
+  
+    return validLong.test(control.value)
+      ? null
+      : {
+          invalidLongitude: { valid: false },
+        };
   }
 
   private initAllKeywords(): void {
