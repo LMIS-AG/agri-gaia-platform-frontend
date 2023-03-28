@@ -86,8 +86,8 @@ export class PublishAssetDlgComponent {
       assetType: [AssetType.DataSet],
       startDate: [null],
       endDate: [null],
-      latitude: ['', [Validators.required, this.validLatitude]],
-      longitude: ['', [Validators.required, this.validLongitude]],
+      latitude: ['', [this.validLatitude]],
+      longitude: ['', [this.validLongitude]],
     });
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
@@ -99,7 +99,7 @@ export class PublishAssetDlgComponent {
       return null; // allow empty value
     }
   
-    const validLat = /^(\+|-)?([0-9]{1,2})(\.\d{1,5})?$/;
+    const validLat = /^(\+|-)?([0-9]{1,2})(\.[0-9]+)?$/;
     return validLat.test(value)
       ? null
       : {
@@ -113,7 +113,7 @@ export class PublishAssetDlgComponent {
       return null; // allow empty value
     }
   
-    const validLong = /^(\+|-)?([0-9]{1,3})(\.\d{1,5})?$/;
+    const validLong = /^(\+|-)?([0-9]{1,3})(\.[0-9]+)?$/;
     return validLong.test(value)
       ? null
       : {
