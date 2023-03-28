@@ -80,7 +80,7 @@
         <mat-dialog-content class="dialog-content">
           <ng-container *ngIf="selectableMembers?.length">
             <app-add-members
-              (handledSelectionEvent)="handleSelectedMembers($event)"
+              (handledSelectionEvent)="handleSelectedMembersAndCreateCoopSpace($event)"
               [saveEvent]="saveEventChild"
               [members]="selectableMembers"
             >
@@ -95,9 +95,21 @@
             {{ tCommon('cancel') }}
           </button>
           <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
-          <button class="save" mat-flat-button [disabled]="!canAndShouldSave()" color="primary" (click)="save()">
+          <button
+            *ngIf="!isLoading; else loading"
+            class="save"
+            mat-flat-button
+            [disabled]="!canAndShouldSave()"
+            color="primary"
+            (click)="save()"
+          >
             {{ tCommon('save') }}
           </button>
+          <ng-template #loading>
+            <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner-container">
+              <mat-spinner [diameter]="35"></mat-spinner>
+            </div>
+          </ng-template>
         </mat-dialog-actions>
       </mat-step>
     </mat-stepper>

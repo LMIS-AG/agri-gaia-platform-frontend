@@ -7,10 +7,12 @@ import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
 import { MatTableDataSource } from '@angular/material/table';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-assets',
   templateUrl: './assets.component.html',
@@ -21,8 +23,8 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
-  public isUploading = false;
-  public isLoadingKeys = false;
+  public isLoading = false;
+  public currentLoadingType: LoadingType = LoadingType.NotLoading;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,11 +44,7 @@ export class AssetsComponent implements OnInit {
       )
       .subscribe(result => {
         this.bucket = result.name!;
-        result.assets.forEach(asset => {
-          // convert the displayed file size
-          asset.size = prettyPrintFileSize(parseInt(asset.size));
-        });
-        this.dataSource.data = result.assets;
+        this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(result.assets);
       });
   }
 
@@ -54,7 +52,7 @@ export class AssetsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
-    this.isUploading = true;
+    this.currentLoadingType = LoadingType.UploadingAsset;
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
@@ -71,6 +69,7 @@ export class AssetsComponent implements OnInit {
       })
       .subscribe((userConfirmed: boolean) => {
         if (!userConfirmed) return;
+        this.currentLoadingType = LoadingType.DeletingAsset;
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in deleteAsset().');
         this.bucketService.deleteAsset(bucket, asset.name).subscribe({
@@ -97,6 +96,7 @@ export class AssetsComponent implements OnInit {
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.dataSource.data = this.dataSource.data.filter(e => e.name !== asset.name);
+    this.currentLoadingType = LoadingType.NotLoading;
   }
 
   public unpublishAsset(asset: GeneralPurposeAsset): void {
@@ -119,12 +119,12 @@ export class AssetsComponent implements OnInit {
   }
 
   public openGenerateKeysDialog(): void {
-    this.isLoadingKeys = true;
+    this.currentLoadingType = LoadingType.GeneratingKeys;
     // Retrieve the keys and the session token using the BucketService
-    this.bucketService.getKeysandToken().subscribe(result => {
-      this.isLoadingKeys = false;
+    this.bucketService.getKeysAndToken().subscribe(result => {
+      this.currentLoadingType = LoadingType.NotLoading;
       // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
-      const dialogRef = this.dialog.open(GenerateKeysDialogComponent, {
+      this.dialog.open(GenerateKeysDialogComponent, {
         data: {
           accessKey: result.accessKey,
           secretKey: result.secretKey,
@@ -132,6 +132,14 @@ export class AssetsComponent implements OnInit {
         },
       });
     });
+  }
+
+  private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
+    assets.forEach(asset => {
+      // convert the displayed file size
+      asset.size = prettyPrintFileSize(parseInt(asset.size));
+    });
+    this.dataSource.data = assets;
   }
 
   public handlePublishSuccess(): void {
@@ -151,13 +159,20 @@ export class AssetsComponent implements OnInit {
   }
 
   private handleUploadSuccess(): void {
-    this.isUploading = false;
+    this.currentLoadingType = LoadingType.NotLoading;
 
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.uploadedFile'));
+
+    if (this.bucket) {
+      this.bucketService
+        .getAssetsByBucketName(this.bucket!)
+        .pipe(untilDestroyed(this))
+        .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
+    }
   }
 
   private handleUploadError(): void {
-    this.isUploading = false;
+    this.currentLoadingType = LoadingType.NotLoading;
 
     this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError'));
   }
@@ -168,5 +183,13 @@ export class AssetsComponent implements OnInit {
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
+    this.currentLoadingType = LoadingType.NotLoading;
   }
+}
+
+export enum LoadingType {
+  NotLoading = 'NOT_LOADING',
+  UploadingAsset = 'UPLOADING_ASSET',
+  DeletingAsset = 'DELETING_ASSET',
+  GeneratingKeys = 'GENERATING_KEYS',
 }

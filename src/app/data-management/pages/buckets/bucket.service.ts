@@ -35,7 +35,7 @@ export class BucketService {
     return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`, { observe: 'response' });
   }
 
-  public getKeysandToken(): Observable<STSRequest> {
+  public getKeysAndToken(): Observable<STSRequest> {
     return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 

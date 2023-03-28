@@ -130,9 +130,15 @@
             [disabled]="!canAndShouldSave()"
             color="primary"
             (click)="publishAsset()"
+            *ngIf="!isLoading; else loading"
           >
             {{ t('publishAsset') }}
           </button>
+          <ng-template #loading>
+            <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner-container">
+              <mat-spinner [diameter]="35"></mat-spinner>
+            </div>
+          </ng-template>
         </mat-dialog-actions>
       </mat-step>
     </mat-stepper>
