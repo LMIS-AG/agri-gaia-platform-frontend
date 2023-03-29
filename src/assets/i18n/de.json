@@ -77,7 +77,7 @@
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
         "bucketAccess": "Zugangsdaten für Buckets",
-        
+
         "table": {
           "name": "Assets",
           "date": "Datum",
@@ -112,8 +112,12 @@
             "datePlaceholder": "tt/mm/jjjj",
             "location": "Ort der Datenerfassung",
             "locationLabel": "Ort",
-            "latitude": "Längengrad",
-            "longitude": "Breitengrad"
+            "latitude": "Breitengrad",
+            "longitude": "Längengrad",
+            "errors": {
+              "invalidLatitude": "Geben Sie bitte einen gültigen Breitengrad an.",
+              "invalidLongitude": "Geben Sie bitte einen gültigen Längengrad an."
+            }
           },
           "publishAsset": "Asset veröffentlichen"
         },
