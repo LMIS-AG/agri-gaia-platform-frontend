@@ -108,15 +108,18 @@
               <mat-form-field appearance="fill" color="primary" class="bg">
                 <mat-label>{{ t('fields.latitude') }}</mat-label>
                 <input matInput formControlName="latitude" />
-                <mat-error *ngIf="secondPage.controls['longitude'].hasError('invalidLongitude')">{{
-                  t('fields.invalidLongitude')
+                <mat-error *ngIf="secondPage.controls['latitude'].hasError('invalidLatitude')">{{
+                  t('fields.invalidLatitude')
                 }}</mat-error>
               </mat-form-field>
               <mat-form-field appearance="fill" color="primary" class="bg">
                 <mat-label>{{ t('fields.longitude') }}</mat-label>
                 <input matInput formControlName="longitude" />
-                <mat-error *ngIf="secondPage.controls['longitude'].hasError('invalidLatitude')">{{
+                <mat-error *ngIf="secondPage.controls['longitude'].hasError('invalidLongitude')">{{
                   t('fields.invalidLongitude')
+                }}</mat-error>
+                <mat-error *ngIf="secondPage.hasError('requireLatitudeAndLongitude')">{{ 
+                  t('fields.requireLatitudeAndLongitude') 
                 }}</mat-error>
               </mat-form-field>
             </ng-container>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, of, startWith } from 'rxjs';
 import { AssetType } from 'src/app/shared/model/asset-type';
@@ -88,16 +88,13 @@ export class PublishAssetDlgComponent {
       endDate: [null],
       latitude: ['', [this.validLatitude]],
       longitude: ['', [this.validLongitude]],
-    });
+    }, { validators: [this.requireLatitudeAndLongitude] });
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
   }
 
   private validLatitude(control: FormControl): ValidationErrors | null {
     const value = control.value;
-    if (value === null || value === '') {
-      return null; // allow empty value
-    }
   
     const validLat = /^(\+|-)?([0-9]{1,2})(\.[0-9]+)?$/;
     return validLat.test(value)
@@ -109,9 +106,6 @@ export class PublishAssetDlgComponent {
   
   private validLongitude(control: FormControl): ValidationErrors | null {
     const value = control.value;
-    if (value === null || value === '') {
-      return null; // allow empty value
-    }
   
     const validLong = /^(\+|-)?([0-9]{1,3})(\.[0-9]+)?$/;
     return validLong.test(value)
@@ -120,6 +114,21 @@ export class PublishAssetDlgComponent {
           invalidLongitude: { valid: false },
         };
   }
+
+private requireLatitudeAndLongitude(control: FormControl): ValidationErrors | null {
+  const latitude = control.get('latitude')?.value;
+  const longitude = control.get('longitude')?.value;
+
+  if (!latitude && !longitude) {
+    return null;
+  }
+
+  if ((latitude && !longitude) || (!latitude && longitude)) {
+    return { requireLatitudeAndLongitude: true };
+  }
+
+  return null;
+}
   
 
   private initAllKeywords(): void {
