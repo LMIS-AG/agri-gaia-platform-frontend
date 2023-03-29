@@ -41,6 +41,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public isDeletingAsset: boolean = false;
   public isDeletingMember: boolean = false;
   public isAddingMember: boolean = false;
+  public isDownloading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -165,7 +166,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in addFile().');
 
-    this.isUploading = true;
+    this.isDownloading = true;
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () =>
@@ -178,7 +179,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in downloadAsset().');
 
-    this.isLoading = true;
+    this.isDownloading = true;
     this.bucketService.downloadAsset(bucket, asset.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
@@ -315,14 +316,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   private handleDownloadSuccess(): void {
-    this.isLoading = false
+    this.isDownloading = false
 
     // show success message
     this.uiService.showSuccessMessage('dataManagement.coopSpaces.details.dialog.downloadAssetConfirmationText');
   }
 
   private handleDownloadError(): void {
-    this.isLoading = false
+    this.isDownloading = false
 
     // show error message
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.downloadAssetErrorText'));
