@@ -82,20 +82,24 @@ export class PublishAssetDlgComponent {
       version: [''],
     });
 
-    const secondPage = this.formBuilder.group({
-      assetType: [AssetType.DataSet],
-      startDate: [null],
-      endDate: [null],
-      latitude: ['', [this.validLatitude]],
-      longitude: ['', [this.validLongitude]],
-    }, { validators: [this.requireLatitudeAndLongitude] });
+    const secondPage = this.formBuilder.group(
+      {
+        assetType: [AssetType.DataSet],
+        startDate: [null],
+        endDate: [null],
+        latitude: ['', [this.validLatitudeOrEmpty]],
+        longitude: ['', [this.validLongitudeOrEmpty]],
+      },
+      { validators: [this.requireLatitudeAndLongitude] }
+    );
 
     this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
   }
 
-  private validLatitude(control: FormControl): ValidationErrors | null {
+  private validLatitudeOrEmpty(control: FormControl): ValidationErrors | null {
     const value = control.value;
-  
+    if (!value) return null;
+
     const validLat = /^(\+|-)?([0-9]{1,2})(\.[0-9]+)?$/;
     return validLat.test(value)
       ? null
@@ -103,10 +107,11 @@ export class PublishAssetDlgComponent {
           invalidLatitude: { valid: false },
         };
   }
-  
-  private validLongitude(control: FormControl): ValidationErrors | null {
+
+  private validLongitudeOrEmpty(control: FormControl): ValidationErrors | null {
     const value = control.value;
-  
+    if (!value) return null;
+
     const validLong = /^(\+|-)?([0-9]{1,3})(\.[0-9]+)?$/;
     return validLong.test(value)
       ? null
@@ -115,21 +120,20 @@ export class PublishAssetDlgComponent {
         };
   }
 
-private requireLatitudeAndLongitude(control: FormControl): ValidationErrors | null {
-  const latitude = control.get('latitude')?.value;
-  const longitude = control.get('longitude')?.value;
+  private requireLatitudeAndLongitude(control: FormControl): ValidationErrors | null {
+    const latitude = control.get('latitude')?.value;
+    const longitude = control.get('longitude')?.value;
 
-  if (!latitude && !longitude) {
+    if (!latitude && !longitude) {
+      return null;
+    }
+
+    if ((latitude && !longitude) || (!latitude && longitude)) {
+      return { requireLatitudeAndLongitude: true };
+    }
+
     return null;
   }
-
-  if ((latitude && !longitude) || (!latitude && longitude)) {
-    return { requireLatitudeAndLongitude: true };
-  }
-
-  return null;
-}
-  
 
   private initAllKeywords(): void {
     this.fileService.getAgrovocKeywordsFromFile().subscribe(data => {
