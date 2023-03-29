@@ -77,12 +77,14 @@
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
         "bucketAccess": "Zugangsdaten für Buckets",
+        
         "table": {
           "name": "Assets",
           "date": "Datum",
           "publish": "Veröffentlichen",
           "delete": "Löschen",
-          "size": "Größe"
+          "size": "Größe",
+          "isPublished": "ist veröffentlicht"
         },
         "publishAssetDialog": {
           "headline": "Asset veröffentlichen",
