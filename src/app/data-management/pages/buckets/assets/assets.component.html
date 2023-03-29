@@ -67,7 +67,12 @@
             <td mat-cell *matCellDef="let element">{{ element.size }}</td>
           </ng-container>
 
-          <!-- More Column -->
+          <!-- isPublished Column -->
+          <ng-container matColumnDef="isPublished">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('isPublished') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.isPublished ? tCommon('yes') : tCommon('no') }}</td>
+          </ng-container>
+
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
@@ -75,16 +80,26 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="publishAsset(element)">
+                <button mat-menu-item [disabled]="element.isPublished" (click)="publishAsset(element)">
                   <mat-icon color="primary">publish</mat-icon>
                   {{ t('publishFile') }}
                 </button>
-                <button mat-menu-item class="delete-button" (click)="unpublishAsset(element)">
-                  <!--                  TODO: Get a better icon.-->
+                <button
+                  mat-menu-item
+                  [disabled]="!element.isPublished"
+                  class="delete-button"
+                  (click)="unpublishAsset(element)"
+                >
+                  <!-- TODO: Get a better icon.-->
                   <mat-icon>unpublished</mat-icon>
                   {{ t('unpublishFile') }}
                 </button>
-                <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
+                <button
+                  mat-menu-item
+                  class="delete-button"
+                  [disabled]="element.isPublished"
+                  (click)="deleteAsset(element)"
+                >
                   <mat-icon>delete</mat-icon>
                   {{ tCommon('delete') }}
                 </button>

@@ -6,4 +6,5 @@ export interface GeneralPurposeAsset {
   size: string;
   labeling: string;
   coopSpace: string; // link to CoopSpace
+  isPublished: boolean;
 }

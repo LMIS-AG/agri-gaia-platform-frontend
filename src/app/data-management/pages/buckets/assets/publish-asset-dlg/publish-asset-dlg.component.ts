@@ -146,15 +146,15 @@ export class PublishAssetDlgComponent {
     this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
-        this.isLoading = false;
-        this.dialogRef.close();
+        // Emit a boolean result indicating success
+        this.dialogRef.close(true);
       },
       error: err => {
         this.uiService.showErrorMessage(
           translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status
         );
-        this.isLoading = false;
-        this.dialogRef.close();
+        // Emit a boolean result indicating failure
+        this.dialogRef.close(false);
       },
     });
   }

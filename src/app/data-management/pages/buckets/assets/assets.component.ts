@@ -20,7 +20,7 @@ import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-
 })
 export class AssetsComponent implements OnInit {
   public bucket?: string;
-  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'isPublished', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public isLoading = false;
@@ -82,15 +82,24 @@ export class AssetsComponent implements OnInit {
 
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
-
-    this.openPublishAssetDialog(asset).afterClosed().subscribe();
+    asset.coopSpace = this.bucket!
+    
+    this.openPublishAssetDialog(asset).afterClosed().subscribe((result) => {
+      if (result) {
+        // The asset was successfully published, disable the publish button and enable the unpublish button
+        asset.isPublished = true;
+      } else {
+        // The asset was not published, do nothing
+      }
+    });
   }
+  
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
     return this.dialog.open(PublishAssetDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: asset,
+      data: asset
     });
   }
 
@@ -112,7 +121,7 @@ export class AssetsComponent implements OnInit {
         let bucket = this.bucket;
         if (bucket == null) throw Error('Bucket was null in unpublishAsset().');
         this.bucketService.unpublishAsset(bucket, asset.name).subscribe({
-          next: () => this.handleUnpublishSuccess(),
+          next: () => this.handleUnpublishSuccess(asset),
           error: err => this.handleUnpublishError(err),
         });
       });
@@ -150,8 +159,9 @@ export class AssetsComponent implements OnInit {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.publishErrorText') + err.status);
   }
 
-  public handleUnpublishSuccess(): void {
+  public handleUnpublishSuccess(asset: GeneralPurposeAsset): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.unpublishConfirmationText'));
+    asset.isPublished = false;
   }
 
   public handleUnpublishError(err: any): void {
