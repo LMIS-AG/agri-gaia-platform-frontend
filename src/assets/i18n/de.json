@@ -116,7 +116,8 @@
             "longitude": "Längengrad",
             "errors": {
               "invalidLatitude": "Geben Sie bitte einen gültigen Breitengrad an.",
-              "invalidLongitude": "Geben Sie bitte einen gültigen Längengrad an."
+              "invalidLongitude": "Geben Sie bitte einen gültigen Längengrad an.",
+              "requireLatitudeAndLongitude": "Geben Sie bitte Längengrad und Breitengrad an."
             }
           },
           "publishAsset": "Asset veröffentlichen"
