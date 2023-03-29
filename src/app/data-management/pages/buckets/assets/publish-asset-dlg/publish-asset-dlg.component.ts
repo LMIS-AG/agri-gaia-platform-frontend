@@ -100,7 +100,7 @@ export class PublishAssetDlgComponent {
     const value = control.value;
     if (!value) return null;
 
-    const validLat = /^(\+|-)?([0-9]{1,2})(\.[0-9]+)?$/;
+    const validLat = /(\+|-)?[0-9]{1,2}(\.|,)[0-9]+/;
     return validLat.test(value)
       ? null
       : {
@@ -112,7 +112,7 @@ export class PublishAssetDlgComponent {
     const value = control.value;
     if (!value) return null;
 
-    const validLong = /^(\+|-)?([0-9]{1,3})(\.[0-9]+)?$/;
+    const validLong = /(\+|-)?[0-9]{1,2}(\.|,)[0-9]+/;
     return validLong.test(value)
       ? null
       : {
