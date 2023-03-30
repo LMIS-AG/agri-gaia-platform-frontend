@@ -185,6 +185,7 @@
         "ongoingAssetDeletion": "Asset wird gelöscht...",
         "ongoingMemberRemoval": "Teilnehmer wird entfernt...",
         "ongoingAdditionOfMembers": "Teilnehmer wird hinzugefügt...",
+        "ongoingAssetDownload": "Asset wird heruntergeladen...",
         "role": {
           "GUEST": "Gast",
           "USER": "User",

@@ -37,7 +37,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
   public bucket?: string;
-  public isUploading = false;
+  public isUploading: boolean = false;
   public isDeletingAsset: boolean = false;
   public isDeletingMember: boolean = false;
   public isAddingMember: boolean = false;
@@ -166,7 +166,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in addFile().');
 
-    this.isDownloading = true;
+    this.isUploading = true;
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () =>
