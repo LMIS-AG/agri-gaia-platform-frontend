@@ -23,7 +23,6 @@ export class AssetsComponent implements OnInit {
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'isPublished', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
-  public isLoading = false;
   public currentLoadingType: LoadingType = LoadingType.NotLoading;
 
   constructor(
