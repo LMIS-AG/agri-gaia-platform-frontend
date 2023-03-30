@@ -26,12 +26,12 @@
       <mat-menu #menuForUpload="matMenu">
         <!-- actual inputs for file and folder upload are hidden because it is hard to style -->
         <div fxLayout="column">
-          <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
+          <input type="file" multiple class="file-input" (change)="onFileOrFolderSelected($event)" #fileUpload />
           <input
             type="file"
             multiple
             class="file-input"
-            (change)="onFolderSelected($event)"
+            (change)="onFileOrFolderSelected($event)"
             webkitdirectory
             directory
             #folderUpload

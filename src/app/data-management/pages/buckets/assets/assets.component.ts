@@ -48,7 +48,7 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public onFileSelected(event: any): void {
+  public onFileOrFolderSelected(event: any): void {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
@@ -57,10 +57,6 @@ export class AssetsComponent implements OnInit {
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
     });
-  }
-
-  public onFolderSelected(event: any): void {
-    // TODO handle event; recursively upload files to MinIO
   }
 
   public deleteAsset(asset: GeneralPurposeAsset): void {
@@ -86,24 +82,25 @@ export class AssetsComponent implements OnInit {
 
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
-    asset.coopSpace = this.bucket!
-    
-    this.openPublishAssetDialog(asset).afterClosed().subscribe((result) => {
-      if (result) {
-        // The asset was successfully published, disable the publish button and enable the unpublish button
-        asset.isPublished = true;
-      } else {
-        // The asset was not published, do nothing
-      }
-    });
+    asset.coopSpace = this.bucket!;
+
+    this.openPublishAssetDialog(asset)
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          // The asset was successfully published, disable the publish button and enable the unpublish button
+          asset.isPublished = true;
+        } else {
+          // The asset was not published, do nothing
+        }
+      });
   }
-  
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
     return this.dialog.open(PublishAssetDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: asset
+      data: asset,
     });
   }
 
