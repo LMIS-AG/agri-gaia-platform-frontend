@@ -106,8 +106,22 @@
               </mat-form-field>
               <h3>{{ t('fields.location') }}</h3>
               <mat-form-field appearance="fill" color="primary" class="bg">
-                <mat-label>{{ t('fields.locationLabel') }}</mat-label>
-                <input matInput formControlName="location" />
+                <mat-label>{{ t('fields.latitude') }}</mat-label>
+                <input matInput formControlName="latitude" />
+                <mat-error *ngIf="secondPage.controls['latitude'].hasError('invalidLatitude')">{{
+                  t('fields.errors.invalidLatitude')
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('fields.longitude') }}</mat-label>
+                <input matInput formControlName="longitude" />
+                <mat-error *ngIf="secondPage.controls['longitude'].hasError('invalidLongitude')">{{
+                  t('fields.errors.invalidLongitude')
+                }}</mat-error>
+                <mat-error *ngIf="secondPage.hasError('requireLatitudeAndLongitude')">{{
+                  t('fields.errors.requireLatitudeAndLongitude')
+                }}</mat-error>
+                <mat-hint>{{ t('fields.infoGeonames') }}</mat-hint>
               </mat-form-field>
             </ng-container>
           </div>

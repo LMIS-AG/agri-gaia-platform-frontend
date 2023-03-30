@@ -6,7 +6,8 @@ export interface PublishableAsset {
   assetPropVersion?: string;
   assetPropId?: string;
   agrovocKeywords?: string[];
-  geonamesUri?: string;
+  latitude?: string;
+  longitude?: string;
   dateRange?: string;
   dataAddressType?: string;
   dataAddressRegion?: string;
