@@ -77,7 +77,7 @@
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
         "bucketAccess": "Zugangsdaten für Buckets",
-        
+
         "table": {
           "name": "Assets",
           "date": "Datum",
@@ -111,7 +111,15 @@
             "dates": "Startdatum - Enddatum",
             "datePlaceholder": "tt/mm/jjjj",
             "location": "Ort der Datenerfassung",
-            "locationLabel": "Ort"
+            "locationLabel": "Ort",
+            "latitude": "Breitengrad",
+            "longitude": "Längengrad",
+            "infoGeonames": "Für eine sinnvolle Eingabe verifizieren Sie Ihre Koordinaten bitte unter https://www.geonames.org/v3/",
+            "errors": {
+              "invalidLatitude": "Geben Sie bitte einen gültigen Breitengrad an.",
+              "invalidLongitude": "Geben Sie bitte einen gültigen Längengrad an.",
+              "requireLatitudeAndLongitude": "Geben Sie bitte Längengrad und Breitengrad an."
+            }
           },
           "publishAsset": "Asset veröffentlichen"
         },
