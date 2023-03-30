@@ -13,6 +13,7 @@
         <mat-spinner [diameter]="35"></mat-spinner>
         <div fxLayout="column" fxLayoutAlign="center center">
           <div *ngSwitchCase="'GENERATING_KEYS'">{{ t('ongoingGeneration') }}</div>
+          <div *ngSwitchCase="'DOWNLOADING_ASSET'">{{ t('ongoingAssetDownload') }}</div>
           <ng-container *ngSwitchCase="'UPLOADING_ASSET'">
             <div>{{ t('ongoingUpload1') }}</div>
             <div>{{ t('ongoingUpload2') }}</div>
@@ -88,6 +89,10 @@
                   <!-- TODO: Get a better icon.-->
                   <mat-icon>unpublished</mat-icon>
                   {{ t('unpublishFile') }}
+                </button>
+                <button mat-menu-item class="download-button"  (click)="downloadAsset(element)">
+                  <mat-icon>download</mat-icon>
+                  {{ tCommon('download') }}
                 </button>
                 <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
                   <mat-icon>delete</mat-icon>

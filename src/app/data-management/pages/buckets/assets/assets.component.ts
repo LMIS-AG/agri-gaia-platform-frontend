@@ -25,6 +25,7 @@ export class AssetsComponent implements OnInit {
   public fileToUpload: File | null = null;
   public isLoading = false;
   public currentLoadingType: LoadingType = LoadingType.NotLoading;
+  public isDownloading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +57,37 @@ export class AssetsComponent implements OnInit {
     this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
+    });
+  }
+
+  public downloadAsset(asset: GeneralPurposeAsset): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+
+    this.currentLoadingType = LoadingType.DownloadingAsset;
+    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+      next: (data) => {
+        // create a blob object from the API response
+        let blob = new Blob([data], { type: 'application/octet-stream' });
+    
+        // create a temporary URL for the blob object
+        let url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', asset.name);
+        link.setAttribute('target', '_blank');
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    
+        // show success message
+        this.handleDownloadSuccess()
+      },
+      error: () => {
+        // show error message
+        this.handleDownloadError()
+      },
     });
   }
 
@@ -184,7 +216,21 @@ export class AssetsComponent implements OnInit {
   private handleUploadError(): void {
     this.currentLoadingType = LoadingType.NotLoading;
 
-    this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError'));
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError'));
+  }
+
+  private handleDownloadSuccess(): void {
+    this.currentLoadingType = LoadingType.NotLoading;
+
+    // show success message
+    this.uiService.showSuccessMessage('dataManagement.buckets.assets.downloadAssetConfirmationText');
+  }
+
+  private handleDownloadError(): void {
+    this.currentLoadingType = LoadingType.NotLoading;
+
+        // show error message
+    this.uiService.showSuccessMessage('dataManagement.buckets.assets.downloadAssetErrorText');
   }
 
   public handleDeleteSuccess(): void {
@@ -202,4 +248,5 @@ export enum LoadingType {
   UploadingAsset = 'UPLOADING_ASSET',
   DeletingAsset = 'DELETING_ASSET',
   GeneratingKeys = 'GENERATING_KEYS',
+  DownloadingAsset = 'DOWNLOADING_ASSET'
 }
