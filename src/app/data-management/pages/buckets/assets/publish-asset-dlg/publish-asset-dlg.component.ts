@@ -173,8 +173,8 @@ export class PublishAssetDlgComponent {
       ),
       agrovocKeywords: this.selectedKeywords,
       dateRange: this.getDateRangeIfPresent(),
-      latitude: secondPageCtrl.latitude.value,
-      longitude: secondPageCtrl.longitude.value,
+      latitude: secondPageCtrl.latitude.value ? String(secondPageCtrl.latitude.value).replace(',', '.') : undefined,
+      longitude: secondPageCtrl.longitude.value ? String(secondPageCtrl.longitude.value).replace(',', '.') : undefined,
 
       // information from asset
       dataAddressAssetName: this.asset.name,
