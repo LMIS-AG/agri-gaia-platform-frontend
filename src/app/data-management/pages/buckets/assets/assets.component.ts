@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
+import { FileElement } from '../../../../shared/model/file-element';
 import { GeneralPurposeAsset } from '../../../../shared/model/general-purpose-asset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
@@ -11,6 +12,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -21,15 +23,17 @@ import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-
 export class AssetsComponent implements OnInit {
   public bucket?: string;
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'isPublished', 'more'];
-  public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
+  public dataSource: MatTableDataSource<FileElement> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public currentLoadingType: LoadingType = LoadingType.NotLoading;
+  public assetsInBucket: GeneralPurposeAsset[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private bucketService: BucketService,
     private uiService: UIService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private datePipe: DatePipe
   ) {}
 
   public ngOnInit(): void {
@@ -148,7 +152,39 @@ export class AssetsComponent implements OnInit {
       // convert the displayed file size
       asset.size = prettyPrintFileSize(parseInt(asset.size));
     });
-    this.dataSource.data = assets;
+    this.dataSource.data = this.transformGeneralPurposeAssetsIntoFileElements(assets);
+    console.log(this.dataSource.data); // TODO remove
+
+    this.assetsInBucket = assets;
+  }
+
+  private transformGeneralPurposeAssetsIntoFileElements(assets: GeneralPurposeAsset[]): FileElement[] {
+    const files: FileElement[] = assets
+      .filter(asset => !asset.name.includes('/'))
+      .map(
+        asset =>
+          ({
+            isFolder: false,
+            name: asset.name,
+            asset: asset,
+          } as FileElement)
+      );
+
+    var folders: FileElement[] = [];
+    var folderNames = new Set();
+    assets
+      .filter(asset => asset.name.includes('/'))
+      .map(asset => asset.name.split('/')[0])
+      .forEach(folderName => folderNames.add(folderName));
+
+    folderNames.forEach(folderName =>
+      folders.push({
+        isFolder: true,
+        name: folderName,
+      } as FileElement)
+    );
+
+    return files.concat(folders);
   }
 
   public handlePublishSuccess(): void {
@@ -194,6 +230,26 @@ export class AssetsComponent implements OnInit {
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
     this.currentLoadingType = LoadingType.NotLoading;
+  }
+
+  // MAT TABLE VALUE FORMATTING
+  public formatSize(value: string | undefined): string {
+    if (!value) return '';
+
+    return value;
+  }
+
+  public formatDate(value: string | undefined): string {
+    if (!value) return '';
+
+    const date = this.datePipe.transform(value, 'yyyy-MM-dd');
+    return date ? date : ''; // TODO adjust with DatePipe!
+  }
+
+  public formatIsPublished(value: boolean | null): string {
+    if (value === null) return '';
+
+    return value ? translate('common.yes') : translate('common.no');
   }
 }
 

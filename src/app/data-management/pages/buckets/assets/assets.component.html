@@ -71,19 +71,19 @@
           <!-- Date Column -->
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd.MM.YYYY' }}</td>
+            <td mat-cell *matCellDef="let element" [innerHtml]="formatDate(element?.asset?.date)"></td>
           </ng-container>
 
           <!-- Size Column -->
           <ng-container matColumnDef="size">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.size }}</td>
+            <td mat-cell *matCellDef="let element" [innerHtml]="formatSize(element?.asset?.size)"></td>
           </ng-container>
 
           <!-- isPublished Column -->
           <ng-container matColumnDef="isPublished">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('isPublished') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.isPublished ? tCommon('yes') : tCommon('no') }}</td>
+            <td mat-cell *matCellDef="let element" [innerHtml]="formatIsPublished(element?.asset?.isPublished)"></td>
           </ng-container>
 
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
@@ -93,15 +93,15 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item [disabled]="element.isPublished" (click)="publishAsset(element)">
+                <button mat-menu-item [disabled]="element?.asset?.isPublished" (click)="publishAsset(element)">
                   <mat-icon color="primary">publish</mat-icon>
                   {{ t('publishFile') }}
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="!element.isPublished"
+                  [disabled]="!element?.asset?.isPublished"
                   class="delete-button"
-                  (click)="unpublishAsset(element)"
+                  (click)="unpublishAsset(element.asset)"
                 >
                   <!-- TODO: Get a better icon.-->
                   <mat-icon>unpublished</mat-icon>
@@ -110,8 +110,8 @@
                 <button
                   mat-menu-item
                   class="delete-button"
-                  [disabled]="element.isPublished"
-                  (click)="deleteAsset(element)"
+                  [disabled]="element?.asset?.isPublished"
+                  (click)="deleteAsset(element.asset)"
                 >
                   <mat-icon>delete</mat-icon>
                   {{ tCommon('delete') }}

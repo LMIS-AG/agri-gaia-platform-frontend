@@ -25,6 +25,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
   {
@@ -94,5 +95,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatProgressSpinnerModule,
   ],
+  providers: [DatePipe],
 })
 export class DataManagementModule {}
