@@ -71,7 +71,7 @@
           <!-- isPublished Column -->
           <ng-container matColumnDef="isPublished">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('isPublished') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.isPublished ? 'Ja' : 'Nein' }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.isPublished ? tCommon('yes') : tCommon('no') }}</td>
           </ng-container>
 
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
@@ -85,7 +85,12 @@
                   <mat-icon color="primary">publish</mat-icon>
                   {{ t('publishFile') }}
                 </button>
-                <button mat-menu-item [disabled]="!element.isPublished" class="delete-button" (click)="unpublishAsset(element)">
+                <button
+                  mat-menu-item
+                  [disabled]="!element.isPublished"
+                  class="delete-button"
+                  (click)="unpublishAsset(element)"
+                >
                   <!-- TODO: Get a better icon.-->
                   <mat-icon>unpublished</mat-icon>
                   {{ t('unpublishFile') }}
@@ -94,7 +99,12 @@
                   <mat-icon>download</mat-icon>
                   {{ tCommon('download') }}
                 </button>
-                <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
+                <button
+                  mat-menu-item
+                  class="delete-button"
+                  [disabled]="element.isPublished"
+                  (click)="deleteAsset(element)"
+                >
                   <mat-icon>delete</mat-icon>
                   {{ tCommon('delete') }}
                 </button>
