@@ -271,6 +271,12 @@ export class AssetsComponent implements OnInit {
 
     const toOpenFolderName: string = this.currentRoot + row.name + '/';
 
+    const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
+    this.currentRoot = toOpenFolderName;
+    this.dataSource.data = filteredFileElements;
+  }
+
+  private filterFileElementsByFolderName(toOpenFolderName: string): FileElement[] {
     const files: FileElement[] = this.assetsInBucket
       .filter(asset => asset.name.startsWith(toOpenFolderName))
       .filter(asset => !asset.name.slice(toOpenFolderName.length).includes('/'))
@@ -298,8 +304,7 @@ export class AssetsComponent implements OnInit {
       } as FileElement)
     );
 
-    this.currentRoot = toOpenFolderName;
-    this.dataSource.data = files.concat(folders);
+    return files.concat(folders);
   }
 }
 
