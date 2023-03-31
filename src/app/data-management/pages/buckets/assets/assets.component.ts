@@ -81,7 +81,7 @@ export class AssetsComponent implements OnInit {
           let bucket = this.bucket;
           if (bucket == null) throw Error('Bucket was null in deleteAsset().');
           this.bucketService.deleteAsset(bucket, asset.name).subscribe({
-            next: () => this.handleDeleteSuccess(),
+            next: () => this.handleDeleteSuccess(asset.name),
             complete: () => this.updateAssets(asset),
             error: err => this.handleDeleteError(err),
           });
@@ -203,8 +203,36 @@ export class AssetsComponent implements OnInit {
     this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError'));
   }
 
-  public handleDeleteSuccess(): void {
+  public handleDeleteSuccess(asset: string): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
+
+    this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== asset);
+
+    const leftoverFileElements_files: FileElement[] = this.dataSource.data
+      .filter(fileElement => !fileElement.isFolder)
+      .filter(fileElement => fileElement.asset!.name !== asset);
+
+    const leftoverFileElements_folders: FileElement[] = this.dataSource.data.filter(
+      fileElement => fileElement.isFolder
+    );
+
+    this.dataSource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
+
+    // if folder contains no subfolder and no assets after deleting asset
+    // navigate up and delete this folder
+    if (!leftoverFileElements_folders.length && !leftoverFileElements_files.length) {
+      var toOpenFolderName: string = '';
+      const lastSlashIndex = this.currentRoot.lastIndexOf('/');
+      if (lastSlashIndex !== -1) {
+        var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
+        toOpenFolderName =
+          secondToLastSlashIndex === -1
+            ? this.currentRoot.slice(0, lastSlashIndex)
+            : this.currentRoot.slice(secondToLastSlashIndex + 1, lastSlashIndex);
+      }
+
+      this.navigateBackAndRemoveFolder(toOpenFolderName);
+    }
   }
 
   public handleDeleteError(err: any): void {
@@ -264,6 +292,18 @@ export class AssetsComponent implements OnInit {
       this.currentRoot = toOpenFolderName;
       this.dataSource.data = filteredFileElements;
     }
+  }
+
+  public navigateBackAndRemoveFolder(folder: string): void {
+    this.navigateBack();
+
+    if (!folder) return;
+
+    const files: FileElement[] = this.dataSource.data.filter(fileElement => !fileElement.isFolder);
+    const filteredFolders: FileElement[] = this.dataSource.data
+      .filter(fileElement => fileElement.isFolder)
+      .filter(fileElement => fileElement.name !== folder);
+    this.dataSource.data = files.concat(filteredFolders);
   }
 
   // MAT TABLE VALUE FORMATTING
