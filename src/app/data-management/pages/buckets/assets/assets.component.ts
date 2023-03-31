@@ -223,7 +223,7 @@ export class AssetsComponent implements OnInit {
     if (!value) return '';
 
     const date = this.datePipe.transform(value, 'yyyy-MM-dd');
-    return date ? date : ''; // TODO adjust with DatePipe!
+    return date ? date : '';
   }
 
   public formatIsPublished(value: boolean | null): string {
@@ -232,9 +232,6 @@ export class AssetsComponent implements OnInit {
     return value ? translate('common.yes') : translate('common.no');
   }
 
-  // TODO get folder name and filter accordingly. After that set parent to displayed file element.
-  // TODO set path between h1 and 'assets'
-  // TODO later enable user to go back / on up / to parent (all the same)
   public openIfFolder(row: FileElement): void {
     if (!row.isFolder) return;
 
