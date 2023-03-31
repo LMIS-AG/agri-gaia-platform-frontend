@@ -269,20 +269,17 @@ export class AssetsComponent implements OnInit {
   // MAT TABLE VALUE FORMATTING
   public formatSize(value: string | undefined): string {
     if (!value) return '';
-
     return value;
   }
 
   public formatDate(value: string | undefined): string {
     if (!value) return '';
-
     const date = this.datePipe.transform(value, 'yyyy-MM-dd');
     return date ? date : '';
   }
 
   public formatIsPublished(value: boolean | null): string {
     if (value === null) return '';
-
     return value ? translate('common.yes') : translate('common.no');
   }
 }
