@@ -32,7 +32,6 @@ export class BucketService {
   }
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    // TODO maybe escape '/'
     const encodeName = btoa(name);
     return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${encodeName}`, {
       observe: 'response',
