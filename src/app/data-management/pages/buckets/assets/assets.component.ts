@@ -27,6 +27,7 @@ export class AssetsComponent implements OnInit {
   public fileToUpload: File | null = null;
   public currentLoadingType: LoadingType = LoadingType.NotLoading;
   public assetsInBucket: GeneralPurposeAsset[] = [];
+  public currentRoot: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -62,25 +63,34 @@ export class AssetsComponent implements OnInit {
     });
   }
 
-  public deleteAsset(asset: GeneralPurposeAsset): void {
-    this.uiService
-      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
-        // TODO: This argument isn't used anywhere.
-        confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
-        buttonLabels: 'confirm',
-        confirmButtonColor: 'warn',
-      })
-      .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
-        this.currentLoadingType = LoadingType.DeletingAsset;
-        let bucket = this.bucket;
-        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-        this.bucketService.deleteAsset(bucket, asset.name).subscribe({
-          next: () => this.handleDeleteSuccess(),
-          complete: () => this.updateAssets(asset),
-          error: err => this.handleDeleteError(err),
+  public deleteElement(element: FileElement): void {
+    if (element.isFolder) {
+      this.deleteFolder(element);
+    } else {
+      const asset: GeneralPurposeAsset = element.asset!;
+      this.uiService
+        .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+          // TODO: This argument isn't used anywhere.
+          confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+          buttonLabels: 'confirm',
+          confirmButtonColor: 'warn',
+        })
+        .subscribe((userConfirmed: boolean) => {
+          if (!userConfirmed) return;
+          this.currentLoadingType = LoadingType.DeletingAsset;
+          let bucket = this.bucket;
+          if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+          this.bucketService.deleteAsset(bucket, asset.name).subscribe({
+            next: () => this.handleDeleteSuccess(),
+            complete: () => this.updateAssets(asset),
+            error: err => this.handleDeleteError(err),
+          });
         });
-      });
+    }
+  }
+
+  private deleteFolder(element: FileElement) {
+    // TODO implement
   }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
@@ -152,14 +162,13 @@ export class AssetsComponent implements OnInit {
       // convert the displayed file size
       asset.size = prettyPrintFileSize(parseInt(asset.size));
     });
-    this.dataSource.data = this.transformGeneralPurposeAssetsIntoFileElements(assets);
-    console.log(this.dataSource.data); // TODO remove
-
     this.assetsInBucket = assets;
+    this.dataSource.data = this.transformGeneralPurposeAssetsIntoFileElements();
   }
 
-  private transformGeneralPurposeAssetsIntoFileElements(assets: GeneralPurposeAsset[]): FileElement[] {
-    const files: FileElement[] = assets
+  private transformGeneralPurposeAssetsIntoFileElements(): FileElement[] {
+    // TODO I think this has to be adjusted for the case: User navigated to a subfolder and uploaded a new asset there.
+    const files: FileElement[] = this.assetsInBucket
       .filter(asset => !asset.name.includes('/'))
       .map(
         asset =>
@@ -172,7 +181,7 @@ export class AssetsComponent implements OnInit {
 
     var folders: FileElement[] = [];
     var folderNames = new Set();
-    assets
+    this.assetsInBucket
       .filter(asset => asset.name.includes('/'))
       .map(asset => asset.name.split('/')[0])
       .forEach(folderName => folderNames.add(folderName));
@@ -183,6 +192,8 @@ export class AssetsComponent implements OnInit {
         name: folderName,
       } as FileElement)
     );
+
+    this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
 
     return files.concat(folders);
   }
@@ -250,6 +261,45 @@ export class AssetsComponent implements OnInit {
     if (value === null) return '';
 
     return value ? translate('common.yes') : translate('common.no');
+  }
+
+  // TODO get folder name and filter accordingly. After that set parent to displayed file element.
+  // TODO set path between h1 and 'assets'
+  // TODO later enable user to go back / on up / to parent (all the same)
+  public openIfFolder(row: FileElement): void {
+    if (!row.isFolder) return;
+
+    const toOpenFolderName: string = this.currentRoot + row.name + '/';
+
+    const files: FileElement[] = this.assetsInBucket
+      .filter(asset => asset.name.startsWith(toOpenFolderName))
+      .filter(asset => !asset.name.slice(toOpenFolderName.length).includes('/'))
+      .map(
+        asset =>
+          ({
+            isFolder: false,
+            name: asset.name.slice(toOpenFolderName.length),
+            asset: asset,
+          } as FileElement)
+      );
+
+    var folders: FileElement[] = [];
+    var folderNames = new Set();
+    this.assetsInBucket
+      .filter(asset => asset.name.startsWith(toOpenFolderName))
+      .filter(asset => asset.name.slice(toOpenFolderName.length).includes('/'))
+      .map(asset => asset.name.slice(toOpenFolderName.length).split('/')[0])
+      .forEach(folderName => folderNames.add(folderName));
+
+    folderNames.forEach(folderName =>
+      folders.push({
+        isFolder: true,
+        name: folderName,
+      } as FileElement)
+    );
+
+    this.currentRoot = toOpenFolderName;
+    this.dataSource.data = files.concat(folders);
   }
 }
 

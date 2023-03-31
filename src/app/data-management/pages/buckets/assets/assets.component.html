@@ -93,11 +93,17 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item [disabled]="element?.asset?.isPublished" (click)="publishAsset(element)">
+                <button
+                  *ngIf="!element?.isFolder"
+                  mat-menu-item
+                  [disabled]="element?.asset?.isPublished"
+                  (click)="publishAsset(element)"
+                >
                   <mat-icon color="primary">publish</mat-icon>
                   {{ t('publishFile') }}
                 </button>
                 <button
+                  *ngIf="!element?.isFolder"
                   mat-menu-item
                   [disabled]="!element?.asset?.isPublished"
                   class="delete-button"
@@ -111,7 +117,7 @@
                   mat-menu-item
                   class="delete-button"
                   [disabled]="element?.asset?.isPublished"
-                  (click)="deleteAsset(element.asset)"
+                  (click)="deleteElement(element)"
                 >
                   <mat-icon>delete</mat-icon>
                   {{ tCommon('delete') }}
@@ -121,7 +127,7 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset" (click)="openIfFolder(row)"></tr>
         </table>
       </div>
     </div>

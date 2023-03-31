@@ -1,9 +1,9 @@
 import { GeneralPurposeAsset } from './general-purpose-asset';
 
 export interface FileElement {
-  id?: string; // TODO do I need that?
-  name?: string; // TODO do I need that?
-  parent?: string; // TODO do I need that?
+  id?: string; // TODO necessary?
+  name: string;
+  parent?: string; // TODO necessary?
   asset?: GeneralPurposeAsset;
   isFolder: boolean;
 }
