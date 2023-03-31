@@ -306,6 +306,19 @@ export class AssetsComponent implements OnInit {
 
     return files.concat(folders);
   }
+
+  public navigateBack(): void {
+    const lastSlashIndex = this.currentRoot.lastIndexOf('/');
+    if (lastSlashIndex !== -1) {
+      var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
+      var toOpenFolderName: string =
+        secondToLastSlashIndex === -1 ? '' : this.currentRoot.slice(0, secondToLastSlashIndex + 1);
+
+      const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
+      this.currentRoot = toOpenFolderName;
+      this.dataSource.data = filteredFileElements;
+    }
+  }
 }
 
 export enum LoadingType {

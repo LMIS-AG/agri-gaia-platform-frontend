@@ -52,6 +52,15 @@
       </mat-menu>
     </div>
 
+    <!-- Show current path and provide option for navigating 'upwards' -->
+    <br />
+    <div fxLayout="row" fxLayoutGap="15px">
+      <button class="navigate-back-button" (click)="navigateBack()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <h2>{{ bucket }}/assets/{{ currentRoot }}</h2>
+    </div>
+
     <!-- Dataset -->
     <div class="card" fxLayout="column">
       <!-- Dataset Table -->
