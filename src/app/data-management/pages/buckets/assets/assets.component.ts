@@ -163,39 +163,8 @@ export class AssetsComponent implements OnInit {
       asset.size = prettyPrintFileSize(parseInt(asset.size));
     });
     this.assetsInBucket = assets;
-    this.dataSource.data = this.transformGeneralPurposeAssetsIntoFileElements();
-  }
-
-  private transformGeneralPurposeAssetsIntoFileElements(): FileElement[] {
-    // TODO I think this has to be adjusted for the case: User navigated to a subfolder and uploaded a new asset there.
-    const files: FileElement[] = this.assetsInBucket
-      .filter(asset => !asset.name.includes('/'))
-      .map(
-        asset =>
-          ({
-            isFolder: false,
-            name: asset.name,
-            asset: asset,
-          } as FileElement)
-      );
-
-    var folders: FileElement[] = [];
-    var folderNames = new Set();
-    this.assetsInBucket
-      .filter(asset => asset.name.includes('/'))
-      .map(asset => asset.name.split('/')[0])
-      .forEach(folderName => folderNames.add(folderName));
-
-    folderNames.forEach(folderName =>
-      folders.push({
-        isFolder: true,
-        name: folderName,
-      } as FileElement)
-    );
-
+    this.dataSource.data = this.filterFileElementsByFolderName('');
     this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
-
-    return files.concat(folders);
   }
 
   public handlePublishSuccess(): void {
