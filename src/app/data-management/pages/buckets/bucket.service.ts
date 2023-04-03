@@ -17,8 +17,8 @@ export class BucketService {
     return this.http.get<Bucket[]>(environment.backend.url + '/buckets');
   }
 
-  public getAssetsByBucketName(name: string): Observable<GeneralPurposeAsset[]> {
-    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
+  public getAssetsByBucketName(name: string, folder: string): Observable<GeneralPurposeAsset[]> {
+    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/${folder}`);
   }
 
   public publishAsset(bucket: string, name: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {

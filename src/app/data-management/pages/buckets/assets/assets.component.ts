@@ -38,12 +38,13 @@ export class AssetsComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.currentRoot = 'assets'
     this.route.paramMap
       .pipe(
         filter(paramMap => paramMap.has('name')),
         map(paramMap => paramMap.get('name')),
         switchMap(name =>
-          this.bucketService.getAssetsByBucketName(name ? name : '').pipe(map(assets => ({ name, assets })))
+          this.bucketService.getAssetsByBucketName(name ? name : '', this.currentRoot).pipe(map(assets => ({ name, assets })))
         )
       )
       .subscribe(result => {
@@ -90,7 +91,10 @@ export class AssetsComponent implements OnInit {
   }
 
   private deleteFolder(element: FileElement) {
-    // TODO implement
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+    
+    const assets = this.bucketService.getAssetsByBucketName(bucket, 'assets').pipe(map(assets => ({ name, assets })))
   }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
@@ -191,7 +195,7 @@ export class AssetsComponent implements OnInit {
 
     if (this.bucket) {
       this.bucketService
-        .getAssetsByBucketName(this.bucket!)
+        .getAssetsByBucketName(this.bucket!, 'assets')
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
