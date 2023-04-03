@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs';
+import { filter, forkJoin, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
 import { FileElement } from '../../../../shared/model/file-element';
 import { GeneralPurposeAsset } from '../../../../shared/model/general-purpose-asset';
@@ -38,13 +38,12 @@ export class AssetsComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.currentRoot = 'assets'
     this.route.paramMap
       .pipe(
         filter(paramMap => paramMap.has('name')),
         map(paramMap => paramMap.get('name')),
         switchMap(name =>
-          this.bucketService.getAssetsByBucketName(name ? name : '', this.currentRoot).pipe(map(assets => ({ name, assets })))
+          this.bucketService.getAssetsByBucketName(name ? name : '', 'assets').pipe(map(assets => ({ name, assets })))
         )
       )
       .subscribe(result => {
@@ -91,11 +90,19 @@ export class AssetsComponent implements OnInit {
   }
 
   private deleteFolder(element: FileElement) {
+    let folder = `assets/${element.name}/`;
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in deleteAsset().');
     
-    const assets = this.bucketService.getAssetsByBucketName(bucket, 'assets').pipe(map(assets => ({ name, assets })))
-  }
+    this.bucketService.getAssetsByBucketName(bucket, folder).pipe(map(assets => ({ bucket, assets })))
+    .subscribe(result => {
+      const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
+        this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
+      );
+      forkJoin(deleteAssetObservables).subscribe(() => {
+      });
+      }
+    )}
 
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');

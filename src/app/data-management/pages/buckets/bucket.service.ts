@@ -18,7 +18,8 @@ export class BucketService {
   }
 
   public getAssetsByBucketName(name: string, folder: string): Observable<GeneralPurposeAsset[]> {
-    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/${folder}`);
+    const base64encodedFolderName = btoa(folder);
+    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/${base64encodedFolderName}`);
   }
 
   public publishAsset(bucket: string, name: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
@@ -32,8 +33,8 @@ export class BucketService {
   }
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    const encodeName = btoa(name);
-    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${encodeName}`, {
+    const base64EncodedFileName = btoa(name);
+    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${base64EncodedFileName}`, {
       observe: 'response',
     });
   }
