@@ -43,7 +43,7 @@ export class BucketService {
     return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 
-  public buildFormDataAndUploadAssets(event: any, bucket: string): Observable<HttpEvent<Object>> {
+  public buildFormDataAndUploadAssets(event: any, bucket: string, currentRoot: string): Observable<HttpEvent<Object>> {
     const filesToUpload: File[] = event.target.files;
 
     const formData = new FormData();
@@ -53,12 +53,13 @@ export class BucketService {
         formData.append('files', file);
       }
     }
-    return this.uploadAssets(bucket, formData).pipe(finalize(() => this.reset()));
+    return this.uploadAssets(bucket, currentRoot, formData).pipe(finalize(() => this.reset()));
   }
 
-  private uploadAssets(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
+  private uploadAssets(bucket: string, currentRoot: string, formData: FormData): Observable<HttpEvent<Object>> {
+    const base64encodedFolderName = btoa(currentRoot);
     return this.http
-      .post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
+      .post(`${environment.backend.url}/buckets/upload/${bucket}/${base64encodedFolderName}`, formData, {
         reportProgress: true,
         observe: 'events',
       })

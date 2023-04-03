@@ -57,7 +57,7 @@ export class AssetsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
     this.currentLoadingType = LoadingType.UploadingAsset;
-    this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket, this.currentRoot).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
     });
@@ -90,16 +90,18 @@ export class AssetsComponent implements OnInit {
   }
 
   private deleteFolder(element: FileElement) {
-    let folder = `assets/${element.name}/`;
+    let folder = `${this.currentRoot}${element.name}/`;
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in deleteAsset().');
     
     this.bucketService.getAssetsByBucketName(bucket, folder).pipe(map(assets => ({ bucket, assets })))
     .subscribe(result => {
+      this.currentLoadingType = LoadingType.DeletingAsset;
       const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
         this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
       );
       forkJoin(deleteAssetObservables).subscribe(() => {
+        this.handleDeleteSuccess(folder)
       });
       }
     )}
@@ -215,14 +217,15 @@ export class AssetsComponent implements OnInit {
   }
 
   public handleDeleteSuccess(asset: string): void {
+    this.currentLoadingType = LoadingType.NotLoading
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
 
     this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== asset);
-
+  
     const leftoverFileElements_files: FileElement[] = this.dataSource.data
       .filter(fileElement => !fileElement.isFolder)
       .filter(fileElement => fileElement.asset!.name !== asset);
-
+  
     const leftoverFileElements_folders: FileElement[] = this.dataSource.data.filter(
       fileElement => fileElement.isFolder
     );

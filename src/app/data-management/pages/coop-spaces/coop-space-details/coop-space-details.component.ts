@@ -166,7 +166,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in addFile().');
 
     this.isUploading = true;
-    this.bucketService.buildFormDataAndUploadAssets(event, bucket).subscribe({
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket, '').subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () =>
         this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
