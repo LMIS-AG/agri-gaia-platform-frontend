@@ -74,25 +74,25 @@
           <!-- Name Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}">{{ element.name }}</td>
           </ng-container>
 
           <!-- Date Column -->
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
-            <td mat-cell *matCellDef="let element" [innerHtml]="formatDate(element?.asset?.date)"></td>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatDate(element?.asset?.date)"></td>
           </ng-container>
 
           <!-- Size Column -->
           <ng-container matColumnDef="size">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
-            <td mat-cell *matCellDef="let element" [innerHtml]="formatSize(element?.asset?.size)"></td>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatSize(element?.asset?.size)"></td>
           </ng-container>
 
           <!-- isPublished Column -->
           <ng-container matColumnDef="isPublished">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('isPublished') }}</th>
-            <td mat-cell *matCellDef="let element" [innerHtml]="formatIsPublished(element?.asset?.isPublished)"></td>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatIsPublished(element?.asset?.isPublished)"></td>
           </ng-container>
 
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
