@@ -43,7 +43,7 @@ export class AssetsComponent implements OnInit {
         filter(paramMap => paramMap.has('name')),
         map(paramMap => paramMap.get('name')),
         switchMap(name =>
-          this.bucketService.getAssetsByBucketName(name ? name : '', 'assets').pipe(map(assets => ({ name, assets })))
+          this.bucketService.getAssetsByBucketName(name ? name : '', `asset`).pipe(map(assets => ({ name, assets })))
         )
       )
       .subscribe(result => {
@@ -204,7 +204,7 @@ export class AssetsComponent implements OnInit {
 
     if (this.bucket) {
       this.bucketService
-        .getAssetsByBucketName(this.bucket!, 'assets')
+        .getAssetsByBucketName(this.bucket!, this.currentRoot)
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
@@ -213,7 +213,7 @@ export class AssetsComponent implements OnInit {
   private handleUploadError(): void {
     this.currentLoadingType = LoadingType.NotLoading;
 
-    this.uiService.showErrorMessage(translate('ataManagement.buckets.assets.uploadFileError'));
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError'));
   }
 
   public handleDeleteSuccess(asset: string): void {
