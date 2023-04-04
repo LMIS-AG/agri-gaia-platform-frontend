@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, map, switchMap, tap } from 'rxjs';
+import { concatMap, filter, forkJoin, map, switchMap, tap } from 'rxjs';
 import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
 import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
 import { CoopSpacesService } from '../coop-spaces.service';
@@ -15,6 +15,9 @@ import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
 import { BucketService } from '../../buckets/bucket.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatTableDataSource } from '@angular/material/table';
+import { LoadingType } from '../../buckets/assets/assets.component';
+import { FileElement } from 'src/app/shared/model/file-element';
+import { DatePipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +30,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public displayedColumnsMember: string[] = ['name', 'company', 'role', 'more'];
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'more'];
-  public datasetDatasource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
+  public datasetDatasource: MatTableDataSource<FileElement> = new MatTableDataSource();
   public memberDatasource: MatTableDataSource<Member> = new MatTableDataSource();
 
   public userName: string | undefined;
@@ -41,6 +44,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public isDeletingAsset: boolean = false;
   public isDeletingMember: boolean = false;
   public isAddingMember: boolean = false;
+  public currentLoadingType: LoadingType = LoadingType.NotLoading;
+  public currentRoot: string = '';
+  public assetsInBucket: GeneralPurposeAsset[] = [];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -49,7 +56,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private uiService: UIService,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
-    private bucketService: BucketService
+    private bucketService: BucketService,
+    private datePipe: DatePipe
   ) {}
 
   public ngOnInit(): void {
@@ -161,38 +169,59 @@ export class CoopSpaceDetailsComponent implements OnInit {
     throw Error('Not yet implemented');
   }
 
-  public onFileSelected(event: any): void {
+  public onFileOrFolderSelected(event: any): void {
     const bucket = this.bucket;
-    if (bucket == null) throw Error('Bucket was null in addFile().');
+    if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
-    this.isUploading = true;
-    this.bucketService.buildFormDataAndUploadAssets(event, bucket, '').subscribe({
+    this.currentLoadingType = LoadingType.UploadingAsset;
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket, '/assets/').subscribe({
       complete: () => this.handleUploadSuccess(),
-      error: () =>
-        this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError')),
+      error: () => this.handleUploadError(),
     });
   }
 
-  public deleteAsset(asset: GeneralPurposeAsset): void {
-    this.uiService
-      .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationQuestion'), {
-        // TODO: This argument isn't used anywhere.
-        confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'),
-        buttonLabels: 'confirm',
-        confirmButtonColor: 'warn',
-      })
-      .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
-        let bucket = this.bucket;
-        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-        this.isDeletingAsset = true;
-        this.bucketService.deleteAsset(bucket, asset.name).subscribe({
-          next: () => this.handleDeleteSuccess(),
-          complete: () => this.updateAssets(asset),
-          error: err => this.handleDeleteError(err),
+  public deleteElement(element: FileElement): void {
+    if (element.isFolder) {
+      this.deleteFolder(element);
+    } else {
+      const asset: GeneralPurposeAsset = element.asset!;
+      this.uiService
+        .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+          // TODO: This argument isn't used anywhere.
+          confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+          buttonLabels: 'confirm',
+          confirmButtonColor: 'warn',
+        })
+        .subscribe((userConfirmed: boolean) => {
+          if (!userConfirmed) return;
+          this.currentLoadingType = LoadingType.DeletingAsset;
+          let bucket = this.bucket;
+          if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+          this.bucketService.deleteAsset(bucket, asset.name).subscribe({
+            next: () => this.handleDeleteSuccess(asset.name),
+            complete: () => this.updateAssets(asset),
+            error: err => this.handleDeleteError(err),
+          });
         });
-      });
+    }
   }
+
+  private deleteFolder(element: FileElement) {
+    let folder = `${this.currentRoot}${element.name}/`;
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+
+    this.bucketService.getAssetsByBucketName(bucket, folder).pipe(map(assets => ({ bucket, assets })))
+    .subscribe(result => {
+      this.currentLoadingType = LoadingType.DeletingAsset;
+      const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
+        this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
+      );
+      forkJoin(deleteAssetObservables).subscribe(() => {
+        this.handleDeleteSuccess(folder)
+      });
+      }
+    )}
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
@@ -281,21 +310,140 @@ export class CoopSpaceDetailsComponent implements OnInit {
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
   }
+  private handleUploadError(): void {
+    this.currentLoadingType = LoadingType.NotLoading;
+
+    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError'));
+  }
 
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
     assets.forEach(asset => {
       // convert the displayed file size
       asset.size = prettyPrintFileSize(parseInt(asset.size));
     });
-    this.datasetDatasource.data = assets;
+    this.assetsInBucket = assets;
+    this.datasetDatasource.data = this.filterFileElementsByFolderName('');
+    this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
   }
 
-  public handleDeleteSuccess(): void {
-    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
+  public handleDeleteSuccess(asset: string): void {
+    this.currentLoadingType = LoadingType.NotLoading
+    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
+
+    this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== asset);
+
+    const leftoverFileElements_files: FileElement[] = this.datasetDatasource.data
+      .filter(fileElement => !fileElement.isFolder)
+      .filter(fileElement => fileElement.asset!.name !== asset);
+
+    const leftoverFileElements_folders: FileElement[] = this.datasetDatasource.data.filter(
+      fileElement => fileElement.isFolder
+    );
+
+    this.datasetDatasource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
+
+    // if folder contains no subfolder and no assets after deleting asset
+    // navigate up and delete this folder
+    if (!leftoverFileElements_folders.length && !leftoverFileElements_files.length) {
+      var toOpenFolderName: string = '';
+      const lastSlashIndex = this.currentRoot.lastIndexOf('/');
+      if (lastSlashIndex !== -1) {
+        var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
+        toOpenFolderName =
+          secondToLastSlashIndex === -1
+            ? this.currentRoot.slice(0, lastSlashIndex)
+            : this.currentRoot.slice(secondToLastSlashIndex + 1, lastSlashIndex);
+      }
+
+      this.navigateBackAndRemoveFolder(toOpenFolderName);
+    }
   }
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
     this.isDeletingAsset = false;
+  }
+
+  public openIfFolder(row: FileElement): void {
+    if (!row.isFolder) return;
+
+    const toOpenFolderName: string = this.currentRoot + row.name + '/';
+
+    const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
+    this.currentRoot = toOpenFolderName;
+    this.datasetDatasource.data = filteredFileElements;
+  }
+
+  private filterFileElementsByFolderName(toOpenFolderName: string): FileElement[] {
+    const files: FileElement[] = this.assetsInBucket
+      .filter(asset => asset.name.startsWith(toOpenFolderName))
+      .filter(asset => !asset.name.slice(toOpenFolderName.length).includes('/'))
+      .map(
+        asset =>
+          ({
+            isFolder: false,
+            name: asset.name.slice(toOpenFolderName.length),
+            asset: asset,
+          } as FileElement)
+      );
+
+    var folders: FileElement[] = [];
+    var folderNames = new Set();
+    this.assetsInBucket
+      .filter(asset => asset.name.startsWith(toOpenFolderName))
+      .filter(asset => asset.name.slice(toOpenFolderName.length).includes('/'))
+      .map(asset => asset.name.slice(toOpenFolderName.length).split('/')[0])
+      .forEach(folderName => folderNames.add(folderName));
+
+    folderNames.forEach(folderName =>
+      folders.push({
+        isFolder: true,
+        name: folderName,
+      } as FileElement)
+    );
+
+    return files.concat(folders);
+  }
+
+  public navigateBack(): void {
+    const lastSlashIndex = this.currentRoot.lastIndexOf('/');
+    if (lastSlashIndex !== -1) {
+      var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
+      var toOpenFolderName: string =
+        secondToLastSlashIndex === -1 ? '' : this.currentRoot.slice(0, secondToLastSlashIndex + 1);
+
+      const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
+      this.currentRoot = toOpenFolderName;
+      this.datasetDatasource.data = filteredFileElements;
+    }
+  }
+
+  public navigateBackAndRemoveFolder(folder: string): void {
+    this.navigateBack();
+
+    if (!folder) return;
+
+    const files: FileElement[] = this.datasetDatasource.data.filter(fileElement => !fileElement.isFolder);
+    const filteredFolders: FileElement[] = this.datasetDatasource.data
+      .filter(fileElement => fileElement.isFolder)
+      .filter(fileElement => fileElement.name !== folder);
+    this.datasetDatasource.data = files.concat(filteredFolders);
+  }
+
+  // MAT TABLE VALUE FORMATTING
+  public formatSize(value: string | undefined): string {
+    if (!value) return '';
+    return value;
+  }
+
+  public formatDate(value: string | undefined): string {
+    if (!value) return '';
+    const date = this.datePipe.transform(value, 'yyyy-MM-dd');
+    return date ? date : '';
+  }
+
+  public formatIsPublished(value: boolean | null): string {
+    if (value === null) return '';
+    return value ? translate('common.yes') : translate('common.no');
   }
 }

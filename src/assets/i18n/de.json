@@ -189,6 +189,7 @@
         "member": "Teilnehmer",
         "assets": "Assets",
         "uploadFile": "Datei hochladen",
+        "uploadFolder": "Ordner hochladen",
         "ongoingUpload1": "Datei wird hochgeladen...",
         "ongoingUpload2": "Bitte verlassen Sie die Seite nicht.",
         "ongoingAssetDeletion": "Asset wird gelöscht...",

@@ -31,18 +31,38 @@
               <mat-icon class="icon24-add">add</mat-icon>
             </button>
             <mat-menu #menuForUpload="matMenu">
-              <!-- actual input for file upload is hidden because it is hard to style -->
-              <div>
-                <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
-              </div>
-              <div>
+              <!-- actual inputs for file and folder upload are hidden because it is hard to style -->
+              <div fxLayout="column">
+                <input type="file" multiple class="file-input" (change)="onFileOrFolderSelected($event)" #fileUpload />
+                <input
+                  type="file"
+                  multiple
+                  class="file-input"
+                  (change)="onFileOrFolderSelected($event)"
+                  webkitdirectory
+                  directory
+                  #folderUpload
+                />
                 <button class="upload-button" (click)="fileUpload.click()">
                   <mat-icon>upload</mat-icon>
                   <p>{{ t('uploadFile') }}</p>
                 </button>
+                <button class="upload-button" (click)="folderUpload.click()">
+                  <mat-icon>drive_folder_upload</mat-icon>
+                  <p>{{ t('uploadFolder') }}</p>
+                </button>
               </div>
             </mat-menu>
           </div>
+        </div>
+
+        <!-- Show current path and provide option for navigating 'upwards' -->
+        <br />
+        <div fxLayout="row" fxLayoutGap="15px">
+          <button class="navigate-back-button" (click)="navigateBack()">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+          <h2>{{ bucket }}/{{ currentRoot }}</h2>
         </div>
 
         <!-- Assets Table -->
@@ -53,23 +73,23 @@
             class="mat-elevation-z0"
             *transloco="let tTable; read: 'dataManagement.coopSpaces.details.table'"
           >
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
-              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-            </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}">{{ element.name }}</td>
+          </ng-container>
 
-            <!-- Date Column -->
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
-              <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd.MM.YYYY' }}</td>
-            </ng-container>
+          <!-- Date Column -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatDate(element?.asset?.date)"></td>
+          </ng-container>
 
-            <!-- Size Column -->
-            <ng-container matColumnDef="size">
-              <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
-              <td mat-cell *matCellDef="let element">{{ element.size }}</td>
-            </ng-container>
+          <!-- Size Column -->
+          <ng-container matColumnDef="size">
+            <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatSize(element?.asset?.size)"></td>
+          </ng-container>
 
             <!-- MyRole Column -->
             <ng-container matColumnDef="labeling">
@@ -85,7 +105,7 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
+                  <button mat-menu-item class="delete-button" (click)="deleteElement(element)">
                     <mat-icon>delete</mat-icon>
                     {{ tCommon('delete') }}
                   </button>
@@ -94,7 +114,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset" (click)="openIfFolder(row)"></tr>
           </table>
         </div>
       </div>
