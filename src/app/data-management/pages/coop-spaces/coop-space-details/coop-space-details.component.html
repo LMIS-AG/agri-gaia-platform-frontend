@@ -77,7 +77,13 @@
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
               <td mat-cell *matCellDef="let element" [ngClass]="{ 'subfolder-hover': element.isFolder }">
-                {{ element.name }}
+                <div *ngIf="element.isFolder; else noicon" fxLayout="row" fxLayoutAlign="start center">
+                  <mat-icon class="folder-icon">folder</mat-icon>
+                  {{ element.name }}
+                </div>
+                <ng-template #noicon>
+                  {{ element.name }}
+                </ng-template>
               </td>
             </ng-container>
 
