@@ -73,23 +73,41 @@
             class="mat-elevation-z0"
             *transloco="let tTable; read: 'dataManagement.coopSpaces.details.table'"
           >
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}">{{ element.name }}</td>
-          </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
+              <td mat-cell *matCellDef="let element" [ngClass]="{ 'subfolder-hover': element.isFolder }">
+                <div *ngIf="element.isFolder; else noicon" fxLayout="row" fxLayoutAlign="start center">
+                  <mat-icon class="folder-icon">folder</mat-icon>
+                  {{ element.name }}
+                </div>
+                <ng-template #noicon>
+                  {{ element.name }}
+                </ng-template>
+              </td>
+            </ng-container>
 
-          <!-- Date Column -->
-          <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatDate(element?.asset?.date)"></td>
-          </ng-container>
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [ngClass]="{ 'subfolder-hover': element.isFolder }"
+                [innerHtml]="formatDate(element?.asset?.date)"
+              ></td>
+            </ng-container>
 
-          <!-- Size Column -->
-          <ng-container matColumnDef="size">
-            <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatSize(element?.asset?.size)"></td>
-          </ng-container>
+            <!-- Size Column -->
+            <ng-container matColumnDef="size">
+              <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [ngClass]="{ 'subfolder-hover': element.isFolder }"
+                [innerHtml]="formatSize(element?.asset?.size)"
+              ></td>
+            </ng-container>
 
             <!-- MyRole Column -->
             <ng-container matColumnDef="labeling">
@@ -114,7 +132,12 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset" (click)="openIfFolder(row)"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumnsDataset"
+              [ngClass]="{ row: row.isFolder }"
+              (click)="openIfFolder(row)"
+            ></tr>
           </table>
         </div>
       </div>

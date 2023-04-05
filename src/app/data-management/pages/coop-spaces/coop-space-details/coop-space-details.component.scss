@@ -142,7 +142,6 @@ table {
   cursor: pointer;
 }
 
-
 .more_vert_class:hover {
   cursor: pointer;
 }
@@ -162,4 +161,13 @@ table {
 
 .subfolder-hover:hover {
   cursor: pointer;
+}
+
+.row:hover {
+  background-color: lightgray;
+}
+
+.folder-icon {
+  margin-top: -2px;
+  margin-right: 5px;
 }
