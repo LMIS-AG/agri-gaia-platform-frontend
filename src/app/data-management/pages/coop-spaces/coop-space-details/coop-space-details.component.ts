@@ -69,7 +69,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
           this.coopSpacesService.getCoopSpaceById(id).pipe(
             tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
-              this.coopSpacesService.getAssets(coopSpace.id!).pipe(map(assets => ({ coopSpace, assets })))
+              this.coopSpacesService.getAssets(coopSpace.id!, '').pipe(map(assets => ({ coopSpace, assets })))
             )
           )
         )
@@ -174,7 +174,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
     this.currentLoadingType = LoadingType.UploadingAsset;
-    this.bucketService.buildFormDataAndUploadAssets(event, bucket, '/assets/').subscribe({
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket, this.currentRoot).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
     });
@@ -210,8 +210,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
     let folder = `${this.currentRoot}${element.name}/`;
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+    const coopSpace = this.coopSpace
 
-    this.bucketService.getAssetsByBucketName(bucket, folder).pipe(map(assets => ({ bucket, assets })))
+    this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace , assets })))
     .subscribe(result => {
       this.currentLoadingType = LoadingType.DeletingAsset;
       const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
@@ -305,7 +306,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
     if (this.bucket) {
       this.coopSpacesService
-        .getAssets(this.coopSpace?.id!)
+        .getAssets(this.coopSpace?.id!, this.currentRoot)
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
@@ -323,7 +324,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
     this.assetsInBucket = assets;
     this.datasetDatasource.data = this.filterFileElementsByFolderName('');
-    this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
+//    this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
   }
 
   public handleDeleteSuccess(asset: string): void {

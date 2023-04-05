@@ -57,7 +57,12 @@ export class BucketService {
   }
 
   private uploadAssets(bucket: string, currentRoot: string, formData: FormData): Observable<HttpEvent<Object>> {
-    const base64encodedFolderName = btoa(currentRoot);
+    let base64encodedFolderName;
+    if (currentRoot === '') {
+      base64encodedFolderName = 'default';
+    } else {
+      base64encodedFolderName = btoa(currentRoot);
+    }
     return this.http
       .post(`${environment.backend.url}/buckets/upload/${bucket}/${base64encodedFolderName}`, formData, {
         reportProgress: true,

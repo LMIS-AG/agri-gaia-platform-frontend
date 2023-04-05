@@ -40,8 +40,14 @@ export class CoopSpacesService {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/delete`, coopSpace);
   }
 
-  public getAssets(id: number): Observable<GeneralPurposeAsset[]> {
-    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/assets`);
+  public getAssets(id: number, currentRoot: string): Observable<GeneralPurposeAsset[]> {
+    let base64encodedFolderName;
+    if (currentRoot === '') {
+      base64encodedFolderName = 'default';
+    } else {
+      base64encodedFolderName = btoa(currentRoot);
+    }
+    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/${base64encodedFolderName}`);
   }
 
   public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
