@@ -323,9 +323,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
       asset.size = prettyPrintFileSize(parseInt(asset.size));
     });
     this.assetsInBucket = assets;
-    this.datasetDatasource.data = this.filterFileElementsByFolderName('');
-//    this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
-  }
+    this.datasetDatasource.data = this.filterFileElementsByFolderName(this.currentRoot);
+    }
 
   public handleDeleteSuccess(asset: string): void {
     this.currentLoadingType = LoadingType.NotLoading
