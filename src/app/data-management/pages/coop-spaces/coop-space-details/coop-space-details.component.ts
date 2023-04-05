@@ -58,7 +58,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private bucketService: BucketService,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -186,9 +186,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
     } else {
       const asset: GeneralPurposeAsset = element.asset!;
       this.uiService
-        .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+        .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationQuestion'), {
           // TODO: This argument isn't used anywhere.
-          confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+          confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationText'),
           buttonLabels: 'confirm',
           confirmButtonColor: 'warn',
         })
@@ -212,21 +212,38 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in deleteAsset().');
     const coopSpace = this.coopSpace
 
-    this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace , assets })))
-    .subscribe(result => {
-      this.currentLoadingType = LoadingType.DeletingAsset;
-      const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
-        this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
-      );
-      forkJoin(deleteAssetObservables).subscribe(() => {
-        this.handleDeleteSuccess(folder)
-      });
+    this.uiService
+      .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationQuestion'), {
+        // TODO: This argument isn't used anywhere.
+        confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'warn',
+      })
+      .subscribe((userConfirmed: boolean) => {
+        if (!userConfirmed) return;
+        this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
+          .subscribe(result => {
+            this.currentLoadingType = LoadingType.DeletingAsset;
+            const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
+              this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
+            );
+            forkJoin(deleteAssetObservables).subscribe( {
+              next: () => this.handleDeleteSuccess(folder),
+              complete: () => this.updateFolder(element),
+              error: err => this.handleDeleteError(err),
+            });
+          });
       }
-    )}
+      )
+  }
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
     this.isDeletingAsset = false;
+  }
+
+  private updateFolder(element: FileElement) {
+    this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== element.name)
   }
 
   public addMember(membersSelected: Member[]): void {
@@ -314,7 +331,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   private handleUploadError(): void {
     this.currentLoadingType = LoadingType.NotLoading;
 
-    this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError'));
+    this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError'));
   }
 
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
@@ -324,11 +341,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
     this.assetsInBucket = assets;
     this.datasetDatasource.data = this.filterFileElementsByFolderName(this.currentRoot);
-    }
+  }
 
   public handleDeleteSuccess(asset: string): void {
     this.currentLoadingType = LoadingType.NotLoading
-    this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
+    this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
 
     this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== asset);
 
@@ -380,11 +397,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .filter(asset => !asset.name.slice(toOpenFolderName.length).includes('/'))
       .map(
         asset =>
-          ({
-            isFolder: false,
-            name: asset.name.slice(toOpenFolderName.length),
-            asset: asset,
-          } as FileElement)
+        ({
+          isFolder: false,
+          name: asset.name.slice(toOpenFolderName.length),
+          asset: asset,
+        } as FileElement)
       );
 
     var folders: FileElement[] = [];
@@ -446,4 +463,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
     if (value === null) return '';
     return value ? translate('common.yes') : translate('common.no');
   }
+
 }
+
