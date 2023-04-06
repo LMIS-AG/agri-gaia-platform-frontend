@@ -365,11 +365,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
       map(assets => ({ coopSpace, assets }))
     ).subscribe(result => {
       const remainingAssets = result.assets.map(asset => asset.name);
-      const filteredAssets = this.assetsInBucket.filter(asset => {
+      const filteredAssets = result.assets.filter(asset => {
         // Check if the asset is not part of the deleted folder or its sub-folders
         return !remainingAssets.some(deletedAssetName => {
-          return asset.name.startsWith(deletedAssetName + '/') ||
-                 asset.name !== deletedAssetName;
+          return asset.name.startsWith(deletedAssetName + '/');
         });
       });
       this.assetsInBucket = filteredAssets;
