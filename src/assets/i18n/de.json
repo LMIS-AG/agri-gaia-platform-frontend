@@ -77,7 +77,9 @@
         "publishFile": "Auf Marktplatz veröffentlichen",
         "unpublishFile": "Von Marktplatz entfernen",
         "bucketAccess": "Zugangsdaten für Buckets",
-
+        "ongoingAssetDownload": "Asset wird heruntergeladen...",
+        "downloadAssetConfirmationText": "Die Datei wurde erfolgreich herunterladen.",
+        "downloadAssetErrorText": "Der Download der Datei ist fehlgeschlagen.",
         "table": {
           "name": "Assets",
           "date": "Datum",
@@ -193,6 +195,7 @@
         "ongoingAssetDeletion": "Asset wird gelöscht...",
         "ongoingMemberRemoval": "Teilnehmer wird entfernt...",
         "ongoingAdditionOfMembers": "Teilnehmer wird hinzugefügt...",
+        "ongoingAssetDownload": "Asset wird heruntergeladen...",
         "role": {
           "GUEST": "Gast",
           "USER": "User",
@@ -212,7 +215,9 @@
           "uploadFileError": "Der Upload ist fehlgeschlagen.",
           "deleteConfirmationQuestion": "Möchten Sie dieses Asset aus dem Kooperationsbereich löschen?",
           "deleteConfirmationText": "Die Anfrage zur Löschung dieses Assets wurde erfolgreich gestellt.",
-          "deleteErrorText": "Die Anfrage zur Löschung dieses Assets ist leider fehlgeschlagen. Fehlercode: "
+          "deleteErrorText": "Die Anfrage zur Löschung dieses Assets ist leider fehlgeschlagen. Fehlercode: ",
+          "downloadAssetConfirmationText": "Die Datei wurde erfolgreich herunterladen.",
+          "downloadAssetErrorText": "Der Download der Datei ist fehlgeschlagen."
         },
         "table": {
           "name": "Name",

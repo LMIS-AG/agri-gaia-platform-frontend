@@ -11,15 +11,18 @@
       <div class="card" fxLayout="column" fxFlex="50">
         <div fxLayout="row" fxLayoutAlign="space-between">
           <h3 class="headline">{{ t('assets') }}</h3>
-          <div *ngIf="isUploading || isDeletingAsset" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
+          <div *ngIf="isUploading || isDownloading || isDeletingAsset" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
             <mat-spinner [diameter]="35"></mat-spinner>
-            <div *ngIf="isUploading; else ongoingDeletion" fxLayout="column" fxLayoutAlign="center center">
+            <div *ngIf="isUploading" fxLayout="column" fxLayoutAlign="center center">
               <div>{{ t('ongoingUpload1') }}</div>
               <div>{{ t('ongoingUpload2') }}</div>
             </div>
-            <ng-template #ongoingDeletion>
+            <div *ngIf="isDeletingAsset" fxLayout="column" fxLayoutAlign="center center">
               <div>{{ t('ongoingAssetDeletion') }}</div>
-            </ng-template>
+            </div>
+            <div *ngIf="isDownloading" fxLayout="column" fxLayoutAlign="center center">
+              <div>{{ t('ongoingAssetDownload') }}</div>
+            </div>
           </div>
           <div fxLayout="row" fxLayoutGap="10px">
             <button
@@ -85,6 +88,10 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
+                  <button mat-menu-item class="download-button"  (click)="downloadAsset(element)">
+                    <mat-icon>download</mat-icon>
+                    {{ tCommon('download') }}
+                  </button>
                   <button mat-menu-item class="delete-button" (click)="deleteAsset(element)">
                     <mat-icon>delete</mat-icon>
                     {{ tCommon('delete') }}

@@ -37,10 +37,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
   public bucket?: string;
-  public isUploading = false;
+  public isUploading: boolean = false;
   public isDeletingAsset: boolean = false;
   public isDeletingMember: boolean = false;
   public isAddingMember: boolean = false;
+  public isDownloading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -173,6 +174,38 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
+
+  public downloadAsset(asset: GeneralPurposeAsset): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+
+    this.isDownloading = true;
+    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+      next: (data) => {
+        // create a blob object from the API response
+        let blob = new Blob([data], { type: 'application/octet-stream' });
+    
+        // create a temporary URL for the blob object
+        let url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', asset.name);
+        link.setAttribute('target', '_blank');
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    
+        // show success message
+        this.handleDownloadSuccess()
+      },
+      error: () => {
+        // show error message
+        this.handleDownloadError()
+      },
+    });
+  }
+
   public deleteAsset(asset: GeneralPurposeAsset): void {
     this.uiService
       .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationQuestion'), {
@@ -280,6 +313,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
+  }
+
+  private handleDownloadSuccess(): void {
+    this.isDownloading = false
+
+    // show success message
+    this.uiService.showSuccessMessage('dataManagement.coopSpaces.details.dialog.downloadAssetConfirmationText');
+  }
+
+  private handleDownloadError(): void {
+    this.isDownloading = false
+
+    // show error message
+    this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.downloadAssetErrorText'));
   }
 
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
