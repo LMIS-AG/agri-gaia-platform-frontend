@@ -353,8 +353,31 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .filter(fileElement => !fileElement.isFolder)
       .filter(fileElement => fileElement.asset!.name !== asset);
 
+    // Remove trailing slash from asset string, if any
+    const actualFolderName = asset.replace(/\/$/, '');
+
+    // Get the last part of the asset string after the last / character
+    const lastSeparatorIndex = actualFolderName.lastIndexOf('/');
+    const deletedFolderName = lastSeparatorIndex !== -1 ? actualFolderName.substring(lastSeparatorIndex + 1) : actualFolderName;
+    const coopSpace = this.coopSpace;
+    
+    this.coopSpacesService.getAssets(this.coopSpace?.id!, deletedFolderName).pipe(
+      map(assets => ({ coopSpace, assets }))
+    ).subscribe(result => {
+      const remainingAssets = result.assets.map(asset => asset.name);
+      const filteredAssets = this.assetsInBucket.filter(asset => {
+        // Check if the asset is not part of the deleted folder or its sub-folders
+        return !remainingAssets.some(deletedAssetName => {
+          return asset.name.startsWith(deletedAssetName + '/') ||
+                 asset.name !== deletedAssetName;
+        });
+      });
+      this.assetsInBucket = filteredAssets;
+    });
+    
+    // Filter out folders that have the same name as the deleted folder
     const leftoverFileElements_folders: FileElement[] = this.datasetDatasource.data.filter(
-      fileElement => fileElement.isFolder
+      fileElement => fileElement.isFolder && fileElement.name !== deletedFolderName
     );
 
     this.datasetDatasource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
