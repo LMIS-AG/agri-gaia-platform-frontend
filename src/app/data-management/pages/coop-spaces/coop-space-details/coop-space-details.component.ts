@@ -181,128 +181,107 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
-  public deleteElement(element: FileElement): void {
+  public deleteFileOrFolder(element: FileElement): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in deleteAsset().');
     if (element.isFolder) {
-      this.deleteFolder(element);
+      this.deleteFolder(element, bucket);
     } else {
-      const asset: GeneralPurposeAsset = element.asset!;
-      this.uiService
-        .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationQuestion'), {
-          // TODO: This argument isn't used anywhere.
-          confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationText'),
-          buttonLabels: 'confirm',
-          confirmButtonColor: 'warn',
-        })
-        .subscribe((userConfirmed: boolean) => {
-          if (!userConfirmed) return;
-          this.currentLoadingType = LoadingType.DeletingAsset;
-          let bucket = this.bucket;
-          if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-          this.bucketService.deleteAsset(bucket, asset.name).subscribe({
-            next: () => this.handleDeleteSuccess(asset.name),
-            complete: () => this.updateAssets(asset),
-            error: err => this.handleDeleteError(err),
-          });
-        });
+      this.deleteAsset(element, bucket)
     }
   }
 
-  private deleteFolder(element: FileElement) {
+  private deleteAsset(element: FileElement, bucket: string) {
+    const asset: GeneralPurposeAsset = element.asset!;
+    this.uiService
+      .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationQuestion'), {
+        // TODO: This argument isn't used anywhere.
+        confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'warn',
+      })
+      .subscribe((userConfirmed: boolean) => {
+        if (!userConfirmed) return;
+        this.currentLoadingType = LoadingType.DeletingAsset;
+        this.bucketService.deleteAsset(bucket, asset.name).subscribe({
+          next: () => this.handleDeleteSuccess(asset.name),
+          complete: () => this.updateAssets(asset),
+          error: err => this.handleDeleteError(err),
+        });
+      });
+  }
+
+  private deleteFolder(element: FileElement, bucket: string) {
     let folder = `${this.currentRoot}${element.name}/`;
-    let bucket = this.bucket;
-    if (bucket == null) throw Error('Bucket was null in deleteAsset().');
     const coopSpace = this.coopSpace
     this.uiService
-    .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationQuestion'), {
-      // TODO: This argument isn't used anywhere.
-      confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationText'),
-      buttonLabels: 'confirm',
-      confirmButtonColor: 'warn',
-    })
-    .subscribe((userConfirmed: boolean) => {
-      if (!userConfirmed) return;
-      this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
-        .subscribe(result => {
-          this.currentLoadingType = LoadingType.DeletingAsset;
-          const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
-            this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
-          );
-          forkJoin(deleteAssetObservables).subscribe( {
-            next: () => this.handleDeleteSuccess(folder),
-            complete: () => this.updateFolder(element),
-            error: err => this.handleDeleteError(err),
+      .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationQuestion'), {
+        // TODO: This argument isn't used anywhere.
+        confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'warn',
+      })
+      .subscribe((userConfirmed: boolean) => {
+        if (!userConfirmed) return;
+        this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
+          .subscribe(result => {
+            this.currentLoadingType = LoadingType.DeletingAsset;
+            const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
+              this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
+            );
+            forkJoin(deleteAssetObservables).subscribe({
+              next: () => this.handleDeleteSuccess(folder),
+              complete: () => this.updateFolder(element),
+              error: err => this.handleDeleteError(err),
+            });
           });
-        });
-    }
-    )
-}
+      }
+      )
+  }
 
-  public downloadAsset(element: FileElement): void {
+  public downloadFileOrFolder(element: FileElement): void {
     let bucket = this.bucket;
-    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+    if (bucket == null) throw Error('Bucket was null in downloadFileOrFolder().');
     if (element.isFolder) {
-      this.downloadFolder(element);
+      this.downloadFolder(element, bucket);
     } else {
+      this.downloadAsset(element, bucket)
+    }
+  }
 
+  public downloadAsset(element: FileElement, bucket: string): void {
     this.isDownloading = true;
+
     this.bucketService.downloadAsset(bucket, this.currentRoot + element.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
         let blob = new Blob([data], { type: 'application/octet-stream' });
-    
-        // create a temporary URL for the blob object
-        let url = window.URL.createObjectURL(blob);
-    
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', element.name);
-        link.setAttribute('target', '_blank');
-        link.click();
 
-        window.URL.revokeObjectURL(url);
-    
-        // show success message
+        this.createDownloadURL(blob, element.name)
         this.handleDownloadSuccess()
       },
       error: () => {
-        // show error message
         this.handleDownloadError()
       },
     });
   }
-  }
 
-  public downloadFolder(element: FileElement): void {
-    let bucket = this.bucket;
-    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+  public downloadFolder(element: FileElement, bucket: string): void {
     this.isDownloading = true;
 
     this.bucketService.downloadFolder(bucket, this.currentRoot + element.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
         let blob = new Blob([data], { type: 'application/zip' });
-    
-        // create a temporary URL for the blob object
-        let url = window.URL.createObjectURL(blob);
-    
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', element.name);
-        link.setAttribute('target', '_blank');
-        link.click();
 
-        window.URL.revokeObjectURL(url);
-    
-        // show success message
+        this.createDownloadURL(blob, element.name)
         this.handleDownloadSuccess()
       },
       error: () => {
-        // show error message
         this.handleDownloadError()
       },
     });
   }
-
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
@@ -374,6 +353,19 @@ export class CoopSpaceDetailsComponent implements OnInit {
     return this.getUserRole() === CoopSpaceRole.Admin;
   }
 
+  private createDownloadURL(blob: Blob, name: string) {
+    // create a temporary URL for the blob object
+    let url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', name);
+    link.setAttribute('target', '_blank');
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
   public handleDeleteMemberSuccess(): void {
     this.uiService.showSuccessMessage(
       translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
@@ -441,7 +433,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     const lastSeparatorIndex = actualFolderName.lastIndexOf('/');
     const deletedFolderName = lastSeparatorIndex !== -1 ? actualFolderName.substring(lastSeparatorIndex + 1) : actualFolderName;
     const coopSpace = this.coopSpace;
-    
+
     this.coopSpacesService.getAssets(this.coopSpace?.id!, deletedFolderName).pipe(
       map(assets => ({ coopSpace, assets }))
     ).subscribe(result => {
@@ -454,7 +446,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       });
       this.assetsInBucket = filteredAssets;
     });
-    
+
     // Filter out folders that have the same name as the deleted folder
     const leftoverFileElements_folders: FileElement[] = this.datasetDatasource.data.filter(
       fileElement => fileElement.isFolder && fileElement.name !== deletedFolderName

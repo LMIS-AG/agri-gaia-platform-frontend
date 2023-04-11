@@ -126,11 +126,11 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item class="download-button"  (click)="downloadAsset(element)">
+                  <button mat-menu-item class="download-button"  (click)="downloadFileOrFolder(element)">
                     <mat-icon>download</mat-icon>
                     {{ tCommon('download') }}
                   </button>
-                  <button mat-menu-item class="delete-button" (click)="deleteElement(element)">
+                  <button mat-menu-item class="delete-button" (click)="deleteFileOrFolder(element)">
                     <mat-icon>delete</mat-icon>
                     {{ tCommon('delete') }}
                   </button>
