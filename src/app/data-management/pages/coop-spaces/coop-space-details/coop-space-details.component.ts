@@ -222,9 +222,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
       })
       .subscribe((userConfirmed: boolean) => {
         if (!userConfirmed) return;
+        this.isDeletingAsset = true;
         this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
           .subscribe(result => {
-            this.isDeletingAsset = true;
             const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
               this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
             );
