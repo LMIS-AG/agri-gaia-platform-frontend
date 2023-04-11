@@ -192,9 +192,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   private deleteAsset(element: FileElement, bucket: string) {
-    const asset: GeneralPurposeAsset = element.asset!;
     this.uiService
-      .confirm(`${asset.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationQuestion'), {
+      .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationQuestion'), {
         // TODO: This argument isn't used anywhere.
         confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationText'),
         buttonLabels: 'confirm',
@@ -203,9 +202,9 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .subscribe((userConfirmed: boolean) => {
         if (!userConfirmed) return;
         this.currentLoadingType = LoadingType.DeletingAsset;
-        this.bucketService.deleteAsset(bucket, asset.name).subscribe({
-          next: () => this.handleDeleteSuccess(asset.name),
-          complete: () => this.updateAssets(asset),
+        this.bucketService.deleteAsset(bucket, this.currentRoot + element.name).subscribe({
+          next: () => this.handleDeleteSuccess(element),
+          complete: () => this.updateAssets(element),
           error: err => this.handleDeleteError(err),
         });
       });
@@ -230,7 +229,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
               this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
             );
             forkJoin(deleteAssetObservables).subscribe({
-              next: () => this.handleDeleteSuccess(folder),
+              next: () => this.handleDeleteSuccess(element),
               complete: () => this.updateFolder(element),
               error: err => this.handleDeleteError(err),
             });
@@ -283,8 +282,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
-  private updateAssets(asset: GeneralPurposeAsset): void {
-    this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
+  private updateAssets(element: FileElement): void {
+    this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== element.name);
     this.isDeletingAsset = false;
   }
 
@@ -416,42 +415,33 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.datasetDatasource.data = this.filterFileElementsByFolderName(this.currentRoot);
   }
 
-  public handleDeleteSuccess(asset: string): void {
+  public handleDeleteSuccess(element: FileElement): void {
     this.currentLoadingType = LoadingType.NotLoading
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
-
-    this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== asset);
-
+  
+    this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== element.name);
+  
+    const deletedElementName = element.isFolder ? element.name.replace(/\/$/, '') : element.name;
+    
+    // Filter out folders that have the same name as the deleted folder
+    const leftoverFileElements_folders: FileElement[] = this.datasetDatasource.data.filter(
+      fileElement => fileElement.isFolder && fileElement.name !== deletedElementName
+    );
+  
+    // Filter out the deleted element and its sub-folders
     const leftoverFileElements_files: FileElement[] = this.datasetDatasource.data
-      .filter(fileElement => !fileElement.isFolder)
-      .filter(fileElement => fileElement.asset!.name !== asset);
+    .filter(fileElement => !fileElement.isFolder)
+    .filter(fileElement => fileElement.asset!.name !== deletedElementName);
 
-    // Remove trailing slash from asset string, if any
-    const actualFolderName = asset.replace(/\/$/, '');
-
-    // Get the last part of the asset string after the last / character
-    const lastSeparatorIndex = actualFolderName.lastIndexOf('/');
-    const deletedFolderName = lastSeparatorIndex !== -1 ? actualFolderName.substring(lastSeparatorIndex + 1) : actualFolderName;
-    const coopSpace = this.coopSpace;
-
-    this.coopSpacesService.getAssets(this.coopSpace?.id!, deletedFolderName).pipe(
-      map(assets => ({ coopSpace, assets }))
-    ).subscribe(result => {
-      const remainingAssets = result.assets.map(asset => asset.name);
-      const filteredAssets = result.assets.filter(asset => {
-        // Check if the asset is not part of the deleted folder or its sub-folders
-        return !remainingAssets.some(deletedAssetName => {
-          return asset.name.startsWith(deletedAssetName + '/');
-        });
+    // Update the view by reloading all elements based on the given condition
+    this.coopSpacesService.getAssets(this.coopSpace?.id!, '').subscribe(assets => {
+      const filteredAssets = assets.filter(asset => {
+        // Check if the asset is not part of the deleted element or its sub-folders
+        return !asset.name.startsWith(deletedElementName + '/');
       });
       this.assetsInBucket = filteredAssets;
     });
-
-    // Filter out folders that have the same name as the deleted folder
-    const leftoverFileElements_folders: FileElement[] = this.datasetDatasource.data.filter(
-      fileElement => fileElement.isFolder && fileElement.name !== deletedFolderName
-    );
-
+  
     this.datasetDatasource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
 
     // if folder contains no subfolder and no assets after deleting asset
