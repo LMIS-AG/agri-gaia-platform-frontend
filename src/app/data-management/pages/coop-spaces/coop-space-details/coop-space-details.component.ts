@@ -174,7 +174,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
-    this.currentLoadingType = LoadingType.UploadingAsset;
+    this.isUploading = true
     this.bucketService.buildFormDataAndUploadAssets(event, bucket, this.currentRoot).subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
@@ -201,7 +201,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       })
       .subscribe((userConfirmed: boolean) => {
         if (!userConfirmed) return;
-        this.currentLoadingType = LoadingType.DeletingAsset;
+        this.isDeletingAsset = true;
         this.bucketService.deleteAsset(bucket, this.currentRoot + element.name).subscribe({
           next: () => this.handleDeleteSuccess(element),
           complete: () => this.updateAssets(element),
@@ -224,7 +224,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         if (!userConfirmed) return;
         this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
           .subscribe(result => {
-            this.currentLoadingType = LoadingType.DeletingAsset;
+            this.isDeletingAsset = true;
             const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
               this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
             );
@@ -416,7 +416,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   public handleDeleteSuccess(element: FileElement): void {
-    this.currentLoadingType = LoadingType.NotLoading
+    this.isDeletingAsset = false
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
   
     this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== element.name);

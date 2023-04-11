@@ -73,6 +73,7 @@ export class BucketService {
 
   private uploadAssets(bucket: string, currentRoot: string, formData: FormData): Observable<HttpEvent<Object>> {
     let base64encodedFolderName;
+    // simple trick in order to avoid sending the post request with '/' as the last character, not pretty but it works
     if (currentRoot === '') {
       base64encodedFolderName = 'default';
     } else {
