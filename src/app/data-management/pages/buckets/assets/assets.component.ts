@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, forkJoin, map, switchMap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { BucketService } from '../bucket.service';
-import { FileElement } from '../../../../shared/model/file-element';
 import { GeneralPurposeAsset } from '../../../../shared/model/general-purpose-asset';
 import { UIService } from '../../../../shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
@@ -12,7 +11,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
-import { DatePipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -23,18 +21,17 @@ import { DatePipe } from '@angular/common';
 export class AssetsComponent implements OnInit {
   public bucket?: string;
   public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'isPublished', 'more'];
-  public dataSource: MatTableDataSource<FileElement> = new MatTableDataSource();
+  public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
+  public isLoading = false;
   public currentLoadingType: LoadingType = LoadingType.NotLoading;
-  public assetsInBucket: GeneralPurposeAsset[] = [];
-  public currentRoot: string = '';
+  public isDownloading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private bucketService: BucketService,
     private uiService: UIService,
-    private dialog: MatDialog,
-    private datePipe: DatePipe
+    private dialog: MatDialog
   ) {}
 
   public ngOnInit(): void {
@@ -43,7 +40,7 @@ export class AssetsComponent implements OnInit {
         filter(paramMap => paramMap.has('name')),
         map(paramMap => paramMap.get('name')),
         switchMap(name =>
-          this.bucketService.getAssetsByBucketName(name ? name : '', `asset`).pipe(map(assets => ({ name, assets })))
+          this.bucketService.getAssetsByBucketName(name ? name : '', 'assets/').pipe(map(assets => ({ name, assets })))
         )
       )
       .subscribe(result => {
@@ -52,81 +49,89 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public onFileOrFolderSelected(event: any): void {
+  public onFileSelected(event: any): void {
     const bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in onFileSelected().');
 
     this.currentLoadingType = LoadingType.UploadingAsset;
-    this.bucketService.buildFormDataAndUploadAssets(event, bucket, this.currentRoot).subscribe({
+    this.bucketService.buildFormDataAndUploadAssets(event, bucket, 'assets/').subscribe({
       complete: () => this.handleUploadSuccess(),
       error: () => this.handleUploadError(),
     });
   }
 
-  public deleteElement(element: FileElement): void {
-    if (element.isFolder) {
-      this.deleteFolder(element);
-    } else {
-      const asset: GeneralPurposeAsset = element.asset!;
-      this.uiService
-        .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
-          // TODO: This argument isn't used anywhere.
-          confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
-          buttonLabels: 'confirm',
-          confirmButtonColor: 'warn',
-        })
-        .subscribe((userConfirmed: boolean) => {
-          if (!userConfirmed) return;
-          this.currentLoadingType = LoadingType.DeletingAsset;
-          let bucket = this.bucket;
-          if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-          this.bucketService.deleteAsset(bucket, asset.name).subscribe({
-            next: () => this.handleDeleteSuccess(asset.name),
-            complete: () => this.updateAssets(asset),
-            error: err => this.handleDeleteError(err),
-          });
-        });
-    }
+  public downloadAsset(asset: GeneralPurposeAsset): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+
+    this.currentLoadingType = LoadingType.DownloadingAsset;
+    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+      next: (data) => {
+        // create a blob object from the API response
+        let blob = new Blob([data], { type: 'application/octet-stream' });
+    
+        // create a temporary URL for the blob object
+        let url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', asset.name);
+        link.setAttribute('target', '_blank');
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    
+        // show success message
+        this.handleDownloadSuccess()
+      },
+      error: () => {
+        // show error message
+        this.handleDownloadError()
+      },
+    });
   }
 
-  private deleteFolder(element: FileElement) {
-    let folder = `${this.currentRoot}${element.name}/`;
-    let bucket = this.bucket;
-    if (bucket == null) throw Error('Bucket was null in deleteAsset().');
-    
-    this.bucketService.getAssetsByBucketName(bucket, folder).pipe(map(assets => ({ bucket, assets })))
-    .subscribe(result => {
-      this.currentLoadingType = LoadingType.DeletingAsset;
-      const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
-        this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
-      );
-      forkJoin(deleteAssetObservables).subscribe(() => {
-        this.handleDeleteSuccess(folder)
+  public deleteAsset(asset: GeneralPurposeAsset): void {
+    this.uiService
+      .confirm(`${asset.name}`, translate('dataManagement.buckets.assets.dialog.deleteConfirmationQuestion'), {
+        // TODO: This argument isn't used anywhere.
+        confirmationText: translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'),
+        buttonLabels: 'confirm',
+        confirmButtonColor: 'warn',
+      })
+      .subscribe((userConfirmed: boolean) => {
+        if (!userConfirmed) return;
+        this.currentLoadingType = LoadingType.DeletingAsset;
+        let bucket = this.bucket;
+        if (bucket == null) throw Error('Bucket was null in deleteAsset().');
+        this.bucketService.deleteAsset(bucket, 'assets/' + asset.name).subscribe({
+          next: () => this.handleDeleteSuccess(),
+          complete: () => this.updateAssets(asset),
+          error: err => this.handleDeleteError(err),
+        });
       });
-      }
-    )}
+  }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
-    asset.coopSpace = this.bucket!;
-
-    this.openPublishAssetDialog(asset)
-      .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          // The asset was successfully published, disable the publish button and enable the unpublish button
-          asset.isPublished = true;
-        } else {
-          // The asset was not published, do nothing
-        }
-      });
+    asset.coopSpace = this.bucket!
+    
+    this.openPublishAssetDialog(asset).afterClosed().subscribe((result) => {
+      if (result) {
+        // The asset was successfully published, disable the publish button and enable the unpublish button
+        asset.isPublished = true;
+      } else {
+        // The asset was not published, do nothing
+      }
+    });
   }
+  
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
     return this.dialog.open(PublishAssetDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: asset,
+      data: asset
     });
   }
 
@@ -175,9 +180,7 @@ export class AssetsComponent implements OnInit {
       // convert the displayed file size
       asset.size = prettyPrintFileSize(parseInt(asset.size));
     });
-    this.assetsInBucket = assets;
-    this.dataSource.data = this.filterFileElementsByFolderName('');
-    this.currentRoot = ''; // TODO makes sense? what if I added an asset while being in a subfolder and this is triggered... Maybe i have to adjust root or view again...
+    this.dataSource.data = assets;
   }
 
   public handlePublishSuccess(): void {
@@ -204,7 +207,7 @@ export class AssetsComponent implements OnInit {
 
     if (this.bucket) {
       this.bucketService
-        .getAssetsByBucketName(this.bucket!, this.currentRoot)
+        .getAssetsByBucketName(this.bucket!, 'assets/')
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
@@ -216,125 +219,27 @@ export class AssetsComponent implements OnInit {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.uploadFileError'));
   }
 
-  public handleDeleteSuccess(asset: string): void {
-    this.currentLoadingType = LoadingType.NotLoading
+  private handleDownloadSuccess(): void {
+    this.currentLoadingType = LoadingType.NotLoading;
+
+    // show success message
+    this.uiService.showSuccessMessage('dataManagement.buckets.assets.downloadAssetConfirmationText');
+  }
+
+  private handleDownloadError(): void {
+    this.currentLoadingType = LoadingType.NotLoading;
+
+        // show error message
+    this.uiService.showSuccessMessage('dataManagement.buckets.assets.downloadAssetErrorText');
+  }
+
+  public handleDeleteSuccess(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.deleteConfirmationText'));
-
-    this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== asset);
-  
-    const leftoverFileElements_files: FileElement[] = this.dataSource.data
-      .filter(fileElement => !fileElement.isFolder)
-      .filter(fileElement => fileElement.asset!.name !== asset);
-  
-    const leftoverFileElements_folders: FileElement[] = this.dataSource.data.filter(
-      fileElement => fileElement.isFolder
-    );
-
-    this.dataSource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
-
-    // if folder contains no subfolder and no assets after deleting asset
-    // navigate up and delete this folder
-    if (!leftoverFileElements_folders.length && !leftoverFileElements_files.length) {
-      var toOpenFolderName: string = '';
-      const lastSlashIndex = this.currentRoot.lastIndexOf('/');
-      if (lastSlashIndex !== -1) {
-        var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
-        toOpenFolderName =
-          secondToLastSlashIndex === -1
-            ? this.currentRoot.slice(0, lastSlashIndex)
-            : this.currentRoot.slice(secondToLastSlashIndex + 1, lastSlashIndex);
-      }
-
-      this.navigateBackAndRemoveFolder(toOpenFolderName);
-    }
   }
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.buckets.assets.dialog.deleteErrorText') + err.status);
     this.currentLoadingType = LoadingType.NotLoading;
-  }
-
-  public openIfFolder(row: FileElement): void {
-    if (!row.isFolder) return;
-
-    const toOpenFolderName: string = this.currentRoot + row.name + '/';
-
-    const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
-    this.currentRoot = toOpenFolderName;
-    this.dataSource.data = filteredFileElements;
-  }
-
-  private filterFileElementsByFolderName(toOpenFolderName: string): FileElement[] {
-    const files: FileElement[] = this.assetsInBucket
-      .filter(asset => asset.name.startsWith(toOpenFolderName))
-      .filter(asset => !asset.name.slice(toOpenFolderName.length).includes('/'))
-      .map(
-        asset =>
-          ({
-            isFolder: false,
-            name: asset.name.slice(toOpenFolderName.length),
-            asset: asset,
-          } as FileElement)
-      );
-
-    var folders: FileElement[] = [];
-    var folderNames = new Set();
-    this.assetsInBucket
-      .filter(asset => asset.name.startsWith(toOpenFolderName))
-      .filter(asset => asset.name.slice(toOpenFolderName.length).includes('/'))
-      .map(asset => asset.name.slice(toOpenFolderName.length).split('/')[0])
-      .forEach(folderName => folderNames.add(folderName));
-
-    folderNames.forEach(folderName =>
-      folders.push({
-        isFolder: true,
-        name: folderName,
-      } as FileElement)
-    );
-
-    return files.concat(folders);
-  }
-
-  public navigateBack(): void {
-    const lastSlashIndex = this.currentRoot.lastIndexOf('/');
-    if (lastSlashIndex !== -1) {
-      var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
-      var toOpenFolderName: string =
-        secondToLastSlashIndex === -1 ? '' : this.currentRoot.slice(0, secondToLastSlashIndex + 1);
-
-      const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
-      this.currentRoot = toOpenFolderName;
-      this.dataSource.data = filteredFileElements;
-    }
-  }
-
-  public navigateBackAndRemoveFolder(folder: string): void {
-    this.navigateBack();
-
-    if (!folder) return;
-
-    const files: FileElement[] = this.dataSource.data.filter(fileElement => !fileElement.isFolder);
-    const filteredFolders: FileElement[] = this.dataSource.data
-      .filter(fileElement => fileElement.isFolder)
-      .filter(fileElement => fileElement.name !== folder);
-    this.dataSource.data = files.concat(filteredFolders);
-  }
-
-  // MAT TABLE VALUE FORMATTING
-  public formatSize(value: string | undefined): string {
-    if (!value) return '';
-    return value;
-  }
-
-  public formatDate(value: string | undefined): string {
-    if (!value) return '';
-    const date = this.datePipe.transform(value, 'yyyy-MM-dd');
-    return date ? date : '';
-  }
-
-  public formatIsPublished(value: boolean | null): string {
-    if (value === null) return '';
-    return value ? translate('common.yes') : translate('common.no');
   }
 }
 
@@ -343,4 +248,5 @@ export enum LoadingType {
   UploadingAsset = 'UPLOADING_ASSET',
   DeletingAsset = 'DELETING_ASSET',
   GeneratingKeys = 'GENERATING_KEYS',
+  DownloadingAsset = 'DOWNLOADING_ASSET'
 }

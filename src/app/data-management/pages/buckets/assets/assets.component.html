@@ -13,6 +13,7 @@
         <mat-spinner [diameter]="35"></mat-spinner>
         <div fxLayout="column" fxLayoutAlign="center center">
           <div *ngSwitchCase="'GENERATING_KEYS'">{{ t('ongoingGeneration') }}</div>
+          <div *ngSwitchCase="'DOWNLOADING_ASSET'">{{ t('ongoingAssetDownload') }}</div>
           <ng-container *ngSwitchCase="'UPLOADING_ASSET'">
             <div>{{ t('ongoingUpload1') }}</div>
             <div>{{ t('ongoingUpload2') }}</div>
@@ -24,25 +25,12 @@
         <mat-icon>add</mat-icon>
       </button>
       <mat-menu #menuForUpload="matMenu">
-        <!-- actual inputs for file and folder upload are hidden because it is hard to style -->
+        <!-- actual input for file upload is hidden because it is hard to style -->
         <div fxLayout="column">
-          <input type="file" multiple class="file-input" (change)="onFileOrFolderSelected($event)" #fileUpload />
-          <input
-            type="file"
-            multiple
-            class="file-input"
-            (change)="onFileOrFolderSelected($event)"
-            webkitdirectory
-            directory
-            #folderUpload
-          />
+          <input type="file" multiple class="file-input" (change)="onFileSelected($event)" #fileUpload />
           <button class="upload-button" (click)="fileUpload.click()">
             <mat-icon>upload</mat-icon>
             <p>{{ t('uploadFile') }}</p>
-          </button>
-          <button class="upload-button" (click)="folderUpload.click()">
-            <mat-icon>drive_folder_upload</mat-icon>
-            <p>{{ t('uploadFolder') }}</p>
           </button>
           <button class="generate-button" (click)="openGenerateKeysDialog()">
             <mat-icon class="generate-button-icon">vpn_key</mat-icon>
@@ -50,15 +38,6 @@
           </button>
         </div>
       </mat-menu>
-    </div>
-
-    <!-- Show current path and provide option for navigating 'upwards' -->
-    <br />
-    <div fxLayout="row" fxLayoutGap="15px">
-      <button class="navigate-back-button" (click)="navigateBack()">
-        <mat-icon>arrow_back_ios</mat-icon>
-      </button>
-      <h2>{{ bucket }}/{{ currentRoot }}</h2>
     </div>
 
     <!-- Dataset -->
@@ -74,25 +53,25 @@
           <!-- Name Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('name') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}">{{ element.name }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
           </ng-container>
 
           <!-- Date Column -->
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('date') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatDate(element?.asset?.date)"></td>
+            <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd.MM.YYYY' }}</td>
           </ng-container>
 
           <!-- Size Column -->
           <ng-container matColumnDef="size">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('size') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatSize(element?.asset?.size)"></td>
+            <td mat-cell *matCellDef="let element">{{ element.size }}</td>
           </ng-container>
 
           <!-- isPublished Column -->
           <ng-container matColumnDef="isPublished">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('isPublished') }}</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{'subfolder-hover': element.isFolder}" [innerHtml]="formatIsPublished(element?.asset?.isPublished)"></td>
+            <td mat-cell *matCellDef="let element">{{ element.isPublished ? tCommon('yes') : tCommon('no') }}</td>
           </ng-container>
 
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
@@ -102,31 +81,29 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button
-                  *ngIf="!element?.isFolder"
-                  mat-menu-item
-                  [disabled]="element?.asset?.isPublished"
-                  (click)="publishAsset(element)"
-                >
+                <button mat-menu-item [disabled]="element.isPublished" (click)="publishAsset(element)">
                   <mat-icon color="primary">publish</mat-icon>
                   {{ t('publishFile') }}
                 </button>
                 <button
-                  *ngIf="!element?.isFolder"
                   mat-menu-item
-                  [disabled]="!element?.asset?.isPublished"
+                  [disabled]="!element.isPublished"
                   class="delete-button"
-                  (click)="unpublishAsset(element.asset)"
+                  (click)="unpublishAsset(element)"
                 >
                   <!-- TODO: Get a better icon.-->
                   <mat-icon>unpublished</mat-icon>
                   {{ t('unpublishFile') }}
                 </button>
+                <button mat-menu-item class="download-button"  (click)="downloadAsset(element)">
+                  <mat-icon>download</mat-icon>
+                  {{ tCommon('download') }}
+                </button>
                 <button
                   mat-menu-item
                   class="delete-button"
-                  [disabled]="element?.asset?.isPublished"
-                  (click)="deleteElement(element)"
+                  [disabled]="element.isPublished"
+                  (click)="deleteAsset(element)"
                 >
                   <mat-icon>delete</mat-icon>
                   {{ tCommon('delete') }}
@@ -134,9 +111,10 @@
               </mat-menu>
             </td>
           </ng-container>
+          
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsDataset"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset" (click)="openIfFolder(row)"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsDataset"></tr>
         </table>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { finalize, Observable, Subscription, timeout } from 'rxjs';
+import { finalize, map, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
 import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
 import { STSRequest } from 'src/app/shared/model/stsRequest';
@@ -31,6 +31,13 @@ export class BucketService {
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     return this.http.delete(`${environment.backend.url}/assets/unpublish/${bucket}/${name}`, { observe: 'response' });
   }
+
+  public downloadAsset(bucket: string, name: string): Observable<Blob> {
+    return this.http.post(`${environment.backend.url}/buckets/download/${bucket}/${name}`, {bucket, name}, { observe: 'response', responseType: 'blob' }).pipe(
+      map((response: HttpResponse<Blob>) => (response.body as Blob))
+    );
+  }
+
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     const base64EncodedFileName = btoa(name);

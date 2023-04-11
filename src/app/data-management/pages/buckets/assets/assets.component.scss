@@ -59,7 +59,7 @@ table {
     color: $error;
   }
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.5; 
     cursor: not-allowed;
   }
 }
@@ -103,17 +103,4 @@ table {
 
 ::ng-deep.mat-menu-panel {
   min-height: 0px !important;
-}
-
-.navigate-back-button {
-  background-color: white;
-  height: 30px;
-  width: 40px;
-  border: 2px solid black;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.subfolder-hover:hover {
-  cursor: pointer;
 }
