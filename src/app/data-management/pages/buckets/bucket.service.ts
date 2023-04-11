@@ -33,11 +33,19 @@ export class BucketService {
   }
 
   public downloadAsset(bucket: string, name: string): Observable<Blob> {
-    return this.http.post(`${environment.backend.url}/buckets/download/${bucket}/${name}`, {bucket, name}, { observe: 'response', responseType: 'blob' }).pipe(
+    const base64EncodedFileName = btoa(name)
+    return this.http.post(`${environment.backend.url}/buckets/downloadAsset/${bucket}/${base64EncodedFileName}`, {bucket, name}, { observe: 'response', responseType: 'blob' }).pipe(
       map((response: HttpResponse<Blob>) => (response.body as Blob))
     );
   }
 
+  public downloadFolder(bucket: string, folderName: string): Observable<Blob> {
+    const base64EncodedFolderName = btoa(folderName)
+
+    return this.http.post(`${environment.backend.url}/buckets/downloadFolder/${bucket}/${base64EncodedFolderName}`, {bucket, folderName}, { observe: 'response', responseType: 'blob' }).pipe(
+      map((response: HttpResponse<Blob>) => (response.body as Blob))
+    );
+  }
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
     const base64EncodedFileName = btoa(name);

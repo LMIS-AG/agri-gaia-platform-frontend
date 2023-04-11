@@ -237,12 +237,15 @@ export class CoopSpaceDetailsComponent implements OnInit {
     )
 }
 
-  public downloadAsset(asset: GeneralPurposeAsset): void {
+  public downloadAsset(element: FileElement): void {
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+    if (element.isFolder) {
+      this.downloadFolder(element);
+    } else {
 
     this.isDownloading = true;
-    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+    this.bucketService.downloadAsset(bucket, this.currentRoot + element.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
         let blob = new Blob([data], { type: 'application/octet-stream' });
@@ -252,7 +255,39 @@ export class CoopSpaceDetailsComponent implements OnInit {
     
         const link = document.createElement('a');
         link.setAttribute('href', url);
-        link.setAttribute('download', asset.name);
+        link.setAttribute('download', element.name);
+        link.setAttribute('target', '_blank');
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    
+        // show success message
+        this.handleDownloadSuccess()
+      },
+      error: () => {
+        // show error message
+        this.handleDownloadError()
+      },
+    });
+  }
+  }
+
+  public downloadFolder(element: FileElement): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+    this.isDownloading = true;
+
+    this.bucketService.downloadFolder(bucket, this.currentRoot + element.name).subscribe({
+      next: (data) => {
+        // create a blob object from the API response
+        let blob = new Blob([data], { type: 'application/zip' });
+    
+        // create a temporary URL for the blob object
+        let url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', element.name);
         link.setAttribute('target', '_blank');
         link.click();
 

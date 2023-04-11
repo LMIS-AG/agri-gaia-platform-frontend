@@ -65,7 +65,7 @@ export class AssetsComponent implements OnInit {
     if (bucket == null) throw Error('Bucket was null in downloadAsset().');
 
     this.currentLoadingType = LoadingType.DownloadingAsset;
-    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+    this.bucketService.downloadAsset(bucket, 'assets/' + asset.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
         let blob = new Blob([data], { type: 'application/octet-stream' });

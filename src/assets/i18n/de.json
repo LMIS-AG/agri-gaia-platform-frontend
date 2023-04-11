@@ -220,7 +220,10 @@
           "deleteFolderConfirmationQuestion": "Möchten Sie diesen Ordner aus dem Kooperationsbereich löschen?",
           "deleteFolderConfirmationText": "Die Anfrage zur Löschung dieses Ordners wurde erfolgreich gestellt.",
           "deleteErrorText": "Die Anfrage zur Löschung ist leider fehlgeschlagen. Fehlercode: ",
-          "deleteConfirmationText": "Die Anfrage zur Löschung war erfolgreich."
+          "deleteConfirmationText": "Die Anfrage zur Löschung war erfolgreich.",
+          "ongoingAssetDownload": "Asset wird heruntergeladen...",
+          "downloadAssetConfirmationText": "Die Datei wurde erfolgreich herunterladen.",
+          "downloadAssetErrorText": "Der Download der Datei ist fehlgeschlagen."
         },
         "table": {
           "name": "Name",
