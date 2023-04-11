@@ -323,7 +323,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
     if (this.bucket) {
       this.coopSpacesService
-        .getAssets(this.coopSpace?.id!, this.currentRoot)
+        .getAssets(this.coopSpace?.id!, '')
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
