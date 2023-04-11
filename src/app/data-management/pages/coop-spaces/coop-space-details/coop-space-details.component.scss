@@ -119,6 +119,12 @@ table {
   }
 }
 
+.download-button {
+  mat-icon {
+    color: $primary;
+  }
+}
+
 .headline {
   height: 32px;
 }

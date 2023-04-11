@@ -40,7 +40,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public roles: CoopSpaceRole[] = $enum(CoopSpaceRole).getValues();
 
   public bucket?: string;
-  public isUploading = false;
+  public isUploading: boolean = false;
   public isDeletingAsset: boolean = false;
   public isDeletingMember: boolean = false;
   public isAddingMember: boolean = false;
@@ -48,6 +48,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public currentRoot: string = '';
   public assetsInBucket: GeneralPurposeAsset[] = [];
 
+  public isDownloading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -211,31 +212,62 @@ export class CoopSpaceDetailsComponent implements OnInit {
     let bucket = this.bucket;
     if (bucket == null) throw Error('Bucket was null in deleteAsset().');
     const coopSpace = this.coopSpace
-
     this.uiService
-      .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationQuestion'), {
-        // TODO: This argument isn't used anywhere.
-        confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationText'),
-        buttonLabels: 'confirm',
-        confirmButtonColor: 'warn',
-      })
-      .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
-        this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
-          .subscribe(result => {
-            this.currentLoadingType = LoadingType.DeletingAsset;
-            const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
-              this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
-            );
-            forkJoin(deleteAssetObservables).subscribe( {
-              next: () => this.handleDeleteSuccess(folder),
-              complete: () => this.updateFolder(element),
-              error: err => this.handleDeleteError(err),
-            });
+    .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationQuestion'), {
+      // TODO: This argument isn't used anywhere.
+      confirmationText: translate('dataManagement.coopSpaces.details.dialog.deleteFolderConfirmationText'),
+      buttonLabels: 'confirm',
+      confirmButtonColor: 'warn',
+    })
+    .subscribe((userConfirmed: boolean) => {
+      if (!userConfirmed) return;
+      this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
+        .subscribe(result => {
+          this.currentLoadingType = LoadingType.DeletingAsset;
+          const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
+            this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
+          );
+          forkJoin(deleteAssetObservables).subscribe( {
+            next: () => this.handleDeleteSuccess(folder),
+            complete: () => this.updateFolder(element),
+            error: err => this.handleDeleteError(err),
           });
-      }
-      )
+        });
+    }
+    )
+}
+
+  public downloadAsset(asset: GeneralPurposeAsset): void {
+    let bucket = this.bucket;
+    if (bucket == null) throw Error('Bucket was null in downloadAsset().');
+
+    this.isDownloading = true;
+    this.bucketService.downloadAsset(bucket, asset.name).subscribe({
+      next: (data) => {
+        // create a blob object from the API response
+        let blob = new Blob([data], { type: 'application/octet-stream' });
+    
+        // create a temporary URL for the blob object
+        let url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', asset.name);
+        link.setAttribute('target', '_blank');
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    
+        // show success message
+        this.handleDownloadSuccess()
+      },
+      error: () => {
+        // show error message
+        this.handleDownloadError()
+      },
+    });
   }
+
 
   private updateAssets(asset: GeneralPurposeAsset): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== asset.name);
@@ -332,6 +364,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.currentLoadingType = LoadingType.NotLoading;
 
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.uploadFileError'));
+  }
+
+  private handleDownloadSuccess(): void {
+    this.isDownloading = false
+
+    // show success message
+    this.uiService.showSuccessMessage('dataManagement.coopSpaces.details.dialog.downloadAssetConfirmationText');
+  }
+
+  private handleDownloadError(): void {
+    this.isDownloading = false
+
+    // show error message
+    this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.downloadAssetErrorText'));
   }
 
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {

@@ -81,7 +81,6 @@
         "ongoingAssetDownload": "Asset wird heruntergeladen...",
         "downloadAssetConfirmationText": "Die Datei wurde erfolgreich herunterladen.",
         "downloadAssetErrorText": "Der Download der Datei ist fehlgeschlagen.",
-
         "table": {
           "name": "Assets",
           "date": "Datum",
@@ -198,6 +197,7 @@
         "ongoingAssetDeletion": "Asset wird gelöscht...",
         "ongoingMemberRemoval": "Teilnehmer wird entfernt...",
         "ongoingAdditionOfMembers": "Teilnehmer wird hinzugefügt...",
+        "ongoingAssetDownload": "Asset wird heruntergeladen...",
         "role": {
           "GUEST": "Gast",
           "USER": "User",
