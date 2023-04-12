@@ -437,11 +437,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
     // Update the view by reloading all elements based on the given condition
     this.coopSpacesService.getAssets(this.coopSpace?.id!, '').subscribe(assets => {
-      const filteredAssets = assets.filter(asset => {
+      this.assetsInBucket = assets.filter(asset => {
         // Check if the asset is not part of the deleted element or its sub-folders
         return !asset.name.startsWith(deletedElementName + '/');
       });
-      this.assetsInBucket = filteredAssets;
     });
 
     this.datasetDatasource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
