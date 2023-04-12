@@ -166,6 +166,15 @@ table {
   cursor: pointer;
 }
 
+.navigate-back-button:hover:not([disabled]) {
+  background-color: lightgray;
+}
+
+.navigate-back-button:disabled {
+  cursor: default;
+  background-color: transparent;
+}
+
 .subfolder-hover:hover {
   cursor: pointer;
 }

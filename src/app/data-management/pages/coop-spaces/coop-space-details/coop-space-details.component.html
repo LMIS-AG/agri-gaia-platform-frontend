@@ -60,9 +60,8 @@
         </div>
 
         <!-- Show current path and provide option for navigating 'upwards' -->
-        <br />
         <div fxLayout="row" fxLayoutGap="15px">
-          <button class="navigate-back-button" (click)="navigateBack()">
+          <button class="navigate-back-button" (click)="navigateBack()" [disabled]="currentRoot === ''">
             <mat-icon>arrow_back_ios</mat-icon>
           </button>
           <h2>{{ currentRoot }}</h2>
