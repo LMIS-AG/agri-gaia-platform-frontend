@@ -1,23 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, forkJoin, map, switchMap, tap } from 'rxjs';
-import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
-import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
-import { CoopSpacesService } from '../coop-spaces.service';
-import { Member } from 'src/app/shared/model/member';
-import { UIService } from 'src/app/shared/services/ui.service';
-import { translate } from '@ngneat/transloco';
-import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
-import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
-import { MatDialog } from '@angular/material/dialog';
-import { $enum } from 'ts-enum-util';
-import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
-import { BucketService } from '../../buckets/bucket.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MatTableDataSource } from '@angular/material/table';
-import { LoadingType } from '../../buckets/assets/assets.component';
-import { FileElement } from 'src/app/shared/model/file-element';
-import { DatePipe } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {concatMap, filter, forkJoin, map, switchMap, tap} from 'rxjs';
+import {CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole} from 'src/app/shared/model/coop-spaces';
+import {GeneralPurposeAsset} from 'src/app/shared/model/general-purpose-asset';
+import {CoopSpacesService} from '../coop-spaces.service';
+import {Member} from 'src/app/shared/model/member';
+import {UIService} from 'src/app/shared/services/ui.service';
+import {translate} from '@ngneat/transloco';
+import {AuthenticationService} from 'src/app/core/authentication/authentication.service';
+import {AddMembersAfterwardsDlgComponent} from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
+import {MatDialog} from '@angular/material/dialog';
+import {$enum} from 'ts-enum-util';
+import {prettyPrintFileSize} from 'src/app/shared/utils/convert-utils';
+import {BucketService} from '../../buckets/bucket.service';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {MatTableDataSource} from '@angular/material/table';
+import {LoadingType} from '../../buckets/assets/assets.component';
+import {FileElement} from 'src/app/shared/model/file-element';
+import {DatePipe} from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -59,7 +59,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private bucketService: BucketService,
     private datePipe: DatePipe
-  ) { }
+  ) {
+  }
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -70,7 +71,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
           this.coopSpacesService.getCoopSpaceById(id).pipe(
             tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
-              this.coopSpacesService.getAssets(coopSpace.id!, '').pipe(map(assets => ({ coopSpace, assets })))
+              this.coopSpacesService.getAssets(coopSpace.id!, '').pipe(map(assets => ({coopSpace, assets})))
             )
           )
         )
@@ -191,7 +192,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     }
   }
 
-  private deleteAsset(element: FileElement, bucket: string) {
+  private deleteAsset(element: FileElement, bucket: string): void {
     this.uiService
       .confirm(`${element.name}`, translate('dataManagement.coopSpaces.details.dialog.deleteAssetConfirmationQuestion'), {
         // TODO: This argument isn't used anywhere.
@@ -210,7 +211,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       });
   }
 
-  private deleteFolder(element: FileElement, bucket: string) {
+  private deleteFolder(element: FileElement, bucket: string): void {
     let folder = `${this.currentRoot}${element.name}/`;
     const coopSpace = this.coopSpace
     this.uiService
@@ -221,20 +222,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
         confirmButtonColor: 'warn',
       })
       .subscribe((userConfirmed: boolean) => {
-        if (!userConfirmed) return;
-        this.isDeletingAsset = true;
-        this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({ coopSpace, assets })))
-          .subscribe(result => {
-            const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
-              this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
-            );
-            forkJoin(deleteAssetObservables).subscribe({
-              next: () => this.handleDeleteSuccess(element),
-              complete: () => this.updateFolder(element),
-              error: err => this.handleDeleteError(err),
+          if (!userConfirmed) return;
+          this.isDeletingAsset = true;
+          this.coopSpacesService.getAssets(this.coopSpace?.id!, folder).pipe(map(assets => ({coopSpace, assets})))
+            .subscribe(result => {
+              const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
+                this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
+              );
+              forkJoin(deleteAssetObservables).subscribe({
+                next: () => this.handleDeleteSuccess(element),
+                complete: () => this.updateFolder(element),
+                error: err => this.handleDeleteError(err),
+              });
             });
-          });
-      }
+        }
       )
   }
 
@@ -254,7 +255,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.bucketService.downloadAsset(bucket, this.currentRoot + element.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
-        let blob = new Blob([data], { type: 'application/octet-stream' });
+        let blob = new Blob([data], {type: 'application/octet-stream'});
 
         this.createDownloadURL(blob, element.name)
         this.handleDownloadSuccess()
@@ -271,7 +272,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.bucketService.downloadFolder(bucket, this.currentRoot + element.name).subscribe({
       next: (data) => {
         // create a blob object from the API response
-        let blob = new Blob([data], { type: 'application/zip' });
+        let blob = new Blob([data], {type: 'application/zip'});
 
         this.createDownloadURL(blob, element.name)
         this.handleDownloadSuccess()
@@ -287,7 +288,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.isDeletingAsset = false;
   }
 
-  private updateFolder(element: FileElement) {
+  private updateFolder(element: FileElement): void {
     this.datasetDatasource.data = this.datasetDatasource.data.filter(e => e.name !== element.name)
   }
 
@@ -308,7 +309,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     });
   }
 
-  private reloadMembersListAndUpdateMembersDataSource() {
+  private reloadMembersListAndUpdateMembersDataSource(): void {
     const currentCoopSpaceId = this.coopSpace?.id!;
     if (currentCoopSpaceId) {
       this.coopSpacesService
@@ -352,7 +353,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     return this.getUserRole() === CoopSpaceRole.Admin;
   }
 
-  private createDownloadURL(blob: Blob, name: string) {
+  private createDownloadURL(blob: Blob, name: string): void {
     // create a temporary URL for the blob object
     let url = window.URL.createObjectURL(blob);
 
@@ -386,6 +387,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
   }
+
   private handleUploadError(): void {
     this.currentLoadingType = LoadingType.NotLoading;
 
@@ -418,20 +420,20 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public handleDeleteSuccess(element: FileElement): void {
     this.isDeletingAsset = false
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteConfirmationText'));
-  
+
     this.assetsInBucket = this.assetsInBucket.filter(assetInBucket => assetInBucket.name !== element.name);
-  
+
     const deletedElementName = element.isFolder ? element.name.replace(/\/$/, '') : element.name;
-    
+
     // Filter out folders that have the same name as the deleted folder
     const leftoverFileElements_folders: FileElement[] = this.datasetDatasource.data.filter(
       fileElement => fileElement.isFolder && fileElement.name !== deletedElementName
     );
-  
+
     // Filter out the deleted element and its sub-folders
     const leftoverFileElements_files: FileElement[] = this.datasetDatasource.data
-    .filter(fileElement => !fileElement.isFolder)
-    .filter(fileElement => fileElement.asset!.name !== deletedElementName);
+      .filter(fileElement => !fileElement.isFolder)
+      .filter(fileElement => fileElement.asset!.name !== deletedElementName);
 
     // Update the view by reloading all elements based on the given condition
     this.coopSpacesService.getAssets(this.coopSpace?.id!, '').subscribe(assets => {
@@ -441,7 +443,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       });
       this.assetsInBucket = filteredAssets;
     });
-  
+
     this.datasetDatasource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
 
     // if folder contains no subfolder and no assets after deleting asset
@@ -482,11 +484,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .filter(asset => !asset.name.slice(toOpenFolderName.length).includes('/'))
       .map(
         asset =>
-        ({
-          isFolder: false,
-          name: asset.name.slice(toOpenFolderName.length),
-          asset: asset,
-        } as FileElement)
+          ({
+            isFolder: false,
+            name: asset.name.slice(toOpenFolderName.length),
+            asset: asset,
+          } as FileElement)
       );
 
     var folders: FileElement[] = [];
