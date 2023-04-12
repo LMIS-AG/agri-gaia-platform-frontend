@@ -448,10 +448,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
     // if folder contains no subfolder and no assets after deleting asset
     // navigate up and delete this folder
     if (!leftoverFileElements_folders.length && !leftoverFileElements_files.length) {
-      var toOpenFolderName: string = '';
+      let toOpenFolderName: string = '';
       const lastSlashIndex = this.currentRoot.lastIndexOf('/');
       if (lastSlashIndex !== -1) {
-        var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
+        const secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
         toOpenFolderName =
           secondToLastSlashIndex === -1
             ? this.currentRoot.slice(0, lastSlashIndex)
@@ -490,8 +490,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
           } as FileElement)
       );
 
-    var folders: FileElement[] = [];
-    var folderNames = new Set();
+    let folders: FileElement[] = [];
+    let folderNames = new Set();
     this.assetsInBucket
       .filter(asset => asset.name.startsWith(toOpenFolderName))
       .filter(asset => asset.name.slice(toOpenFolderName.length).includes('/'))
@@ -511,8 +511,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public navigateBack(): void {
     const lastSlashIndex = this.currentRoot.lastIndexOf('/');
     if (lastSlashIndex !== -1) {
-      var secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
-      var toOpenFolderName: string =
+      const secondToLastSlashIndex = this.currentRoot.lastIndexOf('/', lastSlashIndex - 1);
+      const toOpenFolderName: string =
         secondToLastSlashIndex === -1 ? '' : this.currentRoot.slice(0, secondToLastSlashIndex + 1);
 
       const filteredFileElements: FileElement[] = this.filterFileElementsByFolderName(toOpenFolderName);
