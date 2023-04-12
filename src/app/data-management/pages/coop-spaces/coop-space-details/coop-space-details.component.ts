@@ -144,7 +144,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       )
       .subscribe(result => {
         if (result) {
-          // send the necessary data, originalRole must be included for finding the appropiate Keycloak group and deleting the user from it
+          // send the necessary data, originalRole must be included for finding the appropriate Keycloak group and deleting the user from it
           this.coopSpacesService.changeMemberRole(this.coopSpace!.id!, originalRole, member).subscribe({
             next: () => {
               this.uiService.showSuccessMessage(
@@ -161,14 +161,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
           member.role = fromStringToCoopSpaceRole(originalRole);
         }
       });
-  }
-
-  public openSettings(): void {
-    throw Error('Not yet implemented');
-  }
-
-  public addTool(): void {
-    throw Error('Not yet implemented');
   }
 
   public onFileOrFolderSelected(event: any): void {
@@ -334,15 +326,6 @@ export class CoopSpaceDetailsComponent implements OnInit {
       dialogRef.close(); // close the dialog when the user clicks on cancel
     });
   }
-
-  public onMore(): void {
-    throw Error('Not yet implemented');
-  }
-
-  public onTogglePlay(): void {
-    throw Error('Not yet implemented');
-  }
-
   public getUserRole(): CoopSpaceRole | undefined {
     let member = this.coopSpace?.members.find(m => m.username === this.userName);
     if (member === undefined) return undefined;
@@ -445,7 +428,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
     this.datasetDatasource.data = leftoverFileElements_files.concat(leftoverFileElements_folders);
 
-    // if folder contains no subfolder and no assets after deleting asset
+    // if folder contains no sub folder and no assets after deleting asset
     // navigate up and delete this folder
     if (!leftoverFileElements_folders.length && !leftoverFileElements_files.length) {
       let toOpenFolderName: string = '';
@@ -544,11 +527,5 @@ export class CoopSpaceDetailsComponent implements OnInit {
     const date = this.datePipe.transform(value, 'yyyy-MM-dd');
     return date ? date : '';
   }
-
-  public formatIsPublished(value: boolean | null): string {
-    if (value === null) return '';
-    return value ? translate('common.yes') : translate('common.no');
-  }
-
 }
 
