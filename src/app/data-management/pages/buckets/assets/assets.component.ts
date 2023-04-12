@@ -66,13 +66,13 @@ export class AssetsComponent implements OnInit {
 
     this.currentLoadingType = LoadingType.DownloadingAsset;
     this.bucketService.downloadAsset(bucket, 'assets/' + asset.name).subscribe({
-      next: (data) => {
+      next: data => {
         // create a blob object from the API response
         let blob = new Blob([data], { type: 'application/octet-stream' });
-    
+
         // create a temporary URL for the blob object
         let url = window.URL.createObjectURL(blob);
-    
+
         const link = document.createElement('a');
         link.setAttribute('href', url);
         link.setAttribute('download', asset.name);
@@ -80,13 +80,13 @@ export class AssetsComponent implements OnInit {
         link.click();
 
         window.URL.revokeObjectURL(url);
-    
+
         // show success message
-        this.handleDownloadSuccess()
+        this.handleDownloadSuccess();
       },
       error: () => {
         // show error message
-        this.handleDownloadError()
+        this.handleDownloadError();
       },
     });
   }
@@ -114,24 +114,25 @@ export class AssetsComponent implements OnInit {
 
   public publishAsset(asset: GeneralPurposeAsset): void {
     if (!asset) throw Error('asset was null in publishAsset().');
-    asset.coopSpace = this.bucket!
-    
-    this.openPublishAssetDialog(asset).afterClosed().subscribe((result) => {
-      if (result) {
-        // The asset was successfully published, disable the publish button and enable the unpublish button
-        asset.isPublished = true;
-      } else {
-        // The asset was not published, do nothing
-      }
-    });
+    asset.coopSpace = this.bucket!;
+
+    this.openPublishAssetDialog(asset)
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          // The asset was successfully published, disable the publish button and enable the unpublish button
+          asset.isPublished = true;
+        } else {
+          // The asset was not published, do nothing
+        }
+      });
   }
-  
 
   private openPublishAssetDialog(asset: GeneralPurposeAsset): MatDialogRef<PublishAssetDlgComponent, boolean> {
     return this.dialog.open(PublishAssetDlgComponent, {
       minWidth: '60em',
       panelClass: 'resizable',
-      data: asset
+      data: asset,
     });
   }
 
@@ -229,7 +230,7 @@ export class AssetsComponent implements OnInit {
   private handleDownloadError(): void {
     this.currentLoadingType = LoadingType.NotLoading;
 
-        // show error message
+    // show error message
     this.uiService.showSuccessMessage('dataManagement.buckets.assets.downloadAssetErrorText');
   }
 
@@ -243,10 +244,10 @@ export class AssetsComponent implements OnInit {
   }
 }
 
-export enum LoadingType {
+enum LoadingType {
   NotLoading = 'NOT_LOADING',
   UploadingAsset = 'UPLOADING_ASSET',
   DeletingAsset = 'DELETING_ASSET',
   GeneratingKeys = 'GENERATING_KEYS',
-  DownloadingAsset = 'DOWNLOADING_ASSET'
+  DownloadingAsset = 'DOWNLOADING_ASSET',
 }
