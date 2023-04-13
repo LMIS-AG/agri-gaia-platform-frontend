@@ -111,16 +111,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
           this.coopSpacesService.deleteMember(this.coopSpace!.name, member).subscribe({
             next: () => {
               this.memberDatasource.data = this.memberDatasource.data.filter(m => m.id !== member.id);
-              this.uiService.showSuccessMessage(
-                translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
-              );
-              this.currentLoadingType = LoadingType.NotLoading;
+              this.handleDeleteMemberSuccess()
             },
             error: () => {
-              this.uiService.showErrorMessage(
-                translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText')
-              );
-              this.currentLoadingType = LoadingType.NotLoading;
+              this.handleDeleteMemberError()
             },
           });
         }
@@ -358,10 +352,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(
       translate('dataManagement.coopSpaces.details.dialog.deleteMemberConfirmationText')
     );
+
+    this.isDeletingMember = false
   }
 
   public handleDeleteMemberError(): void {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.deleteMemberErrorText'));
+
+    this.isDeletingMember = false
   }
 
   private handleUploadSuccess(): void {
@@ -452,7 +450,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public handleDeleteError(err: any): void {
     this.uiService.showErrorMessage(translate('dataManagement.coopSpaces.details.dialog.deleteErrorText') + err.status);
-    this.currentLoadingType = LoadingType.UploadingAsset;
+    this.currentLoadingType = LoadingType.NotLoading;
   }
 
   public openIfFolder(row: FileElement): void {
