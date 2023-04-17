@@ -146,8 +146,8 @@ table {
 
 .upload-button:hover {
   cursor: pointer;
+  background-color: lightgray;
 }
-
 
 .more_vert_class:hover {
   cursor: pointer;
@@ -155,4 +155,35 @@ table {
 
 ::ng-deep.mat-menu-panel {
   min-height: 0px !important;
+}
+
+.navigate-back-button {
+  background-color: white;
+  height: 30px;
+  width: 40px;
+  border: 2px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navigate-back-button:hover:not([disabled]) {
+  background-color: lightgray;
+}
+
+.navigate-back-button:disabled {
+  cursor: default;
+  background-color: transparent;
+}
+
+.subfolder-hover:hover {
+  cursor: pointer;
+}
+
+.row:hover {
+  background-color: lightgray;
+}
+
+.folder-icon {
+  margin-top: -2px;
+  margin-right: 5px;
 }

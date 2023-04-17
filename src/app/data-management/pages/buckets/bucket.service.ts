@@ -17,8 +17,9 @@ export class BucketService {
     return this.http.get<Bucket[]>(environment.backend.url + '/buckets');
   }
 
-  public getAssetsByBucketName(name: string): Observable<GeneralPurposeAsset[]> {
-    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/assets`);
+  public getAssetsByBucketName(name: string, folder: string): Observable<GeneralPurposeAsset[]> {
+    const base64encodedFolderName = btoa(folder);
+    return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/${base64encodedFolderName}`);
   }
 
   public publishAsset(bucket: string, name: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
@@ -32,21 +33,32 @@ export class BucketService {
   }
 
   public downloadAsset(bucket: string, name: string): Observable<Blob> {
-    return this.http.post(`${environment.backend.url}/buckets/download/${bucket}/${name}`, {bucket, name}, { observe: 'response', responseType: 'blob' }).pipe(
+    const base64EncodedFileName = btoa(name)
+    return this.http.post(`${environment.backend.url}/buckets/downloadAsset/${bucket}/${base64EncodedFileName}`, {bucket, name}, { observe: 'response', responseType: 'blob' }).pipe(
       map((response: HttpResponse<Blob>) => (response.body as Blob))
     );
   }
 
+  public downloadFolder(bucket: string, folderName: string): Observable<Blob> {
+    const base64EncodedFolderName = btoa(folderName)
+
+    return this.http.post(`${environment.backend.url}/buckets/downloadFolder/${bucket}/${base64EncodedFolderName}`, {bucket, folderName}, { observe: 'response', responseType: 'blob' }).pipe(
+      map((response: HttpResponse<Blob>) => (response.body as Blob))
+    );
+  }
 
   public deleteAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${name}`,  { observe: 'response' });
+    const base64EncodedFileName = btoa(name);
+    return this.http.delete(`${environment.backend.url}/buckets/delete/${bucket}/${base64EncodedFileName}`, {
+      observe: 'response',
+    });
   }
 
   public getKeysAndToken(): Observable<STSRequest> {
     return this.http.get<STSRequest>(`${environment.backend.url}/buckets/sts`);
   }
 
-  public buildFormDataAndUploadAssets(event: any, bucket: string): Observable<HttpEvent<Object>> {
+  public buildFormDataAndUploadAssets(event: any, bucket: string, currentRoot: string): Observable<HttpEvent<Object>> {
     const filesToUpload: File[] = event.target.files;
 
     const formData = new FormData();
@@ -56,12 +68,19 @@ export class BucketService {
         formData.append('files', file);
       }
     }
-    return this.uploadAssets(bucket, formData).pipe(finalize(() => this.reset()));
+    return this.uploadAssets(bucket, currentRoot, formData).pipe(finalize(() => this.reset()));
   }
 
-  private uploadAssets(bucket: string, formData: FormData): Observable<HttpEvent<Object>> {
+  private uploadAssets(bucket: string, currentRoot: string, formData: FormData): Observable<HttpEvent<Object>> {
+    let base64encodedFolderName;
+    // simple trick in order to avoid sending the post request with '/' as the last character, not pretty but it works
+    if (currentRoot === '') {
+      base64encodedFolderName = 'default';
+    } else {
+      base64encodedFolderName = btoa(currentRoot);
+    }
     return this.http
-      .post(`${environment.backend.url}/buckets/upload/${bucket}`, formData, {
+      .post(`${environment.backend.url}/buckets/upload/${bucket}/${base64encodedFolderName}`, formData, {
         reportProgress: true,
         observe: 'events',
       })
