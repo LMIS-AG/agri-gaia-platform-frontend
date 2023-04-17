@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CoopSpace } from 'src/app/shared/model/coop-spaces';
@@ -28,8 +28,8 @@ export class CoopSpacesService {
     return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/members`);
   }
 
-  public getMembersOfCoopSpace(id: number): Observable<Member[]> {
-    return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/${id}/members`);
+  public getMembersOfCoopSpace(name: string): Observable<Member[]> {
+    return this.http.get<Member[]>(`${environment.backend.url}/coopspaces/${name}/members`);
   }
 
   public getValidCompanyNames(): Observable<string[]> {
