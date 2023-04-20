@@ -50,8 +50,8 @@ export class CoopSpacesService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/coopspaces/${id}/${base64encodedFolderName}`);
   }
 
-  public addMember(coopSpaceId: Number, member: Member[]): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMember`, { coopSpaceId, member });
+  public addMember(coopSpaceId: Number, coopSpaceName: string, memberList: Member[]): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/addMembers`, { coopSpaceName, memberList });
   }
 
   public deleteMember(coopSpaceName: String, member: Member): Observable<void> {

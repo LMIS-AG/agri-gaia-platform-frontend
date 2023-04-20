@@ -286,7 +286,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public addMember(membersSelected: Member[]): void {
     this.isAddingMember = true;
-    this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
+    this.coopSpacesService.addMember(this.coopSpace?.id!, this.coopSpace?.name!, membersSelected).subscribe({
       complete: () => {
         this.reloadMembersListAndUpdateMembersDataSource();
         this.uiService.showSuccessMessage(
