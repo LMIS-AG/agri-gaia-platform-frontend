@@ -68,7 +68,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
           this.coopSpacesService.getCoopSpaceById(id).pipe(
             tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
-              this.coopSpacesService.getAssets(coopSpace.id!, '').pipe(map(assets => ({coopSpace, assets})))
+              this.coopSpacesService.getAssets(coopSpace.name!, '').pipe(map(assets => ({coopSpace, assets})))
             )
           )
         )
@@ -222,7 +222,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         if (!userConfirmed) return;
         this.currentLoadingType = LoadingType.DeletingAsset;
         this.coopSpacesService
-          .getAssets(this.coopSpace?.id!, folder)
+          .getAssets(this.coopSpace?.name!, folder)
           .pipe(map(assets => ({coopSpace, assets})))
           .subscribe(result => {
             const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
@@ -375,7 +375,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
     if (this.bucket) {
       this.coopSpacesService
-        .getAssets(this.coopSpace?.id!, '')
+        .getAssets(this.coopSpace?.name!, '')
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
@@ -429,7 +429,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .filter(fileElement => fileElement.asset!.name !== deletedElementName);
 
     // Update the view by reloading all elements based on the given condition
-    this.coopSpacesService.getAssets(this.coopSpace?.id!, '').subscribe(assets => {
+    this.coopSpacesService.getAssets(this.coopSpace?.name!, '').subscribe(assets => {
       this.assetsInBucket = assets.filter(asset => {
         // Check if the asset is not part of the deleted element or its sub-folders
         return !asset.name.startsWith(deletedElementName + '/');

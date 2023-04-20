@@ -73,7 +73,9 @@ export class CoopSpacesComponent implements OnInit {
   }
 
   public onDelete(selectedCoopSpace: CoopSpace): void {
-    this.coopSpacesService.getAssets(selectedCoopSpace.id!, '').subscribe(assets => {
+    const coopSpaceName = selectedCoopSpace.name
+    if (coopSpaceName == null) throw Error("coopSpaceName was null")
+    this.coopSpacesService.getAssets(coopSpaceName, '').subscribe(assets => {
       if (assets.length === 0) {
         // No assets found, show confirmation message
         this.uiService
