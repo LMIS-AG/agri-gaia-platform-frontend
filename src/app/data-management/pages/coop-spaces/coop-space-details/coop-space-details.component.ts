@@ -135,8 +135,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
       )
       .subscribe(result => {
         if (result) {
+          let coopSpaceName = this.coopSpace?.name;
+          if (coopSpaceName == null) throw Error("this.coopSpace.name was null")
           // send the necessary data, originalRole must be included for finding the appropriate Keycloak group and deleting the user from it
-          this.coopSpacesService.changeMemberRole(this.coopSpace!.id!, originalRole, member).subscribe({
+          this.coopSpacesService.changeMemberRole(
+            coopSpaceName,
+            originalRole,
+            member,
+          ).subscribe({
             next: () => {
               this.uiService.showSuccessMessage(
                 translate('dataManagement.coopSpaces.details.dialog.changeMemberRoleConfirmationText')
