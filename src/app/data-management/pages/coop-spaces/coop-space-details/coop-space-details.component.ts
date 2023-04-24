@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, filter, forkJoin, map, switchMap, tap } from 'rxjs';
-import { CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole } from 'src/app/shared/model/coop-spaces';
-import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
-import { CoopSpacesService } from '../coop-spaces.service';
-import { Member } from 'src/app/shared/model/member';
-import { UIService } from 'src/app/shared/services/ui.service';
-import { translate } from '@ngneat/transloco';
-import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
-import { AddMembersAfterwardsDlgComponent } from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
-import { MatDialog } from '@angular/material/dialog';
-import { $enum } from 'ts-enum-util';
-import { prettyPrintFileSize } from 'src/app/shared/utils/convert-utils';
-import { BucketService } from '../../buckets/bucket.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MatTableDataSource } from '@angular/material/table';
-import { FileElement } from 'src/app/shared/model/file-element';
-import { DatePipe } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {concatMap, filter, forkJoin, map, switchMap, tap} from 'rxjs';
+import {CoopSpace, CoopSpaceRole, fromStringToCoopSpaceRole} from 'src/app/shared/model/coop-spaces';
+import {GeneralPurposeAsset} from 'src/app/shared/model/general-purpose-asset';
+import {CoopSpacesService} from '../coop-spaces.service';
+import {Member} from 'src/app/shared/model/member';
+import {UIService} from 'src/app/shared/services/ui.service';
+import {translate} from '@ngneat/transloco';
+import {AuthenticationService} from 'src/app/core/authentication/authentication.service';
+import {AddMembersAfterwardsDlgComponent} from './add-members-afterwards-dlg/add-members-afterwards-dlg.component';
+import {MatDialog} from '@angular/material/dialog';
+import {$enum} from 'ts-enum-util';
+import {prettyPrintFileSize} from 'src/app/shared/utils/convert-utils';
+import {BucketService} from '../../buckets/bucket.service';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {MatTableDataSource} from '@angular/material/table';
+import {FileElement} from 'src/app/shared/model/file-element';
+import {DatePipe} from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -56,18 +56,19 @@ export class CoopSpaceDetailsComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private bucketService: BucketService,
     private datePipe: DatePipe
-  ) {}
+  ) {
+  }
 
   public ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        filter(paramMap => paramMap.has('id')),
-        map(paramMap => parseInt(paramMap.get('id')!, 10)),
-        switchMap(id =>
-          this.coopSpacesService.getCoopSpaceById(id).pipe(
+        filter(paramMap => paramMap.has('name')),
+        map(paramMap => paramMap.get('name')!),
+        switchMap(name =>
+          this.coopSpacesService.getCoopSpaceByName(name).pipe(
             tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
-              this.coopSpacesService.getAssets(coopSpace.id!, '').pipe(map(assets => ({ coopSpace, assets })))
+              this.coopSpacesService.getAssets(coopSpace.name!, '').pipe(map(assets => ({coopSpace, assets})))
             )
           )
         )
@@ -134,8 +135,14 @@ export class CoopSpaceDetailsComponent implements OnInit {
       )
       .subscribe(result => {
         if (result) {
+          let coopSpaceName = this.coopSpace?.name;
+          if (coopSpaceName == null) throw Error("this.coopSpace.name was null")
           // send the necessary data, originalRole must be included for finding the appropriate Keycloak group and deleting the user from it
-          this.coopSpacesService.changeMemberRole(this.coopSpace!.id!, originalRole, member).subscribe({
+          this.coopSpacesService.changeMemberRole(
+            coopSpaceName,
+            originalRole,
+            member,
+          ).subscribe({
             next: () => {
               this.uiService.showSuccessMessage(
                 translate('dataManagement.coopSpaces.details.dialog.changeMemberRoleConfirmationText')
@@ -215,8 +222,8 @@ export class CoopSpaceDetailsComponent implements OnInit {
         if (!userConfirmed) return;
         this.currentLoadingType = LoadingType.DeletingAsset;
         this.coopSpacesService
-          .getAssets(this.coopSpace?.id!, folder)
-          .pipe(map(assets => ({ coopSpace, assets })))
+          .getAssets(this.coopSpace?.name!, folder)
+          .pipe(map(assets => ({coopSpace, assets})))
           .subscribe(result => {
             const deleteAssetObservables = result.assets.map(assetToBeDeleted =>
               this.bucketService.deleteAsset(bucket!, `${assetToBeDeleted.name}`)
@@ -246,7 +253,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.bucketService.downloadAsset(bucket, this.currentRoot + element.name).subscribe({
       next: data => {
         // create a blob object from the API response
-        let blob = new Blob([data], { type: 'application/octet-stream' });
+        let blob = new Blob([data], {type: 'application/octet-stream'});
 
         this.createDownloadURL(blob, element.name);
         this.handleDownloadSuccess();
@@ -263,7 +270,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.bucketService.downloadFolder(bucket, this.currentRoot + element.name).subscribe({
       next: data => {
         // create a blob object from the API response
-        let blob = new Blob([data], { type: 'application/zip' });
+        let blob = new Blob([data], {type: 'application/zip'});
 
         this.createDownloadURL(blob, element.name);
         this.handleDownloadSuccess();
@@ -285,7 +292,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
 
   public addMember(membersSelected: Member[]): void {
     this.isAddingMember = true;
-    this.coopSpacesService.addMember(this.coopSpace?.id!, membersSelected).subscribe({
+    this.coopSpacesService.addMember(this.coopSpace?.id!, this.coopSpace?.name!, membersSelected).subscribe({
       complete: () => {
         this.reloadMembersListAndUpdateMembersDataSource();
         this.uiService.showSuccessMessage(
@@ -301,12 +308,11 @@ export class CoopSpaceDetailsComponent implements OnInit {
   }
 
   private reloadMembersListAndUpdateMembersDataSource(): void {
-    const currentCoopSpaceId = this.coopSpace?.id!;
-    if (currentCoopSpaceId) {
-      this.coopSpacesService
-        .getMembersOfCoopSpace(currentCoopSpaceId)
-        .subscribe(members => (this.memberDatasource.data = members));
-    }
+    const coopSpaceName = this.coopSpace?.name;
+    if (coopSpaceName == null) throw Error("coopSpaceName was null")
+    this.coopSpacesService
+      .getMembersOfCoopSpace(coopSpaceName)
+      .subscribe(members => (this.memberDatasource.data = members));
   }
 
   public openAddMembersAfterwardsDialog(): void {
@@ -325,6 +331,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       dialogRef.close(); // close the dialog when the user clicks on cancel
     });
   }
+
   public getUserRole(): CoopSpaceRole | undefined {
     let member = this.coopSpace?.members.find(m => m.username === this.userName);
     if (member === undefined) return undefined;
@@ -368,7 +375,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
     this.uiService.showSuccessMessage(translate('dataManagement.coopSpaces.details.dialog.uploadedFile'));
     if (this.bucket) {
       this.coopSpacesService
-        .getAssets(this.coopSpace?.id!, '')
+        .getAssets(this.coopSpace?.name!, '')
         .pipe(untilDestroyed(this))
         .subscribe(assets => this.prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets));
     }
@@ -422,7 +429,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
       .filter(fileElement => fileElement.asset!.name !== deletedElementName);
 
     // Update the view by reloading all elements based on the given condition
-    this.coopSpacesService.getAssets(this.coopSpace?.id!, '').subscribe(assets => {
+    this.coopSpacesService.getAssets(this.coopSpace?.name!, '').subscribe(assets => {
       this.assetsInBucket = assets.filter(asset => {
         // Check if the asset is not part of the deleted element or its sub-folders
         return !asset.name.startsWith(deletedElementName + '/');
