@@ -37,7 +37,7 @@ const routes: Routes = [
     component: BucketsComponent,
   },
   {
-    path: 'coop-spaces/:id',
+    path: 'coop-spaces/:name',
     component: CoopSpaceDetailsComponent,
   },
   {

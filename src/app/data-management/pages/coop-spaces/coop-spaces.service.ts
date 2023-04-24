@@ -17,8 +17,8 @@ export class CoopSpacesService {
     return this.http.get<CoopSpace[]>(environment.backend.url + '/coopspaces');
   }
 
-  public getCoopSpaceById(id: number): Observable<CoopSpace> {
-    return this.http.get<CoopSpace>(`${environment.backend.url}/coopspaces/${id}`);
+  public getCoopSpaceByName(name: string): Observable<CoopSpace> {
+    return this.http.get<CoopSpace>(`${environment.backend.url}/coopspaces/${name}`);
   }
 
   public create(coopSpace: CoopSpace): Observable<CoopSpace> {

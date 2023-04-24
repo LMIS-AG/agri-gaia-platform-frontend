@@ -62,10 +62,10 @@ export class CoopSpaceDetailsComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        filter(paramMap => paramMap.has('id')),
-        map(paramMap => parseInt(paramMap.get('id')!, 10)),
-        switchMap(id =>
-          this.coopSpacesService.getCoopSpaceById(id).pipe(
+        filter(paramMap => paramMap.has('name')),
+        map(paramMap => paramMap.get('name')!),
+        switchMap(name =>
+          this.coopSpacesService.getCoopSpaceByName(name).pipe(
             tap(coopSpace => (this.memberDatasource.data = coopSpace.members)),
             concatMap(coopSpace =>
               this.coopSpacesService.getAssets(coopSpace.name!, '').pipe(map(assets => ({coopSpace, assets})))
