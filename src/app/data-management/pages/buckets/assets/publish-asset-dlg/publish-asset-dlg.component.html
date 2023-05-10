@@ -31,8 +31,22 @@
             <br />
             <mat-form-field appearance="fill" color="primary" class="bg">
               <mat-label>{{ t('fields.version') }}</mat-label>
-              <input matInput formControlName="version" />
+              <input matInput formControlName="version"/>
               <mat-hint>{{ t('fields.infoVersion') }}</mat-hint>
+            </mat-form-field>
+            <br/>
+
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.policyName') }}</mat-label>
+              <mat-select formControlName="policyName" required>
+                <mat-option *ngFor="let policyName of policyNames" [value]="policyName">
+                  {{ policyName }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="firstPage.controls['policyName'].hasError('required')">{{
+                tCommon('required')
+                }}</mat-error>
+              <mat-hint>{{ t('fields.infoPolicyName') }}</mat-hint>
             </mat-form-field>
             <br />
           </div>

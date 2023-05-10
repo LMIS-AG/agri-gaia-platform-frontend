@@ -16,7 +16,7 @@ export class PoliciesComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private policyService: PolicyService) {}
 
   public ngOnInit(): void {
-    this.policyService.getAll().subscribe(policies => {
+    this.policyService.getAllPolicies().subscribe(policies => {
       this.dataSource = policies;
     });
   }

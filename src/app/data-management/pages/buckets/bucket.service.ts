@@ -22,8 +22,8 @@ export class BucketService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/${base64encodedFolderName}`);
   }
 
-  public publishAsset(bucket: string, name: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/assets/publish/${bucket}/${name}`, asset, {
+  public publishAsset(bucketName: string, assetName: string, policyName: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
+    return this.http.post(`${environment.backend.url}/assets/publish/${bucketName}/${assetName}/${policyName}`, asset, {
       observe: 'response',
     });
   }

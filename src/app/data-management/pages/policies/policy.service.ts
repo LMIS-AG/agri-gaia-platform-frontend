@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Policy, PolicyType } from 'src/app/shared/model/policy';
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../../environments/environment";
 
 // MOCK DATA ! TODO remove later when fetching data from extern
 const MOCK_DATA: Policy[] = [
@@ -24,9 +26,12 @@ const MOCK_DATA: Policy[] = [
 export class PolicyService {
   private mockData: Policy[] = MOCK_DATA;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  public getAll(): Observable<Policy[]> {
-    return of(this.mockData);
+  public getAllPolicies(): Observable<Policy[]> {
+   return of(this.mockData)
+  }
+  public getAllPolicyNames(bucketName: string): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.backend.url}/assets/policies/${bucketName}`)
   }
 }
