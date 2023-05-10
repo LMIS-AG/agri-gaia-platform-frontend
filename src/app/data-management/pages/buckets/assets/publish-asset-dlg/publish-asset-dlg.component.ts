@@ -1,19 +1,19 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { map, Observable, of, startWith } from 'rxjs';
-import { AssetType } from 'src/app/shared/model/asset-type';
-import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
-import { UIService } from 'src/app/shared/services/ui.service';
-import { $enum } from 'ts-enum-util';
-import { ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FileService } from 'src/app/shared/services/file.service';
-import { DateAdapter } from '@angular/material/core';
-import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
-import { BucketService } from '../../bucket.service';
-import { translate } from '@ngneat/transloco';
+import {Component, ElementRef, Inject, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {map, Observable, of, startWith} from 'rxjs';
+import {AssetType} from 'src/app/shared/model/asset-type';
+import {GeneralPurposeAsset} from 'src/app/shared/model/general-purpose-asset';
+import {UIService} from 'src/app/shared/services/ui.service';
+import {$enum} from 'ts-enum-util';
+import {ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {FileService} from 'src/app/shared/services/file.service';
+import {DateAdapter} from '@angular/material/core';
+import {PublishableAsset} from 'src/app/shared/model/publishable-asset';
+import {BucketService} from '../../bucket.service';
+import {translate} from '@ngneat/transloco';
 
 @Component({
   selector: 'app-publish-asset-dlg',
@@ -100,7 +100,7 @@ export class PublishAssetDlgComponent {
     const value = control.value;
     if (!value) return null;
 
-    const validLat = /(\+|-)?[0-9]{1,2}(\.|,)[0-9]+/;
+    const validLat = /([+\-])?[0-9]{1,2}([.,])[0-9]+/;
     return validLat.test(value)
       ? null
       : {
@@ -112,7 +112,7 @@ export class PublishAssetDlgComponent {
     const value = control.value;
     if (!value) return null;
 
-    const validLong = /(\+|-)?[0-9]{1,2}(\.|,)[0-9]+/;
+    const validLong = /([+\-])?[0-9]{1,2}([.,])[0-9]+/;
     return validLong.test(value)
       ? null
       : {
@@ -137,8 +137,7 @@ export class PublishAssetDlgComponent {
 
   private initAllKeywords(): void {
     this.fileService.getAgrovocKeywordsFromFile().subscribe(data => {
-      const words = data.split(/\r?\n/);
-      this.allKeywords = words;
+      this.allKeywords = data.split(/\r?\n/);
     });
   }
 
