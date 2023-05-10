@@ -101,6 +101,8 @@
             "infoDescription": "Geben Sie hier eine längere Beschreibung Ihres Assets an",
             "version": "Version",
             "infoVersion": "Geben Sie hier die Version Ihres Assets an",
+            "policyName": "Policy",
+            "infoPolicyName": "Wählen Sie die Policy aus unter der Sie ihr Asset veröffentlichen",
             "agrovoc": "Agrovoc-Keywords",
             "infoAgrovoc": "Geben Sie hier Agrovoc-Keywords für Ihr Asset an",
             "assetType": {

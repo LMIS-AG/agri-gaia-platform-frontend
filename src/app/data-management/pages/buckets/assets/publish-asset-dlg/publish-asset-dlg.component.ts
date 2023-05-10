@@ -1,19 +1,21 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { map, Observable, of, startWith } from 'rxjs';
-import { AssetType } from 'src/app/shared/model/asset-type';
-import { GeneralPurposeAsset } from 'src/app/shared/model/general-purpose-asset';
-import { UIService } from 'src/app/shared/services/ui.service';
-import { $enum } from 'ts-enum-util';
-import { ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FileService } from 'src/app/shared/services/file.service';
-import { DateAdapter } from '@angular/material/core';
-import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
-import { BucketService } from '../../bucket.service';
-import { translate } from '@ngneat/transloco';
+import {Component, ElementRef, Inject, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {map, Observable, of, startWith} from 'rxjs';
+import {AssetType} from 'src/app/shared/model/asset-type';
+import {GeneralPurposeAsset} from 'src/app/shared/model/general-purpose-asset';
+import {UIService} from 'src/app/shared/services/ui.service';
+import {$enum} from 'ts-enum-util';
+import {ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {FileService} from 'src/app/shared/services/file.service';
+import {DateAdapter} from '@angular/material/core';
+import {PublishableAsset} from 'src/app/shared/model/publishable-asset';
+import {BucketService} from '../../bucket.service';
+import {translate} from '@ngneat/transloco';
+import {PolicyService} from "../../../policies/policy.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-publish-asset-dlg',
@@ -25,6 +27,7 @@ export class PublishAssetDlgComponent {
   public assetType = AssetType;
   public formGroup!: FormGroup;
   public assetTypes: AssetType[] = $enum(AssetType).getValues();
+  public policyNames!: string[];
 
   // chips
   public separatorKeysCodes: number[] = [ENTER]; // TODO what happens if enter is removed? kann man dann nur noch aus den Vorschlägen selecten? wäre gut.
@@ -43,9 +46,12 @@ export class PublishAssetDlgComponent {
     private formBuilder: FormBuilder,
     private fileService: FileService,
     private bucketService: BucketService,
+    private policyService: PolicyService,
+    private router: Router,
     private _adapter: DateAdapter<any>
   ) {
     this.initAllKeywords();
+    this.initPolicyNames();
     this.initFormGroup();
 
     if (asset) {
@@ -80,6 +86,7 @@ export class PublishAssetDlgComponent {
       name: ['', Validators.required],
       description: [''],
       version: [''],
+      policyName: ['', Validators.required],
     });
 
     const secondPage = this.formBuilder.group(
@@ -100,7 +107,7 @@ export class PublishAssetDlgComponent {
     const value = control.value;
     if (!value) return null;
 
-    const validLat = /(\+|-)?[0-9]{1,2}(\.|,)[0-9]+/;
+    const validLat = /([+\-])?[0-9]{1,2}([.,])[0-9]+/;
     return validLat.test(value)
       ? null
       : {
@@ -112,7 +119,7 @@ export class PublishAssetDlgComponent {
     const value = control.value;
     if (!value) return null;
 
-    const validLong = /(\+|-)?[0-9]{1,2}(\.|,)[0-9]+/;
+    const validLong = /([+\-])?[0-9]{1,2}([.,])[0-9]+/;
     return validLong.test(value)
       ? null
       : {
@@ -137,9 +144,14 @@ export class PublishAssetDlgComponent {
 
   private initAllKeywords(): void {
     this.fileService.getAgrovocKeywordsFromFile().subscribe(data => {
-      const words = data.split(/\r?\n/);
-      this.allKeywords = words;
+      this.allKeywords = data.split(/\r?\n/);
     });
+  }
+
+  private initPolicyNames(): void {
+    let url: string = this.router.url
+    let bucketName: string = url.substring(url.lastIndexOf('/') + 1);
+    this.policyService.getAllPolicyNames(bucketName).subscribe(policyNames => this.policyNames = policyNames)
   }
 
   public cancel(): void {
@@ -160,6 +172,7 @@ export class PublishAssetDlgComponent {
     const firstPageCtrl = this.firstPage.controls;
     const secondPageCtrl = this.secondPage.controls;
 
+    const policyName: string = firstPageCtrl.policyName.value;
     const assetToPublish: PublishableAsset = {
       // information from dialog page 1
       assetPropId: firstPageCtrl.id.value,
@@ -187,7 +200,7 @@ export class PublishAssetDlgComponent {
       dataAddressRegion: 'us-east-1',
     };
 
-    this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, assetToPublish).subscribe({
+    this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, policyName, assetToPublish).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
         // Emit a boolean result indicating success
