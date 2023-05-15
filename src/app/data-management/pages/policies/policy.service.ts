@@ -8,15 +8,53 @@ import {environment} from "../../../../environments/environment";
 const MOCK_DATA: Policy[] = [
   {
     id: 1,
-    name: 'Data Policy for Confidential Data',
+    name: "Vertrags-Policy 1",
     type: PolicyType.Contract,
-    inUse: false,
   },
   {
     id: 2,
-    name: 'Data Policy for Non-Confidential Data',
+    name: "Vertrags-Policy 2",
+    type: PolicyType.Contract,
+  },
+  {
+    id: 3,
+    name: "Vertrags-Policy 3",
+    type: PolicyType.Contract,
+  },
+  {
+    id: 4,
+    name: "Vertrags-Policy 4",
+    type: PolicyType.Contract,
+  },
+  {
+    id: 5,
+    name: "Vertrags-Policy 5",
+    type: PolicyType.Contract,
+  },
+  {
+    id: 6,
+    name: "Zugriffs-Policy 1",
     type: PolicyType.Access,
-    inUse: true,
+  },
+  {
+    id: 7,
+    name: "Zugriffs-Policy 2",
+    type: PolicyType.Access,
+  },
+  {
+    id: 8,
+    name: "Zugriffs-Policy 3",
+    type: PolicyType.Access,
+  },
+  {
+    id: 9,
+    name: "Zugriffs-Policy 4",
+    type: PolicyType.Access,
+  },
+  {
+    id: 10,
+    name: "Zugriffs-Policy 5",
+    type: PolicyType.Access,
   },
 ];
 
