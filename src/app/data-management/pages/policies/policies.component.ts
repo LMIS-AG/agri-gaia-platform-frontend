@@ -10,7 +10,7 @@ import { PolicyService } from './policy.service';
   styleUrls: ['./policies.component.scss'],
 })
 export class PoliciesComponent implements OnInit {
-  public displayedColumns: string[] = ['name', 'type', 'inUse', 'more'];
+  public displayedColumns: string[] = ['name', 'type', 'more'];
   public dataSource: Policy[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private policyService: PolicyService) {}
