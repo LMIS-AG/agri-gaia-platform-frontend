@@ -149,9 +149,8 @@ export class PublishAssetDlgComponent {
   }
 
   private initPolicyNames(): void {
-    let url: string = this.router.url
-    let bucketName: string = url.substring(url.lastIndexOf('/') + 1);
-    this.policyService.getAllPolicyNames(bucketName).subscribe(policyNames => this.policyNames = policyNames)
+    this.policyService.getAllPolicies()
+      .subscribe(policies => this.policyNames = policies.map(p => p.name))
   }
 
   public cancel(): void {

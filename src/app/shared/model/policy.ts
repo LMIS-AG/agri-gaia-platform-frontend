@@ -1,7 +1,7 @@
 export interface Policy {
   id?: number;
   name: string;
-  type: PolicyType;
+  policyType: PolicyType;
 }
 
 export enum PolicyType {
