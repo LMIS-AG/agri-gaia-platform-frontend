@@ -97,10 +97,10 @@ export class PublishAssetDlgComponent {
         latitude: ['', [this.validLatitudeOrEmpty]],
         longitude: ['', [this.validLongitudeOrEmpty]],
       },
-      { validators: [this.requireLatitudeAndLongitude] }
+      {validators: [this.requireLatitudeAndLongitude]}
     );
 
-    this.formGroup = this.formBuilder.group({ firstPage: firstPage, secondPage: secondPage });
+    this.formGroup = this.formBuilder.group({firstPage: firstPage, secondPage: secondPage});
   }
 
   private validLatitudeOrEmpty(control: FormControl): ValidationErrors | null {
@@ -111,8 +111,8 @@ export class PublishAssetDlgComponent {
     return validLat.test(value)
       ? null
       : {
-          invalidLatitude: { valid: false },
-        };
+        invalidLatitude: {valid: false},
+      };
   }
 
   private validLongitudeOrEmpty(control: FormControl): ValidationErrors | null {
@@ -123,8 +123,8 @@ export class PublishAssetDlgComponent {
     return validLong.test(value)
       ? null
       : {
-          invalidLongitude: { valid: false },
-        };
+        invalidLongitude: {valid: false},
+      };
   }
 
   private requireLatitudeAndLongitude(control: FormControl): ValidationErrors | null {
@@ -136,7 +136,7 @@ export class PublishAssetDlgComponent {
     }
 
     if ((latitude && !longitude) || (!latitude && longitude)) {
-      return { requireLatitudeAndLongitude: true };
+      return {requireLatitudeAndLongitude: true};
     }
 
     return null;
@@ -237,6 +237,7 @@ export class PublishAssetDlgComponent {
   public canAndShouldSave(): boolean {
     return !this.formGroup.invalid && this.formGroup.dirty;
   }
+
   public canGoToSecondPage(): boolean {
     return !this.firstPage.invalid && this.firstPage.dirty;
   }
