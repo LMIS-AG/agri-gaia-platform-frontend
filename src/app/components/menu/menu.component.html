@@ -44,8 +44,8 @@
         <span *ngIf="isMenuOpen">{{ t('gettingStarted') }}</span>
         <img *ngIf="isMenuOpen" src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
       </a>
-      <a mat-list-item routerLink="data/asset-management" routerLinkActive="active-link">
-        <img src="/assets/icons/icons8-data.svg" class="menu-svg-icon" />
+      <a mat-list-item routerLink="data/asset-management/{{this.userBucketName}}" routerLinkActive="active-link">
+        <img ngSrc="/assets/icons/icons8-data.svg" class="menu-svg-icon" height="24" width="24"/>
         <span *ngIf="isMenuOpen">{{ t('dataManagement') }}</span>
       </a>
       <a mat-list-item routerLink="data/coop-spaces" routerLinkActive="active-link">
@@ -61,7 +61,8 @@
       </a>
       <a mat-list-item href="http://marktplatz.platform.agri-gaia.com/catalog-browser" target="_blank">
         <mat-icon>storefront</mat-icon> <span *ngIf="isMenuOpen">{{ t('marketplace') }}</span>
-        <img *ngIf="isMenuOpen" src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
+        <img *ngIf="isMenuOpen" ngSrc="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon"
+             height="18" width="18"/>
       </a>
       <!--<a
         mat-list-item
