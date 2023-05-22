@@ -1,11 +1,10 @@
 export interface Policy {
   id?: number;
   name: string;
-  type: PolicyType;
-  inUse: boolean;
+  policyType: PolicyType;
 }
 
 export enum PolicyType {
-  Contract = 'CONTRACT',
-  Access = 'ACCESS',
+  Contract = "CONTRACT",
+  Access = "ACCESS",
 }

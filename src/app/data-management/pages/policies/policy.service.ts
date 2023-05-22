@@ -1,37 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Policy, PolicyType } from 'src/app/shared/model/policy';
-import {HttpClient} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Policy} from 'src/app/shared/model/policy';
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
-
-// MOCK DATA ! TODO remove later when fetching data from extern
-const MOCK_DATA: Policy[] = [
-  {
-    id: 1,
-    name: 'Data Policy for Confidential Data',
-    type: PolicyType.Contract,
-    inUse: false,
-  },
-  {
-    id: 2,
-    name: 'Data Policy for Non-Confidential Data',
-    type: PolicyType.Access,
-    inUse: true,
-  },
-];
 
 @Injectable({
   providedIn: 'root',
 })
 export class PolicyService {
-  private mockData: Policy[] = MOCK_DATA;
 
   constructor(private http: HttpClient) {}
 
   public getAllPolicies(): Observable<Policy[]> {
-   return of(this.mockData)
+    return this.http.get<Policy[]>(`${environment.backend.url}/edc/policies`)
   }
-  public getAllPolicyNames(bucketName: string): Observable<string[]> {
-    return this.http.get<string[]>(`${environment.backend.url}/assets/policies/${bucketName}`)
+
+  public deletePolicy(policyName: string): Observable<HttpResponse<unknown>> {
+    return this.http.delete(`${environment.backend.url}/edc/policies/${policyName}`,
+      {observe: 'response'});
   }
 }

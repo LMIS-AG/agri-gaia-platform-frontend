@@ -16,6 +16,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslocoRootModule } from './transloco/transloco-root.module';
 import {environment} from "../environments/environment";
+import {NgOptimizedImage} from "@angular/common";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -31,21 +32,22 @@ function initializeKeycloak(keycloak: KeycloakService) {
 
 @NgModule({
   declarations: [AppComponent, ToolbarComponent, MenuComponent],
-  imports: [
-    SharedModule,
-    BrowserModule,
-    AppRoutingModule,
-    KeycloakAngularModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    TranslocoRootModule,
-    HotToastModule.forRoot(),
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatTooltipModule,
-    MatInputModule,
-  ],
+    imports: [
+        SharedModule,
+        BrowserModule,
+        AppRoutingModule,
+        KeycloakAngularModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        TranslocoRootModule,
+        HotToastModule.forRoot(),
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule,
+        MatTooltipModule,
+        MatInputModule,
+        NgOptimizedImage,
+    ],
   providers: [
     {
       provide: APP_INITIALIZER,

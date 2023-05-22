@@ -19,16 +19,10 @@
         <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
-      <!-- Company Column -->
+      <!-- Policy Type Column -->
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef>{{ tTable('type') }}</th>
-        <td mat-cell *matCellDef="let element">{{ tTable(element.type) }}</td>
-      </ng-container>
-
-      <!-- InUse Column -->
-      <ng-container matColumnDef="inUse">
-        <th mat-header-cell *matHeaderCellDef>{{ tTable('inUse') }}</th>
-        <td mat-cell *matCellDef="let element">{{ tTable(element.inUse) }}</td>
+        <td mat-cell *matCellDef="let element">{{ tTable(element.policyType) }}</td>
       </ng-container>
 
       <!-- More Column -->
@@ -39,7 +33,7 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button class="delete-button" (click)="onDelete()" mat-menu-item>
+            <button class="delete-button" (click)="onDelete(element.name)" mat-menu-item>
               <mat-icon aria-hidden="false" aria-label="Mail">delete</mat-icon>
               {{ tCommon('delete') }}
             </button>

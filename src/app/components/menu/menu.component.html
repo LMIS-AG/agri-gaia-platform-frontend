@@ -14,7 +14,7 @@
           fxLayoutAlign="start center"
           fxLayoutGap="10px"
         >
-          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
+          <img class="image" ngSrc="/assets/dummy_avatar_hank_scorpio.png" height="128" width="128"/>
           <div fxLayout="column">
             <div class="name">{{ this.profile?.firstName }} {{ this.profile?.lastName }}</div>
             <div class="email">{{ this.profile?.email }}</div>
@@ -27,7 +27,7 @@
 
       <div *ngIf="!isMenuOpen" class="collapsed-menu-logout" fxLayout="column">
         <a style="pointer-events: none" routerLink="#" routerLinkActive="active-link" fxFlex="grow">
-          <img class="image" src="/assets/dummy_avatar_hank_scorpio.png" />
+          <img class="image" ngSrc="/assets/dummy_avatar_hank_scorpio.png" height="128" width="128"/>
         </a>
         <button mat-icon-button (click)="logout()" [matTooltip]="tCommon('logout')">
           <mat-icon>logout</mat-icon>
@@ -44,12 +44,15 @@
         <span *ngIf="isMenuOpen">{{ t('gettingStarted') }}</span>
         <img *ngIf="isMenuOpen" src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
       </a>
-      <a mat-list-item routerLink="data/asset-management" routerLinkActive="active-link">
-        <img src="/assets/icons/icons8-data.svg" class="menu-svg-icon" />
+      <a mat-list-item routerLink="data/asset-management/{{this.userBucketName}}" routerLinkActive="active-link">
+        <img ngSrc="/assets/icons/icons8-data.svg" class="menu-svg-icon" height="24" width="24"/>
         <span *ngIf="isMenuOpen">{{ t('dataManagement') }}</span>
       </a>
       <a mat-list-item routerLink="data/coop-spaces" routerLinkActive="active-link">
         <mat-icon>workspaces</mat-icon> <span *ngIf="isMenuOpen">{{ t('spaces') }}</span>
+      </a>
+      <a mat-list-item routerLink="data/policies" routerLinkActive="active-link">
+        <mat-icon>policy</mat-icon> <span *ngIf="isMenuOpen">{{ t('policies') }}</span>
       </a>
       <a mat-list-item href="https://jupyterhub.platform.agri-gaia.com" target="_blank">
         <mat-icon>model_training</mat-icon>
@@ -58,11 +61,9 @@
       </a>
       <a mat-list-item href="http://marktplatz.platform.agri-gaia.com/catalog-browser" target="_blank">
         <mat-icon>storefront</mat-icon> <span *ngIf="isMenuOpen">{{ t('marketplace') }}</span>
-        <img *ngIf="isMenuOpen" src="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon" />
+        <img *ngIf="isMenuOpen" ngSrc="/assets/icons/icons8-external_link.svg" class="menu-svg-icon suffix-icon"
+             height="18" width="18"/>
       </a>
-      <!--<a mat-list-item routerLink="data/policies" routerLinkActive="active-link">
-        <mat-icon>policy</mat-icon> <span *ngIf="isMenuOpen">{{ t('policies') }}</span>
-      </a>-->
       <!--<a
         mat-list-item
         href="https://harbor.platform.agri-gaia.com/account/sign-in?redirect_url=%2Fharbor%2Fprojects"
