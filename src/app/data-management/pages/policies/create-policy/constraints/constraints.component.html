@@ -10,20 +10,20 @@
     >
       <div *transloco="let tCommon; read: 'common'">
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="property" placeholder="{{ t('property') }}">
-            <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
+          <mat-select formControlName="property" placeholder="{{ t('leftExpression') }}">
+            <mat-option *ngFor="let leftExpression of leftExpressions" [value]="leftExpression">{{ leftExpression }}</mat-option>
           </mat-select>
           <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="operator" placeholder="{{ t('select') }}">
-            <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
+          <mat-select formControlName="operator" placeholder="{{ t('operator') }}">
+            <mat-option *ngFor="let operator of operators" [value]="operator">{{ operator }}</mat-option>
           </mat-select>
           <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="attribute" placeholder="{{ t('attribute') }}">
-            <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
+          <mat-select formControlName="attribute" placeholder="{{ t('rightExpression') }}">
+            <mat-option *ngFor="let rightExpression of rightExpressions" [value]="rightExpression">{{ rightExpression }}</mat-option>
           </mat-select>
           <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>

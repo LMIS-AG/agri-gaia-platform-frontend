@@ -263,9 +263,9 @@
         "duties": "Pflichten",
         "permissions": "Befugnisse",
         "prohibitions": "Verbote",
-        "property": "Eigenschaft",
-        "select": "Auswählen",
-        "attribute": "Attribut",
+        "leftExpression": "linker Ausdruck",
+        "operator": "Operator",
+        "rightExpression": "rechter Ausdruck",
         "addConstraint": "Neue Einschränkung",
         "createPolicy": "Policy erstellen"
       }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,9 +7,9 @@ import { FormArray, FormGroup } from '@angular/forms';
   styleUrls: ['./constraints.component.scss'],
 })
 export class ConstraintsComponent {
-  public propertyOptions: string[] = ['Foward', 'Certification'];
-  public operatorOptions: string[] = ['Equal to =', 'Less than equal <='];
-  public attributeOptions: string[] = ['EU Country ', 'Not Allowed', 'Attribute'];
+  public leftExpressions: string[] = ['Date'];
+  public operators: string[] = ['=', '<', '>', '<=', '>='];
+  public rightExpressions: string[] = ['EU Country ', 'Not Allowed', 'Attribute'];
 
   @Input()
   public formGroup!: FormGroup;
