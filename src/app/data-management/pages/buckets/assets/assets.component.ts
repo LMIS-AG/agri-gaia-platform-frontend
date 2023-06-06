@@ -113,7 +113,7 @@ export class AssetsComponent implements OnInit {
   }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
-    asset.coopSpace = this.bucket!;
+    asset.bucket = this.bucket!;
 
     this.openPublishAssetDialog(asset)
       .afterClosed()

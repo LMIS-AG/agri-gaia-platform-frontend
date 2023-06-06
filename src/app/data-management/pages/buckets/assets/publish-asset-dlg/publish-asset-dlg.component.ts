@@ -190,7 +190,7 @@ export class PublishAssetDlgComponent {
 
       // information from asset
       dataAddressAssetName: this.asset.name,
-      dataAddressBucketName: this.asset.coopSpace,
+      dataAddressBucketName: this.asset.bucket,
       assetPropByteSize: this.transformSizeStringToNumber(),
       dataAddressKeyName: 'assets/' + this.asset.name,
 
@@ -199,7 +199,7 @@ export class PublishAssetDlgComponent {
       dataAddressRegion: 'us-east-1',
     };
 
-    this.bucketService.publishAsset(this.asset.coopSpace, this.asset.name, policyName, assetToPublish).subscribe({
+    this.bucketService.publishAsset(this.asset.bucket, this.asset.name, policyName, assetToPublish).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
         // Emit a boolean result indicating success
