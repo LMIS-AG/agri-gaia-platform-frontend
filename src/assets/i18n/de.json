@@ -87,7 +87,8 @@
           "publish": "Veröffentlichen",
           "delete": "Löschen",
           "size": "Größe",
-          "isPublished": "ist veröffentlicht"
+          "isPublished": "ist veröffentlicht",
+          "hasAssetjson": "hat Metadaten"
         },
         "publishAssetDialog": {
           "headline": "Asset veröffentlichen",
