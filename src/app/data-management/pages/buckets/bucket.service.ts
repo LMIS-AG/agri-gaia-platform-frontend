@@ -23,13 +23,13 @@ export class BucketService {
   }
 
   public publishAsset(bucketName: string, assetName: string, policyName: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/assets/publish/${bucketName}/${assetName}/${policyName}`, asset, {
+    return this.http.post(`${environment.backend.url}/edc/publish/${bucketName}/${assetName}/${policyName}`, asset, {
       observe: 'response',
     });
   }
 
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/assets/unpublish/${bucket}/${name}`, { observe: 'response' });
+    return this.http.delete(`${environment.backend.url}/edc/unpublish/${bucket}/${name}`, { observe: 'response' });
   }
 
   public downloadAsset(bucket: string, name: string): Observable<Blob> {
