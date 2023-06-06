@@ -113,7 +113,6 @@ export class AssetsComponent implements OnInit {
   }
 
   public publishAsset(asset: GeneralPurposeAsset): void {
-    if (!asset) throw Error('asset was null in publishAsset().');
     asset.coopSpace = this.bucket!;
 
     this.openPublishAssetDialog(asset)
@@ -122,8 +121,6 @@ export class AssetsComponent implements OnInit {
         if (result) {
           // The asset was successfully published, disable the publish button and enable the unpublish button
           asset.isPublished = true;
-        } else {
-          // The asset was not published, do nothing
         }
       });
   }
