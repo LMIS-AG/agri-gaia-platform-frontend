@@ -7,9 +7,20 @@
         <div>{{ t('ongoingDeletion') }}</div>
       </div>
     </div>
-    <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="addCoopSpace()">
-      <mat-icon>add</mat-icon>
-    </button>
+    <div *ngIf="isGeneratingKeys" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
+      <mat-spinner [diameter]="35"></mat-spinner>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div>{{ t('ongoingGeneration') }}</div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="openGenerateKeysDialog()">
+        <mat-icon>vpn_key</mat-icon>
+      </button>
+      <button mat-mini-fab class="mat-elevation-z0" color="primary" (click)="addCoopSpace()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
 
   <div *ngIf="dataSource.data.length !== 0">
