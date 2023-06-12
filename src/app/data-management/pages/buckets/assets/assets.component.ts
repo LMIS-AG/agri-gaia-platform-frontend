@@ -160,22 +160,6 @@ export class AssetsComponent implements OnInit {
       });
   }
 
-  public openGenerateKeysDialog(): void {
-    this.currentLoadingType = LoadingType.GeneratingKeys;
-    // Retrieve the keys and the session token using the BucketService
-    this.bucketService.getKeysAndToken().subscribe(result => {
-      this.currentLoadingType = LoadingType.NotLoading;
-      // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
-      this.dialog.open(GenerateKeysDialogComponent, {
-        data: {
-          accessKey: result.accessKey,
-          secretKey: result.secretKey,
-          sessionToken: result.sessionToken,
-        },
-      });
-    });
-  }
-
   private prettyPrintFileSizeOfAssetsAndUpdateDataSource(assets: GeneralPurposeAsset[]): void {
     assets.forEach(asset => {
       // convert the displayed file size
@@ -248,6 +232,5 @@ enum LoadingType {
   NotLoading = 'NOT_LOADING',
   UploadingAsset = 'UPLOADING_ASSET',
   DeletingAsset = 'DELETING_ASSET',
-  GeneratingKeys = 'GENERATING_KEYS',
   DownloadingAsset = 'DOWNLOADING_ASSET',
 }
