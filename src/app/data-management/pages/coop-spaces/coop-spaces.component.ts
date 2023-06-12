@@ -12,7 +12,6 @@ import { UIService } from 'src/app/shared/services/ui.service';
 import { translate } from '@ngneat/transloco';
 import { BucketService } from '../buckets/bucket.service';
 import { CreateCoopSpaceDlgComponent } from './create-coop-space-dlg/create-coop-space-dlg.component';
-import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
 
 @Component({
   selector: 'app-coop-spaces',
@@ -25,7 +24,6 @@ export class CoopSpacesComponent implements OnInit {
 
   public userName: string | undefined;
   public isPerformingDeletion: boolean = false;
-  public isGeneratingKeys: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -57,22 +55,6 @@ export class CoopSpacesComponent implements OnInit {
 
   public isAdmin(id: number): boolean {
     return this.getUserRole(id) === 'ADMIN';
-  }
-
-  public openGenerateKeysDialog(): void {
-    this.isGeneratingKeys = true;
-    // Retrieve the keys and the session token using the BucketService
-    this.bucketService.getKeysAndToken().subscribe(result => {
-      this.isGeneratingKeys = false;
-      // Open the GenerateKeysDialogComponent and pass the keys and the session token as data
-      this.dialog.open(GenerateKeysDialogComponent, {
-        data: {
-          accessKey: result.accessKey,
-          secretKey: result.secretKey,
-          sessionToken: result.sessionToken,
-        },
-      });
-    });
   }
 
   public addCoopSpace(): void {
