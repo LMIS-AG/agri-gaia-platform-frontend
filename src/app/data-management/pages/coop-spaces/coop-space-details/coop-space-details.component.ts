@@ -109,7 +109,7 @@ export class CoopSpaceDetailsComponent implements OnInit {
         if (result) {
           // send the necessary data and remove the user from the member table
           this.isDeletingMember = true;
-          this.coopSpacesService.deleteMember(this.coopSpace!.name, member).subscribe({
+          this.coopSpacesService.deleteMember(this.coopSpace!.name, this.coopSpace!.company, member).subscribe({
             next: () => {
               this.memberDatasource.data = this.memberDatasource.data.filter(m => m.id !== member.id);
               this.handleDeleteMemberSuccess()
