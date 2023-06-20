@@ -7,9 +7,8 @@ import { FormArray, FormGroup } from '@angular/forms';
   styleUrls: ['./constraints.component.scss'],
 })
 export class ConstraintsComponent {
-  public leftExpressions: string[] = ['Date'];
-  public operators: string[] = ['=', '<', '>', '<=', '>='];
-  public rightExpressions: string[] = ['EU Country ', 'Not Allowed', 'Attribute'];
+  public leftExpressions: string[] = ['POLICY_EVALUATION_TIME'];
+  public operators: string[] = ['EQ', 'NEQ', 'LT', 'GT', 'LEQ', 'GEQ'];
 
   @Input()
   public formGroup!: FormGroup;

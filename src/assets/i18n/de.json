@@ -268,7 +268,9 @@
         "operator": "Operator",
         "rightExpression": "rechter Ausdruck",
         "addConstraint": "Neue Einschränkung",
-        "createPolicy": "Policy erstellen"
+        "createPolicy": "Policy erstellen",
+        "createConfirmationText": "Policy erfolgreich erstellt.",
+        "createErrorText": "Policy konnte nicht erstellt werden."
       }
     }
   }

@@ -77,10 +77,14 @@
           <!-- hasAssetjson Column -->
           <ng-container matColumnDef="hasAssetjson">
             <th mat-header-cell *matHeaderCellDef>{{ tTable('hasAssetjson') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.hasAssetjson ? tCommon('yes') : tCommon('no') }}</td>
+            <td mat-cell *matCellDef="let element">
+              <button (click)="createAssetjson(element)">
+                {{ element.hasAssetjson ? tCommon('yes') : tCommon('no') }}
+              </button>
+            </td>
           </ng-container>
 
-<!--          moremenu column-->
+          <!--          moremenu column-->
           <ng-container matColumnDef="more" *transloco="let tCommon; read: 'common'">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
@@ -102,7 +106,7 @@
                   <mat-icon>unpublished</mat-icon>
                   {{ t('unpublishFile') }}
                 </button>
-                <button mat-menu-item class="download-button"  (click)="downloadAsset(element)">
+                <button mat-menu-item class="download-button" (click)="downloadAsset(element)">
                   <mat-icon>download</mat-icon>
                   {{ tCommon('download') }}
                 </button>

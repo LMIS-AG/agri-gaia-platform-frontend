@@ -11,7 +11,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {FileService} from 'src/app/shared/services/file.service';
 import {DateAdapter} from '@angular/material/core';
-import {PublishableAsset} from 'src/app/shared/model/publishable-asset';
+import {AssetJson} from 'src/app/shared/model/asset-json';
 import {BucketService} from '../../bucket.service';
 import {translate} from '@ngneat/transloco';
 import {PolicyService} from "../../../policies/policy.service";
@@ -172,7 +172,7 @@ export class PublishAssetDlgComponent {
     const secondPageCtrl = this.secondPage.controls;
 
     const policyName: string = firstPageCtrl.policyName.value;
-    const assetToPublish: PublishableAsset = {
+    const assetToPublish: AssetJson = {
       // information from dialog page 1
       assetPropId: firstPageCtrl.id.value,
       assetPropName: firstPageCtrl.name.value,
@@ -283,5 +283,6 @@ export class PublishAssetDlgComponent {
 
     return this.allKeywords.filter(keyword => keyword.toLowerCase().includes(filterValue));
   }
+
   /* CHIPS END */
 }
