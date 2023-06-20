@@ -86,7 +86,8 @@ export class PublishAssetDlgComponent {
       name: ['', Validators.required],
       description: [''],
       version: [''],
-      policyName: ['', Validators.required],
+      accessPolicyName: ['', Validators.required],
+      contractPolicyName: ['', Validators.required],
     });
 
     const secondPage = this.formBuilder.group(
@@ -171,7 +172,8 @@ export class PublishAssetDlgComponent {
     const firstPageCtrl = this.firstPage.controls;
     const secondPageCtrl = this.secondPage.controls;
 
-    const policyName: string = firstPageCtrl.policyName.value;
+    const accessPolicyName: string = firstPageCtrl.accessPolicyName.value;
+    const contractPolicyName: string = firstPageCtrl.contractPolicyName.value;
     const assetToPublish: AssetJson = {
       // information from dialog page 1
       assetPropId: firstPageCtrl.id.value,
@@ -199,7 +201,7 @@ export class PublishAssetDlgComponent {
       dataAddressRegion: 'us-east-1',
     };
 
-    this.bucketService.publishAsset(this.asset.bucket, this.asset.name, policyName, assetToPublish).subscribe({
+    this.bucketService.publishAsset(this.asset.bucket, this.asset.name, accessPolicyName, contractPolicyName, assetToPublish).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
         // Emit a boolean result indicating success

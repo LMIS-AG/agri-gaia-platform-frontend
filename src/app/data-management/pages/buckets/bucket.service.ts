@@ -27,8 +27,8 @@ export class BucketService {
       observe: 'response',
     });
   }
-  public publishAsset(bucketName: string, assetName: string, policyName: string, assetJson: AssetJson): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/edc/publish/${bucketName}/${assetName}/${policyName}`, assetJson, {
+  public publishAsset(bucketName: string, assetName: string, accessPolicyName: string, contractPolicyName: string, assetJson: AssetJson): Observable<HttpResponse<unknown>> {
+    return this.http.post(`${environment.backend.url}/edc/publish/${bucketName}/${assetName}/${accessPolicyName}/${contractPolicyName}`, assetJson, {
       observe: 'response',
     });
   }
