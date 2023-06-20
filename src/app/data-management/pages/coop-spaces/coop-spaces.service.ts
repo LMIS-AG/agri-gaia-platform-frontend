@@ -55,8 +55,8 @@ export class CoopSpacesService {
     return this.http.post<void>(`${environment.backend.url}/coopspaces/addMembers`, {coopSpaceName, memberList});
   }
 
-  public deleteMember(coopSpaceName: String, member: Member): Observable<void> {
-    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {coopSpaceName, member});
+  public deleteMember(coopSpaceName: String, companyName: String, member: Member): Observable<void> {
+    return this.http.post<void>(`${environment.backend.url}/coopspaces/deleteMember`, {coopSpaceName, companyName, member});
   }
 
   public changeMemberRole(coopSpaceName: string, oldRole: String, member: Member): Observable<void> {
