@@ -1,0 +1,168 @@
+<ng-container *transloco="let tCommon; read: 'common'">
+  <ng-container *transloco="let t; read: 'dataManagement.buckets.assets.publishAssetDialog'">
+    <h2 mat-dialog-title>{{ t('headline') }}</h2>
+    <p>{{ t('description') }}</p>
+
+    <mat-stepper>
+      <!-- PAGE 1 -->
+      <mat-step>
+        <mat-dialog-content class="dialog-content">
+          <div fxLayout="column" [formGroup]="firstPage">
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.id') }}</mat-label>
+              <input matInput formControlName="id" required />
+              <mat-error *ngIf="firstPage.controls['id'].hasError('required')">{{ tCommon('required') }}</mat-error>
+              <mat-hint>{{ t('fields.infoId') }}</mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.name') }}</mat-label>
+              <input matInput formControlName="name" required />
+              <mat-error *ngIf="firstPage.controls['name'].hasError('required')">{{ tCommon('required') }}</mat-error>
+              <mat-hint>{{ t('fields.infoName') }}</mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.description') }}</mat-label>
+              <textarea #descriptionInput matInput maxLength="300" formControlName="description"></textarea>
+              <mat-hint>{{ t('fields.infoDescription') }}</mat-hint>
+              <mat-hint align="end"> {{ descriptionInput?.value?.length ?? 0 }} / 300 </mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.version') }}</mat-label>
+              <input matInput formControlName="version"/>
+              <mat-hint>{{ t('fields.infoVersion') }}</mat-hint>
+            </mat-form-field>
+            <br/>
+
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.policyName') }}</mat-label>
+              <mat-select formControlName="policyName" required>
+                <mat-option *ngFor="let policyName of policyNames" [value]="policyName">
+                  {{ policyName }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="firstPage.controls['policyName'].hasError('required')">{{
+                tCommon('required')
+                }}</mat-error>
+              <mat-hint>{{ t('fields.infoPolicyName') }}</mat-hint>
+            </mat-form-field>
+            <br />
+          </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions class="dialog-actions">
+          <button mat-flat-button (click)="cancel()">
+            {{ tCommon('cancel') }}
+          </button>
+          <button mat-flat-button matStepperNext [disabled]="!canGoToSecondPage()" color="primary">
+            {{ tCommon('next') }}
+          </button>
+        </mat-dialog-actions>
+      </mat-step>
+
+      <!-- PAGE 2 -->
+      <mat-step>
+        <mat-dialog-content class="dialog-content">
+          <div fxLayout="column" [formGroup]="secondPage">
+            <mat-form-field appearance="fill" color="primary" class="bg">
+              <mat-label>{{ t('fields.assetType.label') }}</mat-label>
+              <mat-select formControlName="assetType" required>
+                <mat-option *ngFor="let assetType of assetTypes" [value]="assetType">
+                  {{ t('fields.assetType.' + assetType) }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="secondPage.controls['assetType'].hasError('required')">{{
+                tCommon('required')
+                }}</mat-error>
+              <mat-hint>{{ t('fields.assetType.info') }}</mat-hint>
+            </mat-form-field>
+            <br />
+            <mat-form-field class="example-chip-list" color="primary" class="bg" appearance="fill">
+              <mat-label>{{ t('fields.agrovoc') }}</mat-label>
+              <mat-chip-list #chipList aria-label="Keyword selection">
+                <mat-chip *ngFor="let keyword of selectedKeywords" (removed)="remove(keyword)">
+                  {{ keyword }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input
+                  placeholder="Neues Keyword... (t)"
+                  #input
+                  [formControl]="keywordInputCtrl"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="addKeyword($event)"
+                />
+              </mat-chip-list>
+              <mat-hint>{{ t('fields.infoAgrovoc') }}</mat-hint>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let keyword of filteredKeywords | async" [value]="keyword">
+                  {{ keyword }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <br />
+
+            <ng-container *ngIf="currentAssetType === assetType.DataSet">
+              <h3>{{ t('fields.dateSpan') }}</h3>
+              <mat-form-field class="bg" appearance="fill">
+                <mat-label>{{ t('fields.dates') }}</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControlName="startDate" placeholder="{{ t('fields.datePlaceholder') }}" />
+                  <input matEndDate formControlName="endDate" placeholder="{{ t('fields.datePlaceholder') }}" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+              <h3>{{ t('fields.location') }}</h3>
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('fields.latitude') }}</mat-label>
+                <input matInput formControlName="latitude" />
+                <mat-error *ngIf="secondPage.controls['latitude'].hasError('invalidLatitude')">{{
+                  t('fields.errors.invalidLatitude')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('fields.longitude') }}</mat-label>
+                <input matInput formControlName="longitude" />
+                <mat-error *ngIf="secondPage.controls['longitude'].hasError('invalidLongitude')">{{
+                  t('fields.errors.invalidLongitude')
+                  }}</mat-error>
+                <mat-error *ngIf="secondPage.hasError('requireLatitudeAndLongitude')">{{
+                  t('fields.errors.requireLatitudeAndLongitude')
+                  }}</mat-error>
+                <mat-hint>{{ t('fields.infoGeonames') }}</mat-hint>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions class="dialog-actions">
+          <button mat-flat-button (click)="cancel()">
+            {{ tCommon('cancel') }}
+          </button>
+          <button mat-flat-button matStepperPrevious>{{ tCommon('back') }}</button>
+          <button
+            class="save"
+            mat-flat-button
+            [disabled]="!canAndShouldSave()"
+            color="primary"
+            (click)="addAssetjson()"
+            *ngIf="!isLoading; else loading"
+          >
+            {{ t('publishAsset') }}
+          </button>
+          <ng-template #loading>
+            <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner-container">
+              <mat-spinner [diameter]="35"></mat-spinner>
+            </div>
+          </ng-template>
+        </mat-dialog-actions>
+      </mat-step>
+    </mat-stepper>
+  </ng-container>
+</ng-container>
