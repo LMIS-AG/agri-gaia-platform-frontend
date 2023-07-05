@@ -18,11 +18,11 @@ import {PolicyService} from "../../../policies/policy.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-publish-asset-dlg',
-  templateUrl: './publish-asset-dlg.component.html',
-  styleUrls: ['./publish-asset-dlg.component.scss'],
+  selector: 'app-create-assetjson-dlg',
+  templateUrl: './create-assetjson-dlg.component.html',
+  styleUrls: ['./create-assetjson-dlg.component.scss']
 })
-export class PublishAssetDlgComponent {
+export class CreateAssetjsonDlgComponent {
   public asset!: GeneralPurposeAsset;
   public assetType = AssetType;
   public formGroup!: FormGroup;
@@ -86,8 +86,7 @@ export class PublishAssetDlgComponent {
       name: ['', Validators.required],
       description: [''],
       version: [''],
-      accessPolicyName: ['', Validators.required],
-      contractPolicyName: ['', Validators.required],
+      policyName: ['', Validators.required],
     });
 
     const secondPage = this.formBuilder.group(
@@ -162,7 +161,7 @@ export class PublishAssetDlgComponent {
     });
   }
 
-  public publishAsset(): void {
+  public addAssetjson(): void {
     if (!this.canAndShouldSave()) {
       return;
     }
@@ -172,9 +171,8 @@ export class PublishAssetDlgComponent {
     const firstPageCtrl = this.firstPage.controls;
     const secondPageCtrl = this.secondPage.controls;
 
-    const accessPolicyName: string = firstPageCtrl.accessPolicyName.value;
-    const contractPolicyName: string = firstPageCtrl.contractPolicyName.value;
-    const assetToPublish: AssetJson = {
+    const policyName: string = firstPageCtrl.policyName.value;
+    const assetJson: AssetJson = {
       // information from dialog page 1
       assetPropId: firstPageCtrl.id.value,
       assetPropName: firstPageCtrl.name.value,
@@ -201,7 +199,9 @@ export class PublishAssetDlgComponent {
       dataAddressRegion: 'us-east-1',
     };
 
-    this.bucketService.publishAsset(this.asset.bucket, this.asset.name, accessPolicyName, contractPolicyName, assetToPublish).subscribe({
+    let assetName: string = this.asset.name
+    assetName = assetName.substring(assetName.lastIndexOf('/') + 1)
+    this.bucketService.addAssetjson(assetName, assetJson).subscribe({
       next: () => {
         this.uiService.showSuccessMessage(translate('dataManagement.buckets.assets.dialog.publishConfirmationText'));
         // Emit a boolean result indicating success

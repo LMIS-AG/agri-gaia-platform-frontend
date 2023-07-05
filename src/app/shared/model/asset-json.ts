@@ -1,4 +1,4 @@
-export interface PublishableAsset {
+export interface AssetJson {
   assetPropName?: string;
   assetPropByteSize?: number; // Approximately 8 million TB.
   assetPropDescription?: string;

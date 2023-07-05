@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs';
-import { BucketService } from '../bucket.service';
-import { GeneralPurposeAsset } from '../../../../shared/model/general-purpose-asset';
-import { UIService } from '../../../../shared/services/ui.service';
-import { translate } from '@ngneat/transloco';
-import { prettyPrintFileSize } from '../../../../shared/utils/convert-utils';
-import { MatTableDataSource } from '@angular/material/table';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PublishAssetDlgComponent } from './publish-asset-dlg/publish-asset-dlg.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {filter, map, switchMap} from 'rxjs';
+import {BucketService} from '../bucket.service';
+import {GeneralPurposeAsset} from '../../../../shared/model/general-purpose-asset';
+import {UIService} from '../../../../shared/services/ui.service';
+import {translate} from '@ngneat/transloco';
+import {prettyPrintFileSize} from '../../../../shared/utils/convert-utils';
+import {MatTableDataSource} from '@angular/material/table';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {PublishAssetDlgComponent} from './publish-asset-dlg/publish-asset-dlg.component';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {
+  GenerateKeysDialogComponent
+} from 'src/app/shared/components/generate-keys-dialog/generate-keys-dialog.component';
+import {CreateAssetjsonDlgComponent} from "./create-assetjson-dlg/create-assetjson-dlg.component";
 
 @UntilDestroy()
 @Component({
@@ -20,7 +23,7 @@ import { GenerateKeysDialogComponent } from 'src/app/shared/components/generate-
 })
 export class AssetsComponent implements OnInit {
   public bucket?: string;
-  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'isPublished', 'more'];
+  public displayedColumnsDataset: string[] = ['name', 'date', 'size', 'hasAssetjson', 'isPublished', 'more'];
   public dataSource: MatTableDataSource<GeneralPurposeAsset> = new MatTableDataSource();
   public fileToUpload: File | null = null;
   public isLoading = false;
@@ -32,7 +35,8 @@ export class AssetsComponent implements OnInit {
     private bucketService: BucketService,
     private uiService: UIService,
     private dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   public ngOnInit(): void {
     this.route.paramMap
@@ -40,7 +44,7 @@ export class AssetsComponent implements OnInit {
         filter(paramMap => paramMap.has('name')),
         map(paramMap => paramMap.get('name')),
         switchMap(name =>
-          this.bucketService.getAssetsByBucketName(name ? name : '', 'assets/').pipe(map(assets => ({ name, assets })))
+          this.bucketService.getAssetsByBucketName(name ? name : '', 'assets/').pipe(map(assets => ({name, assets})))
         )
       )
       .subscribe(result => {
@@ -68,7 +72,7 @@ export class AssetsComponent implements OnInit {
     this.bucketService.downloadAsset(bucket, 'assets/' + asset.name).subscribe({
       next: data => {
         // create a blob object from the API response
-        let blob = new Blob([data], { type: 'application/octet-stream' });
+        let blob = new Blob([data], {type: 'application/octet-stream'});
 
         // create a temporary URL for the blob object
         let url = window.URL.createObjectURL(blob);
@@ -112,9 +116,16 @@ export class AssetsComponent implements OnInit {
       });
   }
 
+  public createAssetjson(asset: GeneralPurposeAsset): void {
+    this.dialog.open(CreateAssetjsonDlgComponent, {
+      minWidth: '60em',
+      panelClass: 'resizable',
+      data: asset,
+    }).afterClosed().subscribe(result => asset.hasAssetjson = result);
+  }
+
   public publishAsset(asset: GeneralPurposeAsset): void {
-    if (!asset) throw Error('asset was null in publishAsset().');
-    asset.coopSpace = this.bucket!;
+    asset.bucket = this.bucket!;
 
     this.openPublishAssetDialog(asset)
       .afterClosed()
@@ -122,8 +133,6 @@ export class AssetsComponent implements OnInit {
         if (result) {
           // The asset was successfully published, disable the publish button and enable the unpublish button
           asset.isPublished = true;
-        } else {
-          // The asset was not published, do nothing
         }
       });
   }

@@ -5,6 +5,7 @@ export interface GeneralPurposeAsset {
   uploadDate: string;
   size: string;
   labeling: string;
-  coopSpace: string; // link to CoopSpace
+  bucket: string;
   isPublished: boolean;
+  hasAssetjson: boolean;
 }

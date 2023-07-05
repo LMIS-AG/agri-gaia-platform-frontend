@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, map, Observable, Subscription, timeout } from 'rxjs';
 import { Bucket } from 'src/app/shared/model/bucket';
-import { PublishableAsset } from 'src/app/shared/model/publishable-asset';
+import { AssetJson } from 'src/app/shared/model/asset-json';
 import { STSRequest } from 'src/app/shared/model/stsRequest';
 import { environment } from 'src/environments/environment';
 import { GeneralPurposeAsset } from '../../../shared/model/general-purpose-asset';
@@ -22,14 +22,19 @@ export class BucketService {
     return this.http.get<GeneralPurposeAsset[]>(`${environment.backend.url}/buckets/${name}/${base64encodedFolderName}`);
   }
 
-  public publishAsset(bucketName: string, assetName: string, policyName: string, asset: PublishableAsset): Observable<HttpResponse<unknown>> {
-    return this.http.post(`${environment.backend.url}/assets/publish/${bucketName}/${assetName}/${policyName}`, asset, {
+  public addAssetjson(assetName: string, assetJson: AssetJson): Observable<HttpResponse<unknown>> {
+    return this.http.post(`${environment.backend.url}/edc/assetjsons/${assetName}`, assetJson, {
+      observe: 'response',
+    });
+  }
+  public publishAsset(bucketName: string, assetName: string, accessPolicyName: string, contractPolicyName: string, assetJson: AssetJson): Observable<HttpResponse<unknown>> {
+    return this.http.post(`${environment.backend.url}/edc/publish/${bucketName}/${assetName}/${accessPolicyName}/${contractPolicyName}`, assetJson, {
       observe: 'response',
     });
   }
 
   public unpublishAsset(bucket: string, name: string): Observable<HttpResponse<unknown>> {
-    return this.http.delete(`${environment.backend.url}/assets/unpublish/${bucket}/${name}`, { observe: 'response' });
+    return this.http.delete(`${environment.backend.url}/edc/unpublish/${bucket}/${name}`, { observe: 'response' });
   }
 
   public downloadAsset(bucket: string, name: string): Observable<Blob> {

@@ -9,10 +9,19 @@ import {environment} from "../../../../environments/environment";
 })
 export class PolicyService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public getAllPolicies(): Observable<Policy[]> {
     return this.http.get<Policy[]>(`${environment.backend.url}/edc/policies`)
+  }
+
+  public addPolicy(policy: Policy): Observable<HttpResponse<unknown>> {
+    return this.http.post(
+      `${environment.backend.url}/edc/policies`,
+      policy,
+      {observe: 'response'},
+    );
   }
 
   public deletePolicy(policyName: string): Observable<HttpResponse<unknown>> {

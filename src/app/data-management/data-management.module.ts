@@ -26,6 +26,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DatePipe } from '@angular/common';
+import { CreateAssetjsonDlgComponent } from './pages/buckets/assets/create-assetjson-dlg/create-assetjson-dlg.component';
 
 const routes: Routes = [
   {
@@ -75,6 +76,7 @@ const routes: Routes = [
     AssetsComponent,
     AddMembersAfterwardsDlgComponent,
     PublishAssetDlgComponent,
+    CreateAssetjsonDlgComponent,
   ],
   imports: [
     MatTableModule,

@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { Tag } from 'src/app/shared/model/tag';
+import {Component} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {PolicyService} from "../policy.service";
+import {Constraint, ConstraintType} from 'src/app/shared/model/constraint';
+import {Policy, PolicyType} from "../../../../shared/model/policy";
+import {HttpResponse} from "@angular/common/http";
+import {translate} from "@ngneat/transloco";
+import {UIService} from "../../../../shared/services/ui.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-policy',
@@ -9,49 +15,56 @@ import { Tag } from 'src/app/shared/model/tag';
 })
 export class CreatePolicyComponent {
   public formGroup: FormGroup;
-  public policytypes: string[] = ['Vertrag', 'Zugriff'];
-  public addTagForm: FormGroup;
-  public tags: Tag[] = [];
+  public policytypes: PolicyType[] = Object.values(PolicyType);
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private policyService: PolicyService,
+    private uiService: UIService,
+  ) {
     this.formGroup = this.formBuilder.group({
       name: ['', [Validators.required]],
-      description: ['', Validators.required],
-      type: [''],
-      duties: this.createRowFormArray(),
+      type: ['', [Validators.required]],
       permissions: this.createRowFormArray(),
-      prohibitions: this.createRowFormArray(),
-    });
-    this.addTagForm = this.formBuilder.group({
-      tagName: ['', [Validators.minLength(1)]],
     });
   }
 
-  public removeTag(tag: Tag): void {
-    const index = this.tags.indexOf(tag);
-    if (index !== -1) {
-      this.tags.splice(index, 1);
-    }
+  public back(): void {
   }
 
-  public addTagging(): void {
-    const formValue = this.addTagForm.value;
-    this.tags.push({ name: formValue.tagName } as Tag);
-    this.addTagForm.reset();
+  public addPolicy(): void {
+    const formValues = this.formGroup.value;
+    let name = formValues.name;
+    let policyType = formValues.type;
+    const permissions: Constraint[] = formValues.permissions.map((permission: any) =>
+      ({
+        constraintType: ConstraintType.Permission,
+        leftExpression: permission.property,
+        operator: permission.operator,
+        rightExpression: permission.attribute,
+      }));
+    const policy: Policy = ({
+      name: name,
+      policyType: policyType,
+      permissions: permissions,
+    });
+    this.policyService.addPolicy(policy).subscribe({
+      next: (response: HttpResponse<unknown>) => {
+        this.handleAddSuccess()
+      }, error: err => {
+        this.handleAddError(err)
+      }
+    });
   }
 
-  public back(): void {}
-
-  public createPolicy(): void {
-    const x = this.formGroup.value;
+  private handleAddSuccess(): void {
+    this.router.navigate(['data/policies']);
+    this.uiService.showSuccessMessage(translate('dataManagement.policies.createPolicy.createConfirmationText'))
   }
 
-  public addDuty(): void {
-    this.duties.push(this.createRowFormGroup());
-  }
-
-  public deleteDuty(index: number): void {
-    this.duties.removeAt(index);
+  private handleAddError(err: any): void {
+    this.uiService.showErrorMessage(translate('dataManagement.policies.createPolicy.createErrorText') + err.status);
   }
 
   public addPermission(): void {
@@ -62,24 +75,8 @@ export class CreatePolicyComponent {
     this.permissions.removeAt(index);
   }
 
-  public addProhibition(): void {
-    this.prohibitions.push(this.createRowFormGroup());
-  }
-
-  public deleteProhibition(index: number): void {
-    this.prohibitions.removeAt(index);
-  }
-
-  public get duties(): FormArray {
-    return this.formGroup.get('duties') as FormArray;
-  }
-
   public get permissions(): FormArray {
     return this.formGroup.get('permissions') as FormArray;
-  }
-
-  public get prohibitions(): FormArray {
-    return this.formGroup.get('prohibitions') as FormArray;
   }
 
   private createRowFormArray(): FormArray {

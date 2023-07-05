@@ -9,22 +9,26 @@
       fxLayoutAlign="space-between"
     >
       <div *transloco="let tCommon; read: 'common'">
+        <!--Left expression-->
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="property" placeholder="{{ t('property') }}">
-            <mat-option *ngFor="let option of propertyOptions" [value]="option">{{ option }}</mat-option>
+          <mat-select formControlName="property" placeholder="{{ t('leftExpression') }}">
+            <mat-option *ngFor="let leftExpression of leftExpressions"
+                        [value]="leftExpression">{{ leftExpression }}</mat-option>
           </mat-select>
           <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
+        <!--Operator-->
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="operator" placeholder="{{ t('select') }}">
-            <mat-option *ngFor="let option of operatorOptions" [value]="option">{{ option }}</mat-option>
+          <mat-select formControlName="operator" placeholder="{{ t('operator') }}">
+            <mat-option *ngFor="let operator of operators" [value]="operator">{{ operator }}</mat-option>
           </mat-select>
           <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
+        <!--Right expression-->
         <mat-form-field floatLabel="never" appearance="outline">
-          <mat-select formControlName="attribute" placeholder="{{ t('attribute') }}">
-            <mat-option *ngFor="let option of attributeOptions" [value]="option">{{ option }}</mat-option>
-          </mat-select>
+          <input matInput [matDatepicker]="picker" formControlName="attribute">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
           <mat-error>{{ tCommon('required') }}</mat-error>
         </mat-form-field>
       </div>
@@ -36,7 +40,8 @@
       </button>
     </div>
     <button mat-button class="add-btn" (click)="addConstraint()">
-      <mat-icon>add</mat-icon> {{ t('addConstraint') }}
+      <mat-icon>add</mat-icon>
+      {{ t('addConstraint') }}
     </button>
   </div>
 </ng-container>
