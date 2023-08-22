@@ -109,6 +109,7 @@
             "assetType": {
               "label": "Asset-Typ",
               "AIMODEL": "KI-Modell",
+              "AISERVICE": "KI-Service",
               "DATASET": "Datensatz",
               "null": "- keine Auswahl -",
               "info": "Wählen Sie hier den Typ Ihres Assets aus."
@@ -116,6 +117,8 @@
             "dateSpan": "Zeitraum der Datenerfassung",
             "dates": "Startdatum - Enddatum",
             "datePlaceholder": "tt/mm/jjjj",
+            "openApiDescription": "OpenAPI-Beschreibung",
+            "infoOpenApiDescription": "Geben Sie hier die OpenAPI-Beschreibung Ihres Services ein",
             "location": "Ort der Datenerfassung",
             "locationLabel": "Ort",
             "latitude": "Breitengrad",
@@ -124,7 +127,8 @@
             "errors": {
               "invalidLatitude": "Geben Sie bitte einen gültigen Breitengrad an.",
               "invalidLongitude": "Geben Sie bitte einen gültigen Längengrad an.",
-              "requireLatitudeAndLongitude": "Geben Sie bitte Längengrad und Breitengrad an."
+              "requireLatitudeAndLongitude": "Geben Sie bitte Längengrad und Breitengrad an.",
+              "invalidOpenApiDescription": "Geben Sie bitte eine gültige OpenAPI-Beschreibung an."
             }
           },
           "publishAsset": "Asset veröffentlichen"
