@@ -119,6 +119,18 @@
             </mat-form-field>
             <br />
 
+            <ng-container *ngIf="currentAssetType === assetType.AiService">
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('fields.openApiDescription') }}</mat-label>
+                <textarea #openApiDescriptionInput matInput  formControlName="openApiDescription"></textarea>
+                <mat-hint>{{ t('fields.infoOpenApiDescription') }}</mat-hint>
+<!--                <mat-hint align="end"> {{ openApiDescriptionInput?.value?.length ?? 0 }} / 300 </mat-hint>-->
+                <mat-error *ngIf="secondPage.controls['latitude'].hasError('invalidLatitude')">{{
+                  t('fields.errors.invalidOpenApiDescription')
+                  }}</mat-error>
+              </mat-form-field>
+            </ng-container>
+
             <ng-container *ngIf="currentAssetType === assetType.DataSet">
               <h3>{{ t('fields.dateSpan') }}</h3>
               <mat-form-field class="bg" appearance="fill">
