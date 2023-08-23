@@ -124,9 +124,9 @@
                 <mat-label>{{ t('fields.openApiDescription') }}</mat-label>
                 <textarea #openApiDescriptionInput matInput  formControlName="openApiDescription"></textarea>
                 <mat-hint>{{ t('fields.infoOpenApiDescription') }}</mat-hint>
-                <mat-error *ngIf="secondPage.controls['latitude'].hasError('invalidLatitude')">{{
-                  t('fields.errors.invalidOpenApiDescription')
-                  }}</mat-error>
+                <mat-error *ngIf="secondPage.controls['openApiDescription'].hasError('invalidOpenApiDescription')">
+                  {{ t('fields.errors.invalidOpenApiDescription')}} <a href="https://apitools.dev/swagger-parser/online/" target="_blank">OpenAPI Validator</a>, <a href="https://swagger.io/specification/" target="_blank">OpenAPI Dokumentation</a>.
+                  </mat-error>
               </mat-form-field>
             </ng-container>
 
