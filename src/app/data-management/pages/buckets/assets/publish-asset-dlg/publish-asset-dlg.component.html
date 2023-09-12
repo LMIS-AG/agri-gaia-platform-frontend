@@ -119,6 +119,17 @@
             </mat-form-field>
             <br />
 
+            <ng-container *ngIf="currentAssetType === assetType.AiService">
+              <mat-form-field appearance="fill" color="primary" class="bg">
+                <mat-label>{{ t('fields.openApiDescription') }}</mat-label>
+                <textarea #openApiDescriptionInput matInput  formControlName="openApiDescription"></textarea>
+                <mat-hint>{{ t('fields.infoOpenApiDescription') }}</mat-hint>
+                <mat-error *ngIf="secondPage.controls['openApiDescription'].hasError('invalidOpenApiDescription')">
+                  {{ t('fields.errors.invalidOpenApiDescription')}} <a href="https://apitools.dev/swagger-parser/online/" target="_blank">OpenAPI Validator</a>, <a href="https://swagger.io/specification/" target="_blank">OpenAPI Dokumentation</a>.
+                  </mat-error>
+              </mat-form-field>
+            </ng-container>
+
             <ng-container *ngIf="currentAssetType === assetType.DataSet">
               <h3>{{ t('fields.dateSpan') }}</h3>
               <mat-form-field class="bg" appearance="fill">

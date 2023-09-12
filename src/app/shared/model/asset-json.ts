@@ -9,6 +9,7 @@ export interface AssetJson {
   latitude?: string;
   longitude?: string;
   dateRange?: string;
+  openApiDescription?: string;
   dataAddressType?: string;
   dataAddressRegion?: string;
   dataAddressBucketName?: string;
